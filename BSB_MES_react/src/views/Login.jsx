@@ -15,7 +15,7 @@ export default function Login() {
   return (
     <div className="bg-white w-full md:max-w-xl m-auto rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden p-8 sm:p-10 relative border border-slate-200">
       {/* Top Red Bar Accent */}
-      <div className="bg-primary absolute top-0 left-0 w-full h-2 "></div>
+      <div className="bg-primary absolute top-0 left-0 w-full h-2 hidden md:block"></div>
 
       {/* Header / Logo */}
       <div className="flex flex-col items-center mb-8 mt-2">
@@ -102,6 +102,8 @@ export default function Login() {
           Login
         </button>
       </form>
+      {/* Bottom Red Bar Accent */}
+      <div className="bg-primary absolute bottom-0 left-0 w-full h-2 hidden md:block"></div>
     </div>
   );
 }
