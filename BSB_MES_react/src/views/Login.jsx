@@ -1,19 +1,31 @@
 import BrandLogo from "../components/BrandLogo";
+import Alerts from "../components/Alerts";
 import { Eye, EyeOff } from 'lucide-react';
+import axiosClient from '../config/axios.js';
+import { createRef, useState} from "react";
 
 export default function Login() {
-  const usernameRef = '';
-  const passwordRef  = '';
-  const errores = [];
+  const usernameRef = createRef();
+  const passwordRef  = createRef();
+  const [errors, setErrors] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const showPassword  = () => {
-    console.log('handleSubmit');
-  };
-  const handleSubmit = () => {
-    console.log('handleSubmit');
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const loginData = {
+      username : usernameRef.current.value,
+      password : passwordRef.current.value
+    }
+    try {
+      const {data} = await axiosClient.post('api/login', loginData);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      setErrors(Object.values(error.response.data.errors));
+    }
   };
   return (
-    <div className="bg-white w-full md:max-w-xl m-auto rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden p-8 sm:p-10 relative border border-slate-200">
+    <div className="bg-white w-full md:max-w-md m-auto rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden p-8 sm:p-10 relative border border-slate-200">
       {/* Top Red Bar Accent */}
       <div className="bg-primary absolute top-0 left-0 w-full h-2 hidden md:block"></div>
 
@@ -27,9 +39,13 @@ export default function Login() {
           Please authenticate to continue
         </p>
       </div>
-      <form className="flex flex-col gap-5" onSubmit={handleSubmit} noValidate>
-        {errores
-          ? errores.map((error) => <Alerts key={error}> {error}</Alerts>)
+      <form
+        className="flex flex-col gap-5"
+        onSubmit={handleSubmit}
+        noValidate
+      >
+        {errors
+          ? errors.map((error) => <Alerts key={error}> {error}</Alerts>)
           : null}
         <div className="flex flex-col gap-2">
           <label
@@ -47,7 +63,7 @@ export default function Login() {
                        focus:border-primary h-12 placeholder:text-slate-400 px-4
                        text-sm font-medium leading-normal transition-all duration-200"
             placeholder="Enter your username"
-            // ref={usernameRef}
+            ref={usernameRef}
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -67,7 +83,7 @@ export default function Login() {
                        focus:border-primary h-12 placeholder:text-slate-400 px-4 pr-12
                        text-sm font-medium leading-normal transition-all duration-200"
               placeholder="Enter your password"
-              // ref={passwordRef}
+              ref={passwordRef}
             />
             <button
               type="button"
@@ -102,8 +118,6 @@ export default function Login() {
           Login
         </button>
       </form>
-      {/* Bottom Red Bar Accent */}
-      <div className="bg-primary absolute bottom-0 left-0 w-full h-2 hidden md:block"></div>
     </div>
   );
 }
