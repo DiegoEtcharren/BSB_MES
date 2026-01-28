@@ -39,14 +39,10 @@ export default function Login() {
           Please authenticate to continue
         </p>
       </div>
-      <form
-        className="flex flex-col gap-5"
-        onSubmit={handleSubmit}
-        noValidate
-      >
-        {errors
-          ? errors.map((error, i) => <Alerts key={i}> {error}</Alerts>)
-          : null}
+      {errors
+        ? errors.map((error, i) => <Alerts key={i}> {error}</Alerts>)
+        : null}
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit} noValidate>
         <div className="flex flex-col gap-2">
           <label
             className="text-slate-700 text-[11px] font-bold uppercase tracking-wide ml-1"

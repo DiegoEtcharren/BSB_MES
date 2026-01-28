@@ -37,9 +37,9 @@ class LoginRequest extends FormRequest
 
     public function messages() {
         return [
-            'username.required' => 'The username is required to login',
-            'username.exists' => 'There is no username register',
-            'password.required' => 'The password is required'
+            'username.required' => 'The username is required to login.',
+            'username.exists' => 'There is no username register.',
+            'password.required' => 'The password is required to login.'
         ];
     }
 }
