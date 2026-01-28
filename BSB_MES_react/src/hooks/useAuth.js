@@ -31,16 +31,26 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
         }
     }
 
-    const logout = () => {
-        console.log('click');
-    }
+    const logout = async () => {
+      try {
+        await axiosClient.post("/api/logout", null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+        localStorage.removeItem('AUTH_TOKEN');
+        await mutate(undefined);
+      } catch (error) {
+        throw Error(error?.response?.data?.errors);
+      }
+    };
 
     useEffect(() => {
         if(middleware ==='guest' && url && user) {
             navigate(url);
         }
 
-        if(error) {
+        if(middleware ==='auth'&& error) {
             navigate('/auth/login');
         }
     }, [user, error])
