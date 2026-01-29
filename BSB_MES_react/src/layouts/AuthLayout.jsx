@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 export default function AuthLayout() {
   return (
     <>
-      <div className="md:flex ">
+      <div className="flex flex-col">
         <main className="w-full flex flex-col my-0 md:my-5">
           <Outlet />
         </main>
