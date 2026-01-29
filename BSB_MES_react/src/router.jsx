@@ -1,18 +1,29 @@
 import {createBrowserRouter} from 'react-router-dom'
-import Layout from './layouts/Layout';
+import EngLayout from './layouts/EngLayout';
 import AuthLayout from './layouts/AuthLayout';
-import Inicio from './views/Inicio';
+import OpsLayout from './layouts/OpsLayout';
 import Login from './views/Login';
-import Registro from './views/Registro';
+import EngDashboard from './views/Eng/EngDashboard';
+import OpsDashboard from './views/Ops/OpsDashboard';
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Layout />,
+    path: "/eng",
+    element: <EngLayout />,
     children: [
       {
         index: true,
-        element: <Inicio />,
+        element: <EngDashboard />,
+      },
+    ],
+  },
+  {
+    path: "/ops",
+    element: <OpsLayout />,
+    children: [
+      {
+        index: true,
+        element: <OpsDashboard />,
       },
     ],
   },
@@ -23,10 +34,6 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
-      },
-      {
-        path: "registro",
-        element: <Registro />,
       },
     ],
   },
