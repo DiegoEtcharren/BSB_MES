@@ -22,6 +22,7 @@ class AuthController extends Controller
 
         return [
             'user' => $user, // User information.
+            'role' => $user->role,
             'token' => $user->createToken('main')->plainTextToken, // This token will open the session
             'message' => 'Login successful'
         ];
