@@ -11,10 +11,9 @@ export default function EngSidebar() {
       </div>
       <nav className="flex-1 px-3 mt-4 space-y-1">
         <button
-          className="nav-link active flex items-center gap-3 px-4 py-3 rounded transition-all duration-200"
+          className="nav-link active flex items-center gap-3 px-4 py-3 rounded transition-all duration-200 cursor-pointer"
           type="button"
           onClick={() => handleClickSidebarOption('dashboard')}
-          href="#"
         >
           <span className="material-symbols-outlined">dashboard</span>
           <span className="text-sm">Main</span>

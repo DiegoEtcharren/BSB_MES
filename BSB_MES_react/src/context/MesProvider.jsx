@@ -7,6 +7,7 @@ const MesProvider = ({children}) => {
 
     const handleClickSidebarOption = (id) => {
             setCurrentSidebarOption(id);
+            console.log(currentSidebarOption);
         }
 
         return (
