@@ -1,5 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { MesProvider } from "../context/MesProvider";
+import useQuiosco from "../hooks/useMES";
 import EngSidebar from '../components/Sidebar/EngSidebar';
 
 export default function Layout() {

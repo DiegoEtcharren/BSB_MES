@@ -4,7 +4,7 @@ import BrandLogo from "../../components/BrandLogo";
 export default function EngSidebar() {
   const {handleClickSidebarOption, currentSidebarOption} = useMES();
   return (
-    <div classNameName="w-64 bg-white border-r border-border-subtle flex flex-col z-20">
+    <div className="w-64 bg-white border-r border-border-subtle flex flex-col z-20">
       <div className="p-6 flex items-center gap-3">
         <BrandLogo />
         <p className="font-black text-xl tracking-tight text-charcoal">ADMIN</p>
@@ -13,7 +13,7 @@ export default function EngSidebar() {
         <button
           className="nav-link active flex items-center gap-3 px-4 py-3 rounded transition-all duration-200"
           type="button"
-          onClick={() => handleClickSidebarOption('dahboard')}
+          onClick={() => handleClickSidebarOption('dashboard')}
           href="#"
         >
           <span className="material-symbols-outlined">dashboard</span>
