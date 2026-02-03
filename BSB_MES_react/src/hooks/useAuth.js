@@ -46,8 +46,15 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
     };
 
     useEffect(() => {
-        if(middleware ==='guest' && url && user) {
-            navigate(url);
+        if(middleware ==='guest' && user) {
+            console.log(user);
+            if(user.role === 'engineer') {
+                navigate('/eng');
+            }
+
+            if (user.role === 'operator') {
+                navigate('/ops');
+            }
         }
 
         if(middleware ==='auth'&& error) {

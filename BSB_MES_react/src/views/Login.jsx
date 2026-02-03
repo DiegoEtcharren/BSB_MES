@@ -11,8 +11,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useAuth({
-    middleware: 'guest',
-    url: '/eng'
+    middleware: 'guest'
   });
 
   const handleSubmit = async e => {
@@ -32,7 +31,7 @@ export default function Login() {
       {/* Header / Logo */}
       <div className="flex flex-col items-center mb-8 mt-2">
         <BrandLogo />
-        <h1 className="text-text-main text-2xl font-extrabold leading-tight tracking-tight text-center">
+        <h1 className="text-text-main text-2xl font-extrabold leading-tight tracking-tight text-center mt-5">
           Admin Portal
         </h1>
         <p className="text-text-muted mt-2 text-center text-sm font-medium">
