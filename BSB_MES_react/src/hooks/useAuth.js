@@ -49,11 +49,11 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
         if(middleware ==='guest' && user) {
             console.log(user);
             if(user.role === 'engineer') {
-                navigate('/eng');
+                navigate('/eng/dashboard');
             }
 
             if (user.role === 'operator') {
-                navigate('/ops');
+                navigate('/ops/dashboard');
             }
         }
 

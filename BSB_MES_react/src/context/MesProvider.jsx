@@ -3,19 +3,19 @@ import { createContext, useState, useEffect} from "react"
 const MesContext = createContext();
 
 const MesProvider = ({children}) => {
-    const [currentSidebarOption, setCurrentSidebarOption] = useState('dashboard');
+    const [activeTab, setActiveTab] = useState('dashboard');
 
-    const handleClickSidebarOption = (id) => {
-            setCurrentSidebarOption(id);
-            console.log(currentSidebarOption);
+
+    const handleActiveTab = (option) => {
+            setActiveTab(option);
+            console.log(activeTab);
         }
 
         return (
         <MesContext.Provider
             value = {{
-                currentSidebarOption,
-                setCurrentSidebarOption,
-                handleClickSidebarOption
+                activeTab,
+                handleActiveTab
             }}
         >
             {children}

@@ -11,6 +11,7 @@
   --color-input-border: #1e293b;
   --color-text-main: #0f172a;
   --color-text-muted: #64748b;
+  --color-border-subtle: #e2e8f0;
 
   /* Fonts */
   --font-sans: "Inter", sans-serif;
@@ -23,5 +24,13 @@
 
   body {
     @apply bg-surface-background text-text-main font-sans;
+  }
+
+  .nav-link:hover {
+    @apply bg-slate-50 text-primary;
+  }
+
+  .nav-link.active {
+    @apply bg-slate-100 text-primary border-r-4 border-primary font-bold;
   }
 }

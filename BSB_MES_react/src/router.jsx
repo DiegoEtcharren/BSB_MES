@@ -3,7 +3,12 @@ import EngLayout from './layouts/EngLayout';
 import AuthLayout from './layouts/AuthLayout';
 import OpsLayout from './layouts/OpsLayout';
 import Login from './views/Login';
+
 import EngDashboard from './views/Eng/EngDashboard';
+import EngOrders from './views/Eng/EngOrders';
+import EngOperators from './views/Eng/EngOperators';
+import EngProducts from './views/Eng/EngProducts';
+
 import OpsDashboard from './views/Ops/OpsDashboard';
 
 const router = createBrowserRouter([
@@ -12,8 +17,20 @@ const router = createBrowserRouter([
     element: <EngLayout />,
     children: [
       {
-        index: true,
+        path: "dashboard",
         element: <EngDashboard />,
+      },
+      {
+        path: "orders",
+        element: <EngOrders />,
+      },
+      {
+        path: "operators",
+        element: <EngOperators />,
+      },
+      {
+        path: "products",
+        element: <EngProducts />,
       },
     ],
   },
@@ -22,7 +39,7 @@ const router = createBrowserRouter([
     element: <OpsLayout />,
     children: [
       {
-        index: true,
+        path: "dashboard",
         element: <OpsDashboard />,
       },
     ],
