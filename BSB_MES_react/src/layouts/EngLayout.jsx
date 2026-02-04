@@ -4,7 +4,7 @@ import EngHeader from '../components/EngHeader'
 import EngSidebar from '../components/Sidebar/EngSidebar';
 
 export default function Layout() {
-  const {user, error } = useAuth({middleware: 'auth'});
+  const {user, error, } = useAuth({middleware: 'auth'});
   return (
     <div className="flex h-screen overflow-hidden">
       <EngSidebar />
