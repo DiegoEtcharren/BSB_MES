@@ -1,10 +1,27 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate} from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import EngHeader from '../components/EngHeader'
 import EngSidebar from '../components/Sidebar/EngSidebar';
 
 export default function Layout() {
-  const {user, error, } = useAuth({middleware: 'auth'});
+  const {user, error, isLoading} = useAuth({middleware: 'auth'});
+
+  if (isLoading) {
+    return (
+        <div className="flex h-screen items-center justify-center bg-gray-50">
+            <div className="flex flex-col items-center gap-4">
+                 {/* Simple CSS Spinner */}
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-sm text-slate-500 font-medium">Verifying Credentials...</p>
+            </div>
+        </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth/login" />;
+  }
+
   return (
     <div className="flex h-screen overflow-hidden">
       <EngSidebar />
