@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
-import useMES from "../../hooks/useMES"
+import { useAuth } from "../../hooks/useAuth";
 import BrandLogo from "../../components/BrandLogo";
 
 export default function EngSidebar() {
   const location = useLocation();
+  const {logout, user} = useAuth({middleware : 'auth'});
 
   return (
     <aside className="w-64 bg-white border-r border-border-subtle flex flex-col z-20">
@@ -44,7 +45,11 @@ export default function EngSidebar() {
           </Link>
         </nav>
         <div className="p-4 border-t border-border-subtle">
-          <button className="flex items-center gap-3 px-4 py-2 w-full text-slate-500 hover:text-primary transition-colors text-sm font-medium cursor-pointer">
+          <button
+            className="flex items-center gap-3 px-4 py-2 w-full text-slate-500 hover:text-primary transition-colors text-sm font-medium cursor-pointer"
+            type="button"
+            onClick={logout}
+          >
             <span className="material-symbols-outlined">logout</span>
             Logout
           </button>
