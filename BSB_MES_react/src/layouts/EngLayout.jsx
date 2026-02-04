@@ -7,9 +7,7 @@ export default function Layout() {
   const {user, error } = useAuth({middleware: 'auth'});
   return (
     <div className="md:flex ">
-      <aside>
-        <EngSidebar />
-      </aside>
+      <EngSidebar />
       <main className="flex-1 h-screen overflow-y-scroll bg-gray-100 p-3">
         <Outlet />
         <footer className="mt-8 text-center opacity-60">
