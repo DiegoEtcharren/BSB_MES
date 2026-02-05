@@ -3,19 +3,13 @@ import { createContext, useState, useEffect} from "react"
 const MesContext = createContext();
 
 const MesProvider = ({children}) => {
-    const [activeTab, setActiveTab] = useState('dashboard');
-
-
-    const handleActiveTab = (option) => {
-            setActiveTab(option);
-            console.log(activeTab);
-        }
+    const [title, setTitle] = useState("Dashboard");
 
         return (
         <MesContext.Provider
             value = {{
-                activeTab,
-                handleActiveTab
+                title,
+                setTitle
             }}
         >
             {children}
