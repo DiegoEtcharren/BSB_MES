@@ -1,15 +1,15 @@
 import MesContext from "../../context/MesProvider";
+import ModalOperator from "../../components/Modals/ModalOperator";
 import { useContext, useEffect } from "react";
 
 export default function EngOperators() {
-  const { setHeaderConfig } = useContext(MesContext);
+  const { setHeaderConfig, handleClickModal} = useContext(MesContext);
   useEffect(() => {
     setHeaderConfig("Operators", {
       label: "Add New Operator",
       icon: "person",
       onClick: () => {
-        console.log("Add Operators Modal...");
-        // Open your modal logic here
+        handleClickModal()
       },
     });
   }, []);
