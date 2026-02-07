@@ -1,10 +1,11 @@
 import { useAuth } from "../hooks/useAuth";
 import MesContext from "../context/MesProvider";
 import { useContext } from "react";
+import ActionButton from "./ActionButton";
 
 export default function EngHeader() {
   const { user } = useAuth({middleware : 'auth'});
-  const { title } = useContext(MesContext);
+  const { title, actionButton } = useContext(MesContext);
 
   return (
       <header class="h-20 bg-white border-b border-border-subtle flex items-center justify-between px-8 shrink-0">
@@ -12,10 +13,11 @@ export default function EngHeader() {
           <h2 class="text-xl font-extrabold text-charcoal">{title}</h2>
         </div>
         <div class="flex items-center gap-6">
-          <button class="bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded-md font-bold text-sm flex items-center gap-2 shadow-lg shadow-red-500/20 transition-all active:scale-[0.98]">
-            <span class="material-symbols-outlined text-[20px]">add</span>
-            ADD NEW ORDER
-          </button>
+          <ActionButton
+             title={actionButton?.label}
+             onClick={actionButton?.onClick}
+             icon={actionButton?.icon}
+          />
           <div class="h-8 w-px bg-slate-200"></div>
           <div class="flex items-center gap-3">
             <div class="text-right">

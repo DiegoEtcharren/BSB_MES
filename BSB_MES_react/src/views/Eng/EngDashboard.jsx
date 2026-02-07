@@ -2,11 +2,8 @@ import MesContext from "../../context/MesProvider";
 import { useContext, useEffect } from "react";
 
 export default function EngDashboard() {
-  const { setTitle } = useContext(MesContext);
-  useEffect(() => {
-    setTitle("Engineering Dashboard");
-  }, [setTitle]);
-
+  const { setHeaderConfig } = useContext(MesContext);
+  useEffect(() => {setHeaderConfig("Dashboard")}, []);
   return (
     <div>EngDashboard</div>
   )

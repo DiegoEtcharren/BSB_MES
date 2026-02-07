@@ -2,10 +2,17 @@ import MesContext from "../../context/MesProvider";
 import { useContext, useEffect } from "react";
 
 export default function EngOrders() {
-  const { setTitle } = useContext(MesContext);
+  const { setHeaderConfig } = useContext(MesContext);
   useEffect(() => {
-    setTitle("Orders");
-  }, [setTitle]);
+    setHeaderConfig("Orders", {
+      label: "Add New Order",
+      icon: "person",
+      onClick: () => {
+        console.log("Add Orders Modal...");
+        // Open your modal logic here
+      },
+    });
+  }, []);
   return <div>EngOrders</div>;
 }
 
