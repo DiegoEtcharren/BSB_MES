@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import MesContext from "../context/MesProvider";
+import MesContext from "../../context/MesProvider";
 
 export default function ModalOperator() {
   const { modal } = useContext(MesContext);

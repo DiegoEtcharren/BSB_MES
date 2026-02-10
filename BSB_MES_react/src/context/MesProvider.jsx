@@ -2,33 +2,50 @@ import { createContext, useState, useEffect} from "react"
 
 const MesContext = createContext();
 
-const MesProvider = ({children}) => {
-    const [title, setTitle] = useState("Dashboard");
-    const [actionButton, setActionButton] = useState(null);
-    const [modal, setModal] = useState(false);
-    const setHeaderConfig = (pageTitle, buttonConfig = null) => {
-        setTitle(pageTitle);
-        setActionButton(buttonConfig);
-    };
+const MesProvider = ({ children }) => {
+  const [title, setTitle] = useState("Dashboard");
+  const [actionButton, setActionButton] = useState(null);
+  const setHeaderConfig = (pageTitle, buttonConfig = null) => {
+    setTitle(pageTitle);
+    setActionButton(buttonConfig);
+  };
 
-    const handleClickModal = () => {
-        setModal(!modal)
-    }
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    show: null,
+  });
 
-        return (
-        <MesContext.Provider
-            value = {{
-                title,
-                actionButton,
-                setHeaderConfig,
-                modal,
-                handleClickModal
-            }}
-        >
-            {children}
-        </MesContext.Provider>
-    )
-}
+  const openModal = (component) => {
+    setModalConfig({
+      isOpen: true,
+      show: component,
+    });
+  };
+
+  const closeModal = () => {
+    setModalConfig({
+      isOpen: false,
+      show: null,
+    });
+  };
+
+  return (
+    <MesContext.Provider
+      value={{
+        title,
+        actionButton,
+        setHeaderConfig,
+        modal,
+        handleClickModal,
+        modalConfig,
+        openModal,
+        closeModal
+      }}
+    >
+      {children}
+    </MesContext.Provider>
+  );
+};
 
 export { MesProvider };
 export default MesContext;

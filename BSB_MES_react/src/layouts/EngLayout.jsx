@@ -1,6 +1,6 @@
 import { Outlet, Navigate} from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import EngHeader from '../components/EngHeader'
+import EngHeader from '../components/EngHeader';
 import EngSidebar from '../components/Sidebar/EngSidebar';
 
 export default function Layout() {
