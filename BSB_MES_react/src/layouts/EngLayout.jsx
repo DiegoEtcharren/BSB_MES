@@ -2,7 +2,7 @@ import { Outlet, Navigate} from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Modal from '../components/ui/Modal';
 import EngHeader from '../components/EngHeader';
-import EngSidebar from '../components/Sidebar/EngSidebar';
+import EngSidebar from '../components/sidebar/EngSidebar';
 
 export default function Layout() {
   const {user, error, isLoading} = useAuth({middleware: 'auth'});
