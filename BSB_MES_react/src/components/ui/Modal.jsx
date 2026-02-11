@@ -9,9 +9,10 @@ export default function ModalOperator() {
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
         <div className="flex justify-between items-center p-6 border-b border-slate-100">
           <h3 className="text-lg font-bold text-charcoal">{modalConfig.title}</h3>
+          <p class="text-slate-500 text-sm mt-1">{modalConfig.description}</p>
           <button
             onClick={closeModal}
-            className="text-slate-400 hover:text-charcoal transition-colors cursor-pointer hover:bg-color-primary"
+            className="text-slate-400 hover:text-charcoal hover:text-primary-hover transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined">close</span>
           </button>

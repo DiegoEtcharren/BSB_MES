@@ -10,7 +10,8 @@ export default function EngOperators() {
       icon: "person",
       onClick: () => {
         openModal(<OperatorForm />,
-          "Add New Operator"
+          "Add New Operator",
+          "Create a new user account for system access"
         )
       },
     });

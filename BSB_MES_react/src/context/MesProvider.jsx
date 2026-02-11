@@ -13,14 +13,16 @@ const MesProvider = ({ children }) => {
   const [modalConfig, setModalConfig] = useState({
     isOpen: false,
     show: null,
-    title: null
+    title: null,
+    description: null
   });
 
-  const openModal = (component, title) => {
+  const openModal = (component, title, description) => {
     setModalConfig({
       isOpen: true,
       show: component,
-      title: title
+      title: title,
+      description: description
     });
   };
 
@@ -28,7 +30,8 @@ const MesProvider = ({ children }) => {
     setModalConfig({
       isOpen: false,
       show: null,
-      title: null
+      title: null,
+      description: null
     });
   };
 
