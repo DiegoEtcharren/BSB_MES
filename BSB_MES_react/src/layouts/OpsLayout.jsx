@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import OpsSidebar from '../components/Sidebar/EngSidebar';
 
 export default function OperatorLayout() {
   const {user, error } = useAuth({middleware: 'auth'});
