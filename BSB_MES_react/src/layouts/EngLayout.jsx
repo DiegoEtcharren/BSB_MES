@@ -1,5 +1,6 @@
 import { Outlet, Navigate} from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import ModalLayout from '../components/Modals/ModalLayout';
 import EngHeader from '../components/EngHeader';
 import EngSidebar from '../components/Sidebar/EngSidebar';
 
@@ -36,6 +37,7 @@ export default function Layout() {
         </footer>
       </main>
       </div>
+      <ModalLayout />
     </div>
   );
 }

@@ -13,12 +13,14 @@ const MesProvider = ({ children }) => {
   const [modalConfig, setModalConfig] = useState({
     isOpen: false,
     show: null,
+    title: null
   });
 
-  const openModal = (component) => {
+  const openModal = (component, title) => {
     setModalConfig({
       isOpen: true,
       show: component,
+      title: title
     });
   };
 
@@ -26,6 +28,7 @@ const MesProvider = ({ children }) => {
     setModalConfig({
       isOpen: false,
       show: null,
+      title: null
     });
   };
 
@@ -35,8 +38,6 @@ const MesProvider = ({ children }) => {
         title,
         actionButton,
         setHeaderConfig,
-        modal,
-        handleClickModal,
         modalConfig,
         openModal,
         closeModal
