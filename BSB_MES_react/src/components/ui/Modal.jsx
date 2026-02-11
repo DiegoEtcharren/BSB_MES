@@ -9,8 +9,10 @@ export default function ModalOperator() {
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
         <div className="px-8 py-6 border-b border-border-subtle flex items-center justify-between bg-slate-50">
           <div>
-            <h3 className="text-lg font-bold text-charcoal">{modalConfig.title}</h3>
-            <p class="text-slate-500 text-sm mt-1">{modalConfig.description}</p>
+            <h3 className="text-lg font-bold text-charcoal">
+              {modalConfig.title}
+            </h3>
+            <p className="text-slate-500 text-sm mt-1">{modalConfig.description}</p>
           </div>
           <button
             onClick={closeModal}
@@ -19,7 +21,7 @@ export default function ModalOperator() {
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
-        <div className="p-6">{modalConfig.show}</div>
+        {modalConfig.show}
       </div>
     </div>
   );
