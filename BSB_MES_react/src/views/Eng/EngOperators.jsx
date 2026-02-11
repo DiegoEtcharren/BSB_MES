@@ -8,9 +8,10 @@ export default function EngOperators() {
     setHeaderConfig("Operators", {
       label: "Add New Operator",
       icon: "person",
-      title: "Add Operator",
       onClick: () => {
-        openModal(<OperatorForm />)
+        openModal(<OperatorForm />,
+          "Add New Operator"
+        )
       },
     });
   }, []);
