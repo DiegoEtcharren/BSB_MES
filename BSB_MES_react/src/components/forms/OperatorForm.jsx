@@ -1,8 +1,27 @@
-import { useContext } from "react";
+import { createRef, useContext } from "react";
 import MesContext from "../../context/MesProvider";
 
 export default function OperatorForm() {
   const { closeModal } = useContext(MesContext);
+
+  const nameRef = createRef();
+  const lastnameRef = createRef();
+  const employeeIDRef = createRef();
+  const departmentRef = createRef();
+  const emailRef = createRef();
+  const roleRef = createRef();
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const data = {
+      name : nameRef.current.value,
+      lastname : lastnameRef.current.value,
+      employeeID : employeeIDRef.current.value,
+      department : departmentRef.current.value,
+      email : emailRef.current.value,
+      role : roleRef.current.value,
+    }
+  }
   return (
     <>
       <div className="p-6">
