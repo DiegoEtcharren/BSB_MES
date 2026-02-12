@@ -46,7 +46,6 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
 
     useEffect(() => {
         if(middleware ==='guest' && user) {
-            console.log(user);
             if(user.role === 'engineer') {
                 navigate('/eng/dashboard');
             }
