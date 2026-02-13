@@ -25,7 +25,7 @@ export default function EngHeader() {
                 Logged in as
               </p>
               <p className="text-sm font-extrabold text-charcoal">
-                Welcome, {user.name}
+                Welcome, {user.username}
               </p>
             </div>
             <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400">
