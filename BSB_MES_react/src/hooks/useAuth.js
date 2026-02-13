@@ -44,6 +44,15 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
       }
     };
 
+    const userRegister = async (userData) => {
+      try {
+        const { data } = await axiosClient.post("api/register", userData);
+        console.log(data);
+      } catch (error) {
+        setErrors(Object.values(error.response.data.errors));
+      }
+    };
+
     useEffect(() => {
         if(middleware ==='guest' && user) {
             if(user.role === 'engineer') {
@@ -66,6 +75,7 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
         logout,
         user,
         error,
-        isLoading: !user && !error
+        isLoading: !user && !error,
+        userRegister
     }
 }

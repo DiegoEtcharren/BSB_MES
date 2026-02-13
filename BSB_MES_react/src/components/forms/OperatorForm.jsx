@@ -1,18 +1,21 @@
-import { createRef, useContext } from "react";
+import { useRef, createRef, useContext } from "react";
 import MesContext from "../../context/MesProvider";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function OperatorForm() {
   const { closeModal } = useContext(MesContext);
+  const { userRegister } = useAuth({middleware: 'engineering', url: '/'});
 
-  const nameRef = createRef();
-  const lastnameRef = createRef();
-  const employeeIDRef = createRef();
-  const departmentRef = createRef();
-  const emailRef = createRef();
-  const roleRef = createRef();
+  const nameRef = useRef(null);
+  const lastnameRef = useRef(null);
+  const employeeIDRef = useRef(null);
+  const departmentRef = useRef(null);
+  const emailRef = useRef(null);
+  const roleRef = useRef(null);
 
   const handleSubmit = async e => {
     e.preventDefault();
+    console.log(employeeIDRef.current.value);
     const data = {
       name : nameRef.current.value,
       lastname : lastnameRef.current.value,
@@ -21,11 +24,13 @@ export default function OperatorForm() {
       email : emailRef.current.value,
       role : roleRef.current.value,
     }
+
+    userRegister(data);
   }
   return (
     <>
       <div className="p-6">
-        <form className="space-y-6">
+        <form id="operator-form" onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <label
@@ -35,6 +40,7 @@ export default function OperatorForm() {
                 Name
               </label>
               <input
+                ref={nameRef}
                 className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-primary focus:border-primary focus:outline-none focus:ring focus:ring-primary/20  transition-colors duration-200  text-sm placeholder:text-slate-400"
                 id="firstName"
                 placeholder="e.g. Juan"
@@ -46,6 +52,7 @@ export default function OperatorForm() {
                 Last Name
               </label>
               <input
+                ref={lastnameRef}
                 className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-primary focus:border-primary focus:outline-none focus:ring focus:ring-primary/20  transition-colors duration-200  text-sm placeholder:text-slate-400"
                 id="lastName"
                 placeholder="e.g. Jenkins"
@@ -68,6 +75,7 @@ export default function OperatorForm() {
                   </span>
                 </span>
                 <input
+                  ref={employeeIDRef}
                   className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:outline-primary focus:border-primary focus:outline-none focus:ring focus:ring-primary/20  transition-colors duration-200  text-sm placeholder:text-slate-400"
                   id="employeeId"
                   placeholder="XXXX"
@@ -83,6 +91,7 @@ export default function OperatorForm() {
                 Department
               </label>
               <input
+                ref={departmentRef}
                 className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-primary focus:border-primary focus:outline-none focus:ring focus:ring-primary/20  transition-colors duration-200  text-sm placeholder:text-slate-400"
                 id="department"
                 placeholder="e.g. Manufacturing"
@@ -101,6 +110,7 @@ export default function OperatorForm() {
                 </span>
               </span>
               <input
+                ref={emailRef}
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border-slate-300 focus:border-primary focus:ring focus:ring-primary/20 transition-shadow text-sm placeholder:text-slate-400"
                 id="email"
                 placeholder="name@bsbsystems.com"
@@ -117,6 +127,7 @@ export default function OperatorForm() {
             </label>
             <div className="relative">
               <select
+                ref={roleRef}
                 className="w-full px-4 py-2.5 rounded-lg border-slate-300 focus:border-primary focus:ring focus:ring-primary/20 transition-shadow text-sm text-charcoal appearance-none bg-white"
                 id="accessLevel"
               >
@@ -139,7 +150,10 @@ export default function OperatorForm() {
           onClick={closeModal}>
           Cancel
         </button>
-        <button className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] cursor-pointer">
+        <button
+          type="submit"
+          form="operator-form"
+          className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] cursor-pointer">
           Create Account
         </button>
       </div>

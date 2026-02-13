@@ -14,7 +14,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::middleware('role:engineer')->group(function () {
-        // Route::post('/machine/setup', [MachineController::class, 'configure']);
+        Route::post('/register', [AuthController::class, 'register']);
     });
 
     // Routes for Supervisors and Engineers
