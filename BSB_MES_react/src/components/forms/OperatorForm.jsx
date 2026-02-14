@@ -15,11 +15,10 @@ export default function OperatorForm() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    console.log(employeeIDRef.current.value);
     const data = {
-      name : nameRef.current.value,
-      lastname : lastnameRef.current.value,
-      employeeID : employeeIDRef.current.value,
+      first_name : nameRef.current.value,
+      last_name : lastnameRef.current.value,
+      employee_number : employeeIDRef.current.value,
       department : departmentRef.current.value,
       email : emailRef.current.value,
       role : roleRef.current.value,

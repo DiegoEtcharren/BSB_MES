@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\StoreEmployeeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,9 +35,10 @@ class AuthController extends Controller
         return ['user' => null];
     }
 
-    public function register(Request $request) {
+    public function register(StoreEmployeeRequest $request) {
+        $validated = $request->validated();
         return [
-            'message' => "From AuthController -> Register"
+            'message' => $validated
         ];
     }
 }
