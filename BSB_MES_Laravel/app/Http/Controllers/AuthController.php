@@ -37,8 +37,43 @@ class AuthController extends Controller
 
     public function register(StoreEmployeeRequest $request) {
         $validated = $request->validated();
-        return [
-            'message' => $validated
-        ];
+
+        try {
+            $result = DB::transaction(function () use ($validated) {
+
+                $employee = Employee::create([
+                    'employee_number' => $validated['employee_number'],
+                    'first_name'      => $validated['first_name'], 
+                    'last_name'       => $validated['last_name'],
+                    'department'      => $validated['department'],
+                    'email'           => $validated['email'],
+                    'hired_at'        => now(),
+                    'is_active'       => true,
+                ]);
+
+                $user = User::create([
+                    'employee_id' => $employee->id,
+                    'username'    => $validated['employee_number'], 
+                    'password'    => Hash::make('Welcome2026'), // Default password. 
+                    'role'        => $validated['role'],
+                ]);
+
+                return [
+                    'employee' => $employee,
+                    'user'     => $user
+                ];
+            });
+
+            return response()->json([
+                'message' => 'Employee registered successfully',
+                'data'    => $result
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to register employee.',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
     }
 }
