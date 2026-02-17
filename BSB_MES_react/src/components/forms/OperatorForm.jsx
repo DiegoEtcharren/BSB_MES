@@ -26,7 +26,6 @@ export default function OperatorForm() {
     }
 
     await userRegister(data, setErrors);
-    console.log(errors);
   }
   const getInputClass = (fieldName) => {
     const baseClass =
@@ -219,6 +218,7 @@ export default function OperatorForm() {
               <select
                 ref={roleRef}
                 className={`${getInputClass('role')} appearance-none bg-white`}
+                id="accessLevel"
               >
                 <option value="">Select a role...</option>
                 <option value="operator">Operator (Standard Access)</option>
