@@ -44,12 +44,13 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
       }
     };
 
-    const userRegister = async (userData) => {
+    const userRegister = async (userData, setErrors) => {
       try {
         const { data } = await axiosClient.post("api/register", userData);
+        setErrors([]);
         console.log(data);
       } catch (error) {
-        setErrors(Object.values(error.response.data.errors));
+        setErrors(error.response.data.errors);
       }
     };
 
