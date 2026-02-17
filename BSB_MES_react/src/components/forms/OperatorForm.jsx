@@ -5,8 +5,9 @@ import { useAuth } from "../../hooks/useAuth";
 export default function OperatorForm() {
   const { closeModal } = useContext(MesContext);
   const { userRegister } = useAuth({middleware: 'engineering', url: '/'});
+  
   const [errors, setErrors] = useState({});
-
+  
   const nameRef = useRef(null);
   const lastnameRef = useRef(null);
   const employeeIDRef = useRef(null);
@@ -16,6 +17,8 @@ export default function OperatorForm() {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setErrors({});
+    
     const data = {
       first_name : nameRef.current.value,
       last_name : lastnameRef.current.value,
@@ -25,8 +28,19 @@ export default function OperatorForm() {
       role : roleRef.current.value,
     }
 
-    await userRegister(data, setErrors);
+    try {
+      await userRegister(data, setErrors);
+      // Close modal after adding user:
+      setTimeout(() => {
+        closeModal(); 
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log("Added correctly");
+    }
   }
+  
   const getInputClass = (fieldName) => {
     const baseClass =
       "w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring transition-colors duration-200 text-sm placeholder:text-slate-400";
