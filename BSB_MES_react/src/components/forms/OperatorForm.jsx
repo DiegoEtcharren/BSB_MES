@@ -1,7 +1,6 @@
 import { useRef, createRef, useContext, useState } from "react";
 import MesContext from "../../context/MesProvider";
 import { useAuth } from "../../hooks/useAuth";
-import { sileo } from "sileo";
 
 export default function OperatorForm() {
   const { closeModal } = useContext(MesContext);
@@ -34,18 +33,6 @@ export default function OperatorForm() {
       setTimeout(() => {
         closeModal();
       }, 1000);
-      sileo.success({
-        title: "User Added Correctly",
-        position : "top-center",
-        description : `Employee ${data.employee_number} registered.`,
-        duration : 6000,
-          styles: {
-            title: "text-primary!",
-            description: "text-white/75!",
-            badge: "bg-white/20!",
-            button: "bg-white/10!",
-        },
-      });
     } catch (error) {
       console.log(error);
     } finally {
