@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreEmployeeRequest;
+use App\Models\Employee;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,7 +47,7 @@ class AuthController extends Controller
 
                 $employee = Employee::create([
                     'employee_number' => $validated['employee_number'],
-                    'first_name'      => $validated['first_name'], 
+                    'first_name'      => $validated['first_name'],
                     'last_name'       => $validated['last_name'],
                     'department'      => $validated['department'],
                     'email'           => $validated['email'],
@@ -53,8 +57,8 @@ class AuthController extends Controller
 
                 $user = User::create([
                     'employee_id' => $employee->id,
-                    'username'    => $validated['employee_number'], 
-                    'password'    => Hash::make('Welcome2026'), // Default password. 
+                    'username'    => $validated['employee_number'],
+                    'password'    => Hash::make('Welcome2026'), // Default password.
                     'role'        => $validated['role'],
                 ]);
 
