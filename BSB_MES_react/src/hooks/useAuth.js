@@ -50,6 +50,7 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
         setErrors([]);
       } catch (error) {
         setErrors(error.response.data.errors);
+        throw error;
       }
     };
 
