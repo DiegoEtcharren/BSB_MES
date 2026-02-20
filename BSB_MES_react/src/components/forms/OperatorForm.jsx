@@ -1,6 +1,7 @@
 import { useRef, createRef, useContext, useState } from "react";
 import MesContext from "../../context/MesProvider";
 import { useAuth } from "../../hooks/useAuth";
+import { toast } from 'react-toastify';
 
 export default function OperatorForm() {
   const { closeModal } = useContext(MesContext);
@@ -15,7 +16,7 @@ export default function OperatorForm() {
   const emailRef = useRef(null);
   const roleRef = useRef(null);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
 
@@ -28,17 +29,16 @@ export default function OperatorForm() {
       role: roleRef.current.value,
     };
 
-    try {
-      await userRegister(data, setErrors);
-      setTimeout(() => {
+    toast
+      .promise(userRegister(data, setErrors), {
+        pending: "Registering MES user...",
+        success: "User added successfully",
+        error: "Registration failed. Please check the inputs.",
+      })
+      .then(() => {
         closeModal();
-      }, 1000);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("Added correctly");
-    }
-  }
+      })
+  };
 
   const getInputClass = (fieldName) => {
     const baseClass =
@@ -117,8 +117,8 @@ export default function OperatorForm() {
                   placeholder="e.g. Jenkins"
                   type="text"
                 />
-                {errors?.last_name && (<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span class="material-symbols-outlined text-[18px]">
+                {errors?.last_name && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                  <span className="material-symbols-outlined text-[18px]">
                     error
                   </span>
                 </span>)}
@@ -151,8 +151,8 @@ export default function OperatorForm() {
                   placeholder="XXXX"
                   type="text"
                 />
-                {errors?.employee_number && (<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span class="material-symbols-outlined text-[18px]">
+                {errors?.employee_number && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                  <span className="material-symbols-outlined text-[18px]">
                     error
                   </span>
                 </span>)}
@@ -178,8 +178,8 @@ export default function OperatorForm() {
                   placeholder="e.g. Manufacturing"
                   type="text"
                 />
-                {errors?.department && (<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span class="material-symbols-outlined text-[18px]">
+                {errors?.department && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                  <span className="material-symbols-outlined text-[18px]">
                     error
                   </span>
                 </span>)}
@@ -208,8 +208,8 @@ export default function OperatorForm() {
                 placeholder="name@bsbsystems.com"
                 type="email"
               />
-                {errors?.email && (<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span class="material-symbols-outlined text-[18px]">
+                {errors?.email && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                  <span className="material-symbols-outlined text-[18px]">
                     error
                   </span>
                 </span>)}

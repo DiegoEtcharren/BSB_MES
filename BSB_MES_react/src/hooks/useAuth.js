@@ -48,6 +48,7 @@ export const useAuth = ({middleware, url}) => { // Middleware is to indenfity wh
       try {
         const { data } = await axiosClient.post("api/register", userData);
         setErrors([]);
+        return data;
       } catch (error) {
         setErrors(error.response.data.errors);
         throw error;
