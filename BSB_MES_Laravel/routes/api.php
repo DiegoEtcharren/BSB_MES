@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Routes for Supervisors and Engineers
     Route::middleware('role:supervisor,engineer')->group(function () {
-        // Route::get('/reports/efficiency', [ReportController::class, 'index']);
+        // This creates routes for index, store, show, update, and destroy
+        Route::apiResource('employees', EmployeeController::class);
     });
 
     // Routes for all authenticated staff
