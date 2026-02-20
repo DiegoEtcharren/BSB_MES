@@ -3,45 +3,49 @@ import OperatorForm from "../../components/forms/OperatorForm"
 import { useContext, useEffect } from "react";
 
 export default function EngOperators() {
-  const { setHeaderConfig, openModal} = useContext(MesContext);
+  const { setHeaderConfig, openModal, fetchOperators } = useContext(MesContext);
   useEffect(() => {
     setHeaderConfig("Operators", {
       label: "Add New Operator",
       icon: "person",
       onClick: () => {
-        openModal(<OperatorForm />,
+        openModal(
+          <OperatorForm />,
           "Add New Operator",
-          "Create a new user account for system access"
-        )
+          "Create a new user account for system access",
+        );
       },
     });
+
+    fetchOperators();
   }, []);
+
   return (
-    <div class="bg-white rounded-xl border border-border-subtle shadow-sm overflow-hidden flex flex-col h-full max-h-[calc(100vh-8rem)]">
+    <div className="bg-white rounded-xl border border-border-subtle shadow-sm overflow-hidden flex flex-col h-full max-h-[calc(100vh-8rem)]">
       {/* Search Bar: */}
-      <div class="p-6 border-b border-border-subtle flex items-center justify-between bg-white shrink-0">
-        <div class="flex items-center gap-4">
-          <div class="relative">
-            <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[20px]">
+      <div className="p-6 border-b border-border-subtle flex items-center justify-between bg-white shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <span className="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[20px]">
               search
             </span>
             <input
-              class="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-64 text-charcoal placeholder-slate-400"
+              className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-64 text-charcoal placeholder-slate-400"
               placeholder="Search operators..."
               type="text"
             />
           </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold uppercase text-slate-500 tracking-wider">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">
               Filter by:
             </span>
-            <select class="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer">
+            <select className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer">
               <option>All Roles</option>
               <option>Admin</option>
               <option>Supervisor</option>
               <option>Operator</option>
             </select>
-            <select class="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer">
+            <select className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer">
               <option>All Status</option>
               <option>Active</option>
               <option>Inactive</option>
@@ -49,9 +53,9 @@ export default function EngOperators() {
             </select>
           </div>
         </div>
-        <div class="text-sm text-slate-500 font-medium">
-          Showing <span class="text-charcoal font-bold">1-10</span> of{" "}
-          <span class="text-charcoal font-bold">24</span> operators
+        <div className="text-sm text-slate-500 font-medium">
+          Showing <span className="text-charcoal font-bold">1-10</span> of{" "}
+          <span className="text-charcoal font-bold">24</span> operators
         </div>
       </div>
       {/* End Search Bar */}
@@ -399,22 +403,22 @@ export default function EngOperators() {
       </div>
       {/* End Table */}
       {/* Pagination Bottons: */}
-      <div class="p-4 border-t border-border-subtle bg-slate-50 flex items-center justify-between shrink-0">
-        <button class="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+      <div className="p-4 border-t border-border-subtle bg-slate-50 flex items-center justify-between shrink-0">
+        <button className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
           Previous
         </button>
-        <div class="flex items-center gap-2">
-          <button class="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-white text-sm font-bold">
+        <div className="flex items-center gap-2">
+          <button className="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-white text-sm font-bold">
             1
           </button>
-          <button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white text-slate-600 text-sm font-medium transition-colors">
+          <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white text-slate-600 text-sm font-medium transition-colors">
             2
           </button>
-          <button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white text-slate-600 text-sm font-medium transition-colors">
+          <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white text-slate-600 text-sm font-medium transition-colors">
             3
           </button>
         </div>
-        <button class="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors">
+        <button className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors">
           Next
         </button>
       </div>

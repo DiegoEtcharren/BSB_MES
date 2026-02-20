@@ -29,7 +29,7 @@ class EmployeeController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $query
+            'data' => $employees
         ]);
     }
 
