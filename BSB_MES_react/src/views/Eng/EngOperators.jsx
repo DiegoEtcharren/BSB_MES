@@ -64,9 +64,9 @@ export default function EngOperators() {
               onChange={(e) => setRoleFilter(e.target.value)}
             >
               <option>All Roles</option>
-              <option>Admin</option>
-              <option>Supervisor</option>
-              <option>Operator</option>
+              <option value={'admin'}>Admin</option>
+              <option value={'supervisor'}>Supervisor</option>
+              <option value={'operator'}>Operator</option>
             </select>
             <select
               className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
@@ -74,9 +74,9 @@ export default function EngOperators() {
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option>All Status</option>
-              <option>Active</option>
-              <option>Inactive</option>
-              <option>On Leave</option>
+              <option value={'active'}>Active</option>
+              <option value={'inactive'}>Inactive</option>
+              <option value={'on_leave'}>On Leave</option>
             </select>
           </div>
         </div>
