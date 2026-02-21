@@ -1,12 +1,12 @@
 import BrandLogo from "../components/BrandLogo";
 import Alerts from "../components/Alerts";
 import { Eye, EyeOff } from 'lucide-react';
-import { createRef, useState} from "react";
+import { createRef, useState, useRef} from "react";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
-  const usernameRef = createRef();
-  const passwordRef  = createRef();
+  const usernameRef = useRef(null);
+  const passwordRef  = useRef(null);
   const [errors, setErrors] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
 

@@ -112,7 +112,7 @@ export default function OperatorForm() {
               <div className="relative">
                 <input
                   ref={lastnameRef}
-                  className={getInputClass('first_name')}
+                  className={getInputClass('last_name')}
                   id="lastName"
                   placeholder="e.g. Jenkins"
                   type="text"

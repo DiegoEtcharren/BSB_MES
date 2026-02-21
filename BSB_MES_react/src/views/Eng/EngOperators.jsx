@@ -1,9 +1,17 @@
 import MesContext from "../../context/MesProvider";
 import OperatorForm from "../../components/forms/OperatorForm"
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useEmployees } from "../../hooks/useEmployees";
 
 export default function EngOperators() {
-  const { setHeaderConfig, openModal, fetchOperators } = useContext(MesContext);
+  const { setHeaderConfig, openModal } = useContext(MesContext);
+  const { operators, fetchOperators } = useEmployees();
+
+  const [roleFilter, setRoleFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+
   useEffect(() => {
     setHeaderConfig("Operators", {
       label: "Add New Operator",
@@ -16,9 +24,18 @@ export default function EngOperators() {
         );
       },
     });
-
-    fetchOperators();
   }, []);
+
+  useEffect(() => {
+    // Build the parameters object. We only include properties that have a value
+    // to keep the API request clean (taking advantage of Laravel's 'sometimes' rule).
+    const params = {};
+    if (roleFilter) params.role = roleFilter;
+    if (statusFilter) params.status = statusFilter;
+    if (searchQuery) params.search = searchQuery; // Optional: If you add search logic later
+    console.log(params);
+    fetchOperators(params);
+  }, [roleFilter, statusFilter, fetchOperators]);
 
   return (
     <div className="bg-white rounded-xl border border-border-subtle shadow-sm overflow-hidden flex flex-col h-full max-h-[calc(100vh-8rem)]">
@@ -33,19 +50,29 @@ export default function EngOperators() {
               className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-64 text-charcoal placeholder-slate-400"
               placeholder="Search operators..."
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">
               Filter by:
             </span>
-            <select className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer">
+            <select
+              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+            >
               <option>All Roles</option>
               <option>Admin</option>
               <option>Supervisor</option>
               <option>Operator</option>
             </select>
-            <select className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer">
+            <select
+              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
               <option>All Status</option>
               <option>Active</option>
               <option>Inactive</option>

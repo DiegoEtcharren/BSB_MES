@@ -36,19 +36,6 @@ const MesProvider = ({ children }) => {
     });
   };
 
-  const fetchOperators = async () => {
-    try {
-      const response = await axiosClient.get("/api/employees");
-      // setOperators(response.data.data);
-      console.log(response.data.data);
-    } catch (err) {
-      console.error("Failed to fetch operators:", err);
-      // setError("Could not load operators. Please try again later.");
-    } finally {
-      console.log("Loading done...");
-    }
-  };
-
   return (
     <MesContext.Provider
       value={{
@@ -57,8 +44,7 @@ const MesProvider = ({ children }) => {
         setHeaderConfig,
         modalConfig,
         openModal,
-        closeModal,
-        fetchOperators
+        closeModal
       }}
     >
       {children}

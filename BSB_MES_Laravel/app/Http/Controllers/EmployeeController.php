@@ -12,19 +12,26 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        // Build query:
+        // Validate request information:
+        $validated = $request->validate([
+            'role' => 'sometimes|string|in:admin,supervisor,operator,engineer',
+            'status' => 'sometimes|string|in:active,inactive,on_leave',
+            'per_page' => 'sometimes|integer|min:1|max:100',
+        ]);
+
+        // Build query based on parameters to filter information:
         $query = Employee::query();
 
-        if ($request->has('role')) {
-            $query->where('role', $request->query('role'));
+        if (isset($validated['role'])) {
+            $query->where('role', $validated['role']);
         }
 
-        if ($request->has('status')) {
-            $query->where('status', $request->query('status'));
+        if (isset($validated['status'])) {
+            $query->where('status', $validated['status']);
         }
 
         // Pagination:
-        $perPage = $request->query('per_page', 10);
+        $perPage = $validated['per_page'] ?? 10;
         $employees = $query->paginate($perPage);
 
         return response()->json([
