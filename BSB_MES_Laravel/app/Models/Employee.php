@@ -16,6 +16,18 @@ class Employee extends Model
         'is_active'
     ];
 
+    protected $appends = ['role', 'username'];
+
+    public function getRoleAttribute()
+    {
+        return $this->user ? $this->user->role : 'Unassigned';
+    }
+
+    public function getUsernameAttribute()
+    {
+        return $this->user ? $this->user->username : 'No Account';
+    }
+
     public function user()
     {
         return $this->hasOne(User::class);

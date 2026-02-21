@@ -24,18 +24,17 @@ export default function EngOperators() {
         );
       },
     });
+    fetchOperators();
   }, []);
 
   useEffect(() => {
     // Build the parameters object. We only include properties that have a value
-    // to keep the API request clean (taking advantage of Laravel's 'sometimes' rule).
     const params = {};
     if (roleFilter) params.role = roleFilter;
     if (statusFilter) params.status = statusFilter;
     if (searchQuery) params.search = searchQuery; // Optional: If you add search logic later
-    console.log(params);
     fetchOperators(params);
-  }, [roleFilter, statusFilter, fetchOperators]);
+  }, [searchQuery, roleFilter, statusFilter, fetchOperators]);
 
   return (
     <div className="bg-white rounded-xl border border-border-subtle shadow-sm overflow-hidden flex flex-col h-full max-h-[calc(100vh-8rem)]">
@@ -63,20 +62,20 @@ export default function EngOperators() {
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
             >
-              <option>All Roles</option>
-              <option value={'admin'}>Admin</option>
-              <option value={'supervisor'}>Supervisor</option>
-              <option value={'operator'}>Operator</option>
+              <option value={""}>All Roles</option>
+              <option value={"engineering"}>Engineering</option>
+              <option value={"supervisor"}>Supervisor</option>
+              <option value={"operator"}>Operator</option>
             </select>
             <select
               className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option>All Status</option>
-              <option value={'active'}>Active</option>
-              <option value={'inactive'}>Inactive</option>
-              <option value={'on_leave'}>On Leave</option>
+              <option value={""}>All Status</option>
+              <option value={"active"}>Active</option>
+              <option value={"inactive"}>Inactive</option>
+              <option value={"on_leave"}>On Leave</option>
             </select>
           </div>
         </div>
@@ -113,318 +112,89 @@ export default function EngOperators() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
-            <tr className="hover:bg-slate-50 transition-colors group">
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
-                    JD
-                  </div>
-                  <div>
-                    <div className="font-bold text-charcoal text-sm">
-                      John Doe
+            {operators.length > 0 ? (
+              operators.map((operator) => (
+                <tr key={operator.id} className="hover:bg-slate-50 transition-colors group">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                        JD
+                      </div>
+                      <div>
+                        <div className="font-bold text-charcoal text-sm">
+                          {operator.first_name} {operator.last_name}
+                        </div>
+                        <div className="text-xs text-slate-400">
+                          Joined {operator.hired_at}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-xs text-slate-400">
-                      Joined Jan 2023
+                  </td>
+                  <td className="px-6 py-4 text-sm font-medium text-slate-600">
+                    {operator.employee_number}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-slate-500">
+                    {operator.email}
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600">
+                      <span className="material-symbols-outlined text-[14px]">
+                        engineering
+                      </span>{" "}
+                      {operator.role}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{" "}
+                      {operator.is_active}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                      <button
+                        className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors"
+                        title="Edit User"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">
+                          edit
+                        </span>
+                      </button>
+                      <button
+                        className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors"
+                        title="Delete User"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">
+                          delete
+                        </span>
+                      </button>
                     </div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                EMP-10045
-              </td>
-              <td className="px-6 py-4 text-sm text-slate-500">
-                john.doe@bsb.com
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600">
-                  <span className="material-symbols-outlined text-[14px]">
-                    engineering
-                  </span>{" "}
-                  Operator
-                </span>
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{" "}
-                  Active
-                </span>
-              </td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                  <button
-                    className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors"
-                    title="Edit User"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">
-                      edit
-                    </span>
-                  </button>
-                  <button
-                    className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors"
-                    title="Delete User"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">
-                      delete
-                    </span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors group">
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">
-                    SJ
-                  </div>
-                  <div>
-                    <div className="font-bold text-charcoal text-sm">
-                      Sarah Jenkins
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      Joined Mar 2022
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                EMP-10089
-              </td>
-              <td className="px-6 py-4 text-sm text-slate-500">
-                sarah.jenkins@bsb.com
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-purple-50 text-purple-700">
-                  <span className="material-symbols-outlined text-[14px]">
-                    supervisor_account
-                  </span>{" "}
-                  Supervisor
-                </span>
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{" "}
-                  Active
-                </span>
-              </td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                  <button className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      edit
-                    </span>
-                  </button>
-                  <button className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      delete
-                    </span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors group">
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-bold text-xs">
-                    MR
-                  </div>
-                  <div>
-                    <div className="font-bold text-charcoal text-sm">
-                      Michael Ross
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      Joined Nov 2021
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                EMP-10112
-              </td>
-              <td className="px-6 py-4 text-sm text-slate-500">
-                michael.ross@bsb.com
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600">
-                  <span className="material-symbols-outlined text-[14px]">
-                    engineering
-                  </span>{" "}
-                  Operator
-                </span>
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-500">
-                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>{" "}
-                  Inactive
-                </span>
-              </td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                  <button className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      edit
-                    </span>
-                  </button>
-                  <button className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      delete
-                    </span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors group">
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
-                    AL
-                  </div>
-                  <div>
-                    <div className="font-bold text-charcoal text-sm">
-                      Amanda Lee
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      Joined Feb 2024
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                EMP-10205
-              </td>
-              <td className="px-6 py-4 text-sm text-slate-500">
-                amanda.lee@bsb.com
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-blue-50 text-blue-700">
-                  <span className="material-symbols-outlined text-[14px]">
-                    verified_user
-                  </span>{" "}
-                  QA Lead
-                </span>
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>{" "}
-                  On Leave
-                </span>
-              </td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                  <button className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      edit
-                    </span>
-                  </button>
-                  <button className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      delete
-                    </span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors group">
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 font-bold text-xs">
-                    RB
-                  </div>
-                  <div>
-                    <div className="font-bold text-charcoal text-sm">
-                      Robert Brown
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      Joined Aug 2020
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                EMP-10022
-              </td>
-              <td className="px-6 py-4 text-sm text-slate-500">
-                robert.brown@bsb.com
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600">
-                  <span className="material-symbols-outlined text-[14px]">
-                    engineering
-                  </span>{" "}
-                  Operator
-                </span>
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{" "}
-                  Active
-                </span>
-              </td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                  <button className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      edit
-                    </span>
-                  </button>
-                  <button className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      delete
-                    </span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors group">
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold text-xs">
-                    KT
-                  </div>
-                  <div>
-                    <div className="font-bold text-charcoal text-sm">
-                      Kevin Tran
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      Joined Dec 2023
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                EMP-10250
-              </td>
-              <td className="px-6 py-4 text-sm text-slate-500">
-                kevin.tran@bsb.com
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600">
-                  <span className="material-symbols-outlined text-[14px]">
-                    engineering
-                  </span>{" "}
-                  Operator
-                </span>
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{" "}
-                  Active
-                </span>
-              </td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                  <button className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      edit
-                    </span>
-                  </button>
-                  <button className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">
-                      delete
-                    </span>
-                  </button>
-                </div>
-              </td>
-            </tr>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              // Empty Operators:
+              <tr className="hover:bg-slate-50 transition-colors group">
+                <td className="px-6 py-4">
+
+                </td>
+                <td className="px-6 py-4 text-sm font-medium text-slate-600">
+                  Empty
+                </td>
+                <td className="px-6 py-4 text-sm text-slate-500">
+                  Empty
+                </td>
+                <td className="px-6 py-4 text-sm">
+
+                </td>
+                <td className="px-6 py-4 text-sm">
+
+                </td>
+                <td className="px-6 py-4 text-right">
+
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

@@ -15,6 +15,7 @@ export const useEmployees = () => {
             setError(err.response?.data?.message || "Could not load operators.");
         } finally {
             setLoading(false);
+            console.log(operators);
         }
     }, []);
 
