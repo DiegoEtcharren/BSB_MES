@@ -62,7 +62,7 @@ class EmployeeController extends Controller
         }
 
         // Pagination:
-        $perPage = $validated['per_page'] ?? 1;
+        $perPage = $validated['per_page'] ?? 10;
         $employees = $query->paginate($perPage);
 
         return response()->json([

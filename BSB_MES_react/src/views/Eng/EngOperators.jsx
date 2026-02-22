@@ -11,6 +11,7 @@ export default function EngOperators() {
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1); // Pagination configuration
 
 
   useEffect(() => {
@@ -29,12 +30,12 @@ export default function EngOperators() {
   }, []);
 
   useEffect(() => {
-    const params = {};
+    const params = { page };
     if (roleFilter) params.role = roleFilter;
     if (statusFilter) params.status = statusFilter;
     if (searchQuery) params.search = searchQuery;
     fetchOperators(params);
-  }, [searchQuery, roleFilter, statusFilter, fetchOperators]);
+  }, [page, searchQuery, roleFilter, statusFilter, fetchOperators]);
 
   return (
     <div className="bg-white rounded-xl border border-border-subtle shadow-sm overflow-hidden flex flex-col h-full max-h-[calc(100vh-8rem)]">
@@ -63,7 +64,7 @@ export default function EngOperators() {
               onChange={(e) => setRoleFilter(e.target.value)}
             >
               <option value={""}>All Roles</option>
-              <option value={"engineering"}>Engineering</option>
+              <option value={"engineer"}>Engineering</option>
               <option value={"supervisor"}>Supervisor</option>
               <option value={"operator"}>Operator</option>
             </select>
@@ -215,21 +216,33 @@ export default function EngOperators() {
       {/* End Table */}
       {/* Pagination Bottons: */}
       <div className="p-4 border-t border-border-subtle bg-slate-50 flex items-center justify-between shrink-0">
-        <button className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+        <button
+          className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+          disabled={page === 1}
+        >
           Previous
         </button>
         <div className="flex items-center gap-2">
-          <button className="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-white text-sm font-bold">
-            1
-          </button>
-          <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white text-slate-600 text-sm font-medium transition-colors">
-            2
-          </button>
-          <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white text-slate-600 text-sm font-medium transition-colors">
-            3
-          </button>
+          {employees?.last_page > 0 && Array.from({ length: employees.last_page }, (_, index) => index + 1).map((pageNum) => (
+            <button
+              key={pageNum}
+              onClick={() => setPage(pageNum)}
+              className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                page === pageNum
+                  ? "bg-primary text-white font-bold"
+                  : "hover:bg-white text-slate-600"
+              }`}
+              >
+              {pageNum}
+            </button>
+          ))}
         </div>
-        <button className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors cursor-pointer">
+        <button
+          className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          disabled={employees?.last_page && page >= employees.last_page}
+          onClick={() => setPage(prev => prev + 1)}
+        >
           Next
         </button>
       </div>
