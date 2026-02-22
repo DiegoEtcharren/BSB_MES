@@ -2,6 +2,7 @@ import MesContext from "../../context/MesProvider";
 import OperatorForm from "../../components/forms/OperatorForm"
 import { useContext, useEffect, useState } from "react";
 import { useEmployees } from "../../hooks/useEmployees";
+import { getUserInitials, getRoleFormatting, getStatusFormatting, formatDate } from "../../utilities/tableFormatters";
 
 export default function EngOperators() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
@@ -124,46 +125,57 @@ export default function EngOperators() {
                 </td>
               </tr>
             ) : employees?.data?.length > 0 ? (
-              employees.data.map((employee) => (
+              employees.data.map((employee) => {
+                  const userInitials = getUserInitials(employee.first_name, employee.last_name);
+                  const roleFormat = getRoleFormatting(employee.role);
+                  const statusFormatting = getStatusFormatting(employee.is_active);
+                  const formattedDate = formatDate(employee.hired_at);
+                return (
                 <tr
                   key={employee.id}
                   className="hover:bg-slate-50 transition-colors group"
                 >
+                  {/* Name Column: */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
-                        JD
+                        {userInitials}
                       </div>
                       <div>
                         <div className="font-bold text-charcoal text-sm">
                           {employee.first_name} {employee.last_name}
                         </div>
                         <div className="text-xs text-slate-400">
-                          Joined {employee.hired_at}
+                          Joined {formattedDate}
                         </div>
                       </div>
                     </div>
                   </td>
+                  {/* Employee ID Column: */}
                   <td className="px-6 py-4 text-sm font-medium text-slate-600">
                     {employee.employee_number}
                   </td>
+                  {/* Employee Email Column: */}
                   <td className="px-6 py-4 text-sm text-slate-500">
                     {employee.email}
                   </td>
+                  {/* Role Column:  */}
                   <td className="px-6 py-4 text-sm">
-                    <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600">
-                      <span className="material-symbols-outlined text-[14px]">
-                        engineering
+                    <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold ${roleFormat.wrapperClass}`}>
+                      <span className={`material-symbols-outlined text-[14px] ${roleFormat.iconClass}`}>
+                        {roleFormat.icon}
                       </span>{" "}
                       {employee.role}
                     </span>
                   </td>
+                  {/* Status Column: */}
                   <td className="px-6 py-4 text-sm">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{" "}
-                      {employee.is_active}
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusFormatting.wrapperClass}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${statusFormatting.dotClass}`}></span>{" "}
+                      {statusFormatting.label}
                     </span>
                   </td>
+                  {/* Actions Column; */}
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
                       <button
@@ -185,7 +197,7 @@ export default function EngOperators() {
                     </div>
                   </td>
                 </tr>
-              ))
+              )})
             ) : (
               // Empty Operators:
               <tr className="hover:bg-slate-50 transition-colors group">
