@@ -5,7 +5,7 @@ import { useEmployees } from "../../hooks/useEmployees";
 
 export default function EngOperators() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
-  const { operators, fetchOperators } = useEmployees();
+  const { employees, isLoading, error, fetchOperators } = useEmployees();
 
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -28,11 +28,10 @@ export default function EngOperators() {
   }, []);
 
   useEffect(() => {
-    // Build the parameters object. We only include properties that have a value
     const params = {};
     if (roleFilter) params.role = roleFilter;
     if (statusFilter) params.status = statusFilter;
-    if (searchQuery) params.search = searchQuery; // Optional: If you add search logic later
+    if (searchQuery) params.search = searchQuery;
     fetchOperators(params);
   }, [searchQuery, roleFilter, statusFilter, fetchOperators]);
 
@@ -47,7 +46,7 @@ export default function EngOperators() {
             </span>
             <input
               className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-64 text-charcoal placeholder-slate-400"
-              placeholder="Search operators..."
+              placeholder="Search employees..."
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -75,13 +74,16 @@ export default function EngOperators() {
               <option value={""}>All Status</option>
               <option value={"active"}>Active</option>
               <option value={"inactive"}>Inactive</option>
-              <option value={"on_leave"}>On Leave</option>
             </select>
           </div>
         </div>
         <div className="text-sm text-slate-500 font-medium">
-          Showing <span className="text-charcoal font-bold">1-10</span> of{" "}
-          <span className="text-charcoal font-bold">24</span> operators
+          Showing{" "}
+          <span className="text-charcoal font-bold">
+            {employees?.from || 0}-{employees?.to || 0}
+          </span>{" "}
+          of <span className="text-charcoal font-bold">{employees?.total || 0}</span>{" "}
+          employees
         </div>
       </div>
       {/* End Search Bar */}
@@ -112,9 +114,21 @@ export default function EngOperators() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
-            {operators.length > 0 ? (
-              operators.map((operator) => (
-                <tr key={operator.id} className="hover:bg-slate-50 transition-colors group">
+            {isLoading ? (
+              <tr>
+                <td
+                  colSpan="6"
+                  className="px-6 py-8 text-center text-sm font-medium text-slate-500"
+                >
+                  Loading operators...
+                </td>
+              </tr>
+            ) : employees?.data?.length > 0 ? (
+              employees.data.map((employee) => (
+                <tr
+                  key={employee.id}
+                  className="hover:bg-slate-50 transition-colors group"
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
@@ -122,32 +136,32 @@ export default function EngOperators() {
                       </div>
                       <div>
                         <div className="font-bold text-charcoal text-sm">
-                          {operator.first_name} {operator.last_name}
+                          {employee.first_name} {employee.last_name}
                         </div>
                         <div className="text-xs text-slate-400">
-                          Joined {operator.hired_at}
+                          Joined {employee.hired_at}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                    {operator.employee_number}
+                    {employee.employee_number}
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-500">
-                    {operator.email}
+                    {employee.email}
                   </td>
                   <td className="px-6 py-4 text-sm">
                     <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600">
                       <span className="material-symbols-outlined text-[14px]">
                         engineering
                       </span>{" "}
-                      {operator.role}
+                      {employee.role}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{" "}
-                      {operator.is_active}
+                      {employee.is_active}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
@@ -175,23 +189,11 @@ export default function EngOperators() {
             ) : (
               // Empty Operators:
               <tr className="hover:bg-slate-50 transition-colors group">
-                <td className="px-6 py-4">
-
-                </td>
-                <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                  Empty
-                </td>
-                <td className="px-6 py-4 text-sm text-slate-500">
-                  Empty
-                </td>
-                <td className="px-6 py-4 text-sm">
-
-                </td>
-                <td className="px-6 py-4 text-sm">
-
-                </td>
-                <td className="px-6 py-4 text-right">
-
+                <td
+                  colSpan="6"
+                  className="px-6 py-8 text-center text-sm font-medium text-slate-500 italic"
+                >
+                  No Employees found
                 </td>
               </tr>
             )}
@@ -201,7 +203,7 @@ export default function EngOperators() {
       {/* End Table */}
       {/* Pagination Bottons: */}
       <div className="p-4 border-t border-border-subtle bg-slate-50 flex items-center justify-between shrink-0">
-        <button className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        <button className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
           Previous
         </button>
         <div className="flex items-center gap-2">
@@ -215,7 +217,7 @@ export default function EngOperators() {
             3
           </button>
         </div>
-        <button className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors">
+        <button className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors cursor-pointer">
           Next
         </button>
       </div>
