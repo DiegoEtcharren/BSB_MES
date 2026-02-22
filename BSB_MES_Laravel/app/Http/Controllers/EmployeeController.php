@@ -14,7 +14,7 @@ class EmployeeController extends Controller
     {
         // Validate request information:
         $validated = $request->validate([
-            'role' => 'sometimes|string|in:engineering,supervisor,operator',
+            'role' => 'sometimes|string|in:engineer,supervisor,operator',
             'status' => 'sometimes|string|in:active,inactive,on_leave',
             'search'   => 'sometimes|nullable|string|max:255',
             'per_page' => 'sometimes|integer|min:1|max:100',

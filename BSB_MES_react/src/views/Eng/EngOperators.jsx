@@ -180,7 +180,14 @@ export default function EngOperators() {
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
                       <button
-                        className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors"
+                      onClick={() => {
+                        openModal(
+                          <OperatorForm initialData={employee} />,
+                          "Edit Operator",
+                          `Update account details for Employee: ${employee.employee_number}`
+                        );
+                      }}
+                        className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors cursor-pointer"
                         title="Edit User"
                       >
                         <span className="material-symbols-outlined text-[18px]">

@@ -3,34 +3,38 @@ import MesContext from "../../context/MesProvider";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from 'react-toastify';
 
-export default function OperatorForm() {
+export default function OperatorForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
   const { userRegister } = useAuth({middleware: 'engineering', url: '/'});
-
   const [errors, setErrors] = useState({});
 
-  const nameRef = useRef(null);
-  const lastnameRef = useRef(null);
-  const employeeIDRef = useRef(null);
-  const departmentRef = useRef(null);
-  const emailRef = useRef(null);
-  const roleRef = useRef(null);
+  const [formData, setFormData] = useState({
+    first_name: initialData?.first_name || "",
+    last_name: initialData?.last_name || "",
+    employee_number: initialData?.employee_number || "",
+    department: initialData?.department || "",
+    email: initialData?.email || "",
+    role: initialData?.role || "operator",
+    is_active: initialData?.is_active ?? 1,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: null }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
 
-    const data = {
-      first_name: nameRef.current.value,
-      last_name: lastnameRef.current.value,
-      employee_number: employeeIDRef.current.value,
-      department: departmentRef.current.value,
-      email: emailRef.current.value,
-      role: roleRef.current.value,
-    };
-
     toast
-      .promise(userRegister(data, setErrors), {
+      .promise(userRegister(formData, setErrors), {
         pending: "Registering MES user...",
         success: "User added successfully",
         error: "Registration failed. Please check the inputs.",
@@ -84,48 +88,57 @@ export default function OperatorForm() {
               </label>
               <div className="relative">
                 <input
-                  ref={nameRef}
-                  className={getInputClass('first_name')}
+                  type="text"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  // required
                   id="firstName"
                   placeholder="e.g. Juan"
-                  type="text"
+                  className={`${getInputClass("first_name")}`}
                 />
-                {errors?.first_name && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span className="material-symbols-outlined text-[18px]">
-                    error
+                {errors?.first_name && (
+                  <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                    <span className="material-symbols-outlined text-[18px]">
+                      error
+                    </span>
                   </span>
-                </span>)}
+                )}
               </div>
               {errors?.first_name && (
                 <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg('first_name')}
+                  {getErrorMsg("first_name")}
                 </p>
               )}
             </div>
             <div className="space-y-2">
               <label
                 className="text-sm font-bold text-charcoal"
-                htmlFor="lastName"
+                htmlFor="last_name"
               >
                 Last Name
               </label>
               <div className="relative">
                 <input
-                  ref={lastnameRef}
-                  className={getInputClass('last_name')}
-                  id="lastName"
-                  placeholder="e.g. Jenkins"
                   type="text"
+                  name="last_name"
+                  id="last_name"
+                  value={formData.last_name}
+                  onChange={handleChange}
+                  placeholder="e.g. Jenkins"
+                  className={`${getInputClass("last_name")}`}
                 />
-                {errors?.last_name && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span className="material-symbols-outlined text-[18px]">
-                    error
+                {errors?.last_name && (
+                  <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                    <span className="material-symbols-outlined text-[18px]">
+                      error
+                    </span>
                   </span>
-                </span>)}
+                )}
               </div>
               {errors?.last_name && (
                 <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg('last_name')}
+                  {getErrorMsg("last_name")}
                 </p>
               )}
             </div>
@@ -134,7 +147,7 @@ export default function OperatorForm() {
             <div className="space-y-2">
               <label
                 className="text-sm font-bold text-charcoal"
-                htmlFor="employeeId"
+                htmlFor="employee_number"
               >
                 Employee ID
               </label>
@@ -145,21 +158,25 @@ export default function OperatorForm() {
                   </span>
                 </span>
                 <input
-                  ref={employeeIDRef}
-                  className={`${getInputClass('employee_number')} pl-10`}
-                  id="employeeId"
-                  placeholder="XXXX"
                   type="text"
+                  name="employee_number"
+                  id="employee_number"
+                  value={formData.employee_number}
+                  onChange={handleChange}
+                  placeholder="XXXX"
+                  className={`${getInputClass("employee_number")} pl-10`}
                 />
-                {errors?.employee_number && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span className="material-symbols-outlined text-[18px]">
-                    error
+                {errors?.employee_number && (
+                  <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                    <span className="material-symbols-outlined text-[18px]">
+                      error
+                    </span>
                   </span>
-                </span>)}
+                )}
               </div>
               {errors?.employee_number && (
                 <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg('employee_number')}
+                  {getErrorMsg("employee_number")}
                 </p>
               )}
             </div>
@@ -172,21 +189,25 @@ export default function OperatorForm() {
               </label>
               <div className="relative">
                 <input
-                  ref={departmentRef}
-                  className={getInputClass('department')}
-                  id="department"
-                  placeholder="e.g. Manufacturing"
                   type="text"
+                  name="department"
+                  id="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                  placeholder="e.g. Manufacturing"
+                  className={getInputClass("department")}
                 />
-                {errors?.department && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span className="material-symbols-outlined text-[18px]">
-                    error
+                {errors?.department && (
+                  <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                    <span className="material-symbols-outlined text-[18px]">
+                      error
+                    </span>
                   </span>
-                </span>)}
+                )}
               </div>
               {errors?.department && (
                 <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg('department')}
+                  {getErrorMsg("department")}
                 </p>
               )}
             </div>
@@ -202,23 +223,27 @@ export default function OperatorForm() {
                 </span>
               </span>
               <input
-                ref={emailRef}
-                className={`${getInputClass('email')} pl-10`}
-                id="email"
-                placeholder="name@bsbsystems.com"
                 type="email"
+                name="email"
+                id="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="name@bsbsystems.com"
+                className={`${getInputClass("email")} pl-10`}
               />
-                {errors?.email && (<span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+              {errors?.email && (
+                <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
                   <span className="material-symbols-outlined text-[18px]">
                     error
                   </span>
-                </span>)}
-            </div>
-              {errors?.email && (
-                <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg('email')}
-                </p>
+                </span>
               )}
+            </div>
+            {errors?.email && (
+              <p className="text-xs text-primary font-medium mt-1">
+                {getErrorMsg("email")}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <label
@@ -229,8 +254,9 @@ export default function OperatorForm() {
             </label>
             <div className="relative">
               <select
-                ref={roleRef}
-                className={`${getInputClass('role')} appearance-none bg-white`}
+                value={formData.role}
+                onChange={handleChange}
+                className={`${getInputClass("role")} appearance-none bg-white`}
                 id="accessLevel"
               >
                 <option value="">Select a role...</option>
@@ -245,7 +271,7 @@ export default function OperatorForm() {
             </div>
             {errors?.role && (
               <p className="text-xs text-primary font-medium mt-1">
-                {getErrorMsg('role')}
+                {getErrorMsg("role")}
               </p>
             )}
           </div>
@@ -263,7 +289,7 @@ export default function OperatorForm() {
           form="operator-form"
           className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] cursor-pointer"
         >
-          Create Account
+          {initialData ? "Save Changes" : "Create Account"}
         </button>
       </div>
     </>
