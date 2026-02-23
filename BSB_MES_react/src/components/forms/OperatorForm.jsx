@@ -82,7 +82,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
             <div className="space-y-2">
               <label
                 className="text-sm font-bold text-charcoal"
-                htmlFor="firstName"
+                htmlFor="first_name"
               >
                 First Name
               </label>
@@ -93,7 +93,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
                   value={formData.first_name}
                   onChange={handleChange}
                   // required
-                  id="firstName"
+                  id="first_name"
                   placeholder="e.g. Juan"
                   className={`${getInputClass("first_name")}`}
                 />
