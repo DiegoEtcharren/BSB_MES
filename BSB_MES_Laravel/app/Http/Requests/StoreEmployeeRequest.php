@@ -50,7 +50,7 @@ class StoreEmployeeRequest extends FormRequest
                     ? Rule::unique('employees', 'email')->ignore($employeeId)
                     : Rule::unique('employees', 'email')
             ],
-            'role' => ['required', 'in:operator,supervisor,engineering'],
+            'role' => ['required', 'in:operator,supervisor,engineer'],
         ];
     }
 

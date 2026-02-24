@@ -274,7 +274,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
           <div className="space-y-2">
             <label
               className="text-sm font-bold text-charcoal"
-              htmlFor="accessLevel"
+              htmlFor="role"
             >
               Access Level
             </label>
@@ -283,11 +283,12 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
                 value={formData.role}
                 onChange={handleChange}
                 className={`${getInputClass("role")} appearance-none bg-white`}
-                id="accessLevel"
+                name="role"
+                id="role"
               >
                 <option value="">Select a role...</option>
                 <option value="operator">Operator (Standard Access)</option>
-                <option value="engineering">Engineering (Full Access)</option>
+                <option value="engineer">Engineering (Full Access)</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                 <span className="material-symbols-outlined text-sm">
