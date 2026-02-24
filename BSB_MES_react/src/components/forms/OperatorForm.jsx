@@ -14,7 +14,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
     employee_number: initialData?.employee_number || "",
     department: initialData?.department || "",
     email: initialData?.email || "",
-    role: initialData?.role || "operator",
+    role: initialData?.role || "",
     is_active: initialData?.is_active ?? 1,
   });
 
@@ -67,7 +67,6 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
     ).then(() => {
       closeModal();
     }).catch(() => {
-      // Errors are handled by the toast and setErrors
     });
   };
 
@@ -90,7 +89,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
 
   return (
     <>
-      <div className="p-6">
+      <div className="p-6 pb-2">
         {Object.keys(errors).length > 0 ? (
           <div className="bg-red-50 border border-primary/20 text-primary px-4 py-3 rounded-lg mb-6 flex items-start gap-3">
             <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5">
@@ -104,7 +103,11 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
             </div>
           </div>
         ) : null}
-        <form id="operator-form" onSubmit={handleSubmit} className="space-y-6">
+        <form
+          id="operator-form"
+          onSubmit={handleSubmit}
+          className="space-y-6 overflow-y-auto max-h-[50vh] pr-2 pb-4"
+        >
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <label
