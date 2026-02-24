@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 
 export default function OperatorForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
-  // const { userRegister } = useAuth({middleware: 'engineering', url: '/'});
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -31,27 +30,18 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
   };
 
   const userRegister = async (payload, id = null) => {
-    if (id) {
-      console.log("Edit");
-      // Edit Mode:
-      try {
-        const { data } = await axiosClient.put(`/api/employees/${id}`, payload);
-        setErrors([]);
-        return data;
-      } catch (error) {
-        setErrors(error.response.data.errors);
-        throw error;
-      }
-    } else {
-      // Create Mode:
-      try {
-        const { data } = await axiosClient.post("api/register", payload);
-        setErrors([]);
-        return data;
-      } catch (error) {
-        setErrors(error.response.data.errors);
-        throw error;
-      }
+    const isEdit = !!id;
+    const url = isEdit ? `/api/employees/${id}` : "api/register";
+    const method = isEdit ? "put" : "post";
+
+    try {
+      const { data } = await axiosClient[method](url, payload);
+      setErrors([]);
+      // Return both the data and the mode to the caller
+      return { data, isEdit };
+    } catch (error) {
+      setErrors( error.response?.data?.errors);
+      throw error;
     }
   };
 
@@ -59,15 +49,26 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
     e.preventDefault();
     setErrors({});
 
-    toast
-      .promise(userRegister(formData, initialData?.id), {
-        pending: "Registering/Updating MES user...",
-        success: "User added/updated successfully",
+    const id = initialData?.id;
+
+    toast.promise(
+      userRegister(formData, id),
+      {
+        pending: id ? "Updating MES user..." : "Registering new MES user...",
+        success: {
+          render({ data }) {
+            return data.isEdit
+              ? `User ${data.data.name} updated successfully`
+              : "New user registered successfully";
+          },
+        },
         error: "Registration failed. Please check the inputs.",
-      })
-      .then(() => {
-        closeModal();
-      });
+      }
+    ).then(() => {
+      closeModal();
+    }).catch(() => {
+      // Errors are handled by the toast and setErrors
+    });
   };
 
   const getInputClass = (fieldName) => {
