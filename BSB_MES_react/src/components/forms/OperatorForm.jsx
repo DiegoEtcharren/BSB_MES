@@ -276,10 +276,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
             )}
           </div>
           <div className="space-y-2">
-            <label
-              className="text-sm font-bold text-charcoal"
-              htmlFor="role"
-            >
+            <label className="text-sm font-bold text-charcoal" htmlFor="role">
               Access Level
             </label>
             <div className="relative">
@@ -293,6 +290,35 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
                 <option value="">Select a role...</option>
                 <option value="operator">Operator (Standard Access)</option>
                 <option value="engineer">Engineering (Full Access)</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                <span className="material-symbols-outlined text-sm">
+                  expand_more
+                </span>
+              </div>
+            </div>
+            {errors?.role && (
+              <p className="text-xs text-primary font-medium mt-1">
+                {getErrorMsg("role")}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-charcoal" htmlFor="role">
+              Account Status
+            </label>
+            <div className="relative">
+              <select
+                value={formData.is_active}
+                onChange={handleChange}
+                className={`${getInputClass("is_active")} appearance-none bg-white`}
+                name="is_active"
+                id="is_active"
+              >
+                <option value="">Select a status...</option>
+                <option value="1">Active</option>
+                <option value="on_leave">On Leave</option>
+                <option value="deactivated">Deactivated</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                 <span className="material-symbols-outlined text-sm">
