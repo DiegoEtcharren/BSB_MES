@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\User;
 use App\Models\Employee;
+use Illuminate\Validation\Rule;
 
 
 class StoreEmployeeRequest extends FormRequest
@@ -26,12 +27,29 @@ class StoreEmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
+        $isUpdate = $this->isMethod('put') || $this->isMethod('patch');
+        $employeeId = $this->route('employee') ?? $this->route('id');
+        $userId = null;
+
+        if ($isUpdate && $employeeId) {
+            $employee = Employee::find($employeeId);
+            $userId = $employee ? $employee->user_id : null;
+        }
+
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'employee_number' => ['required', 'string', 'unique:employees,employee_number'],
+            'employee_number' => ['required', 'string',
+                $isUpdate
+                    ? Rule::unique('employees', 'employee_number')->ignore($employeeId)
+                    : Rule::unique('employees', 'employee_number')
+            ],
             'department' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:employees,email'],
+            'email' => ['required','email',
+                $isUpdate
+                    ? Rule::unique('employees', 'email')->ignore($employeeId)
+                    : Rule::unique('employees', 'email')
+            ],
             'role' => ['required', 'in:operator,supervisor,engineering'],
         ];
     }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreEmployeeRequest;
 use App\Models\Employee;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -90,9 +92,51 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreEmployeeRequest $request, string $id)
     {
-        //
+        // 1. Validate request info:
+        $validated = $request->validated();
+
+        // 2. Find employee + user:
+        $employee = Employee::findOrFail($id);
+        $user = $employee->user;
+
+
+        DB::beginTransaction();
+
+        try {
+
+            // 3. Update user:
+            $userData = [
+                'role'  => $validated['role'],
+            ];
+
+            $user->update($userData);
+
+            // 4. Update employee:
+            $employee->update([
+                'first_name' => $validated['first_name'],
+                'last_name'  => $validated['last_name'],
+                'employee_number' => $validated['employee_number'],
+                'department'      => $validated['department'],
+                'email'  => $validated['email'],
+                'role'       => $validated['role']
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Employee updated successfully',
+                'employee' => $employee->load('user') // Return updated data
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'An error occurred while updating the operator',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

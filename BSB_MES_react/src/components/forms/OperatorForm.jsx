@@ -1,11 +1,12 @@
 import { useRef, createRef, useContext, useState } from "react";
 import MesContext from "../../context/MesProvider";
-import { useAuth } from "../../hooks/useAuth";
+import axiosClient from "../../config/axios";
 import { toast } from 'react-toastify';
 
 export default function OperatorForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
-  const { userRegister } = useAuth({middleware: 'engineering', url: '/'});
+  // const { userRegister } = useAuth({middleware: 'engineering', url: '/'});
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
@@ -29,19 +30,44 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
     }
   };
 
+  const userRegister = async (payload, id = null) => {
+    if (id) {
+      console.log("Edit");
+      // Edit Mode:
+      try {
+        const { data } = await axiosClient.put(`/api/employees/${id}`, payload);
+        setErrors([]);
+        return data;
+      } catch (error) {
+        setErrors(error.response.data.errors);
+        throw error;
+      }
+    } else {
+      // Create Mode:
+      try {
+        const { data } = await axiosClient.post("api/register", payload);
+        setErrors([]);
+        return data;
+      } catch (error) {
+        setErrors(error.response.data.errors);
+        throw error;
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
 
     toast
-      .promise(userRegister(formData, setErrors), {
-        pending: "Registering MES user...",
-        success: "User added successfully",
+      .promise(userRegister(formData, initialData?.id), {
+        pending: "Registering/Updating MES user...",
+        success: "User added/updated successfully",
         error: "Registration failed. Please check the inputs.",
       })
       .then(() => {
         closeModal();
-      })
+      });
   };
 
   const getInputClass = (fieldName) => {
