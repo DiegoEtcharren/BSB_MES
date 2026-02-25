@@ -120,7 +120,7 @@ class EmployeeController extends Controller
                 'employee_number' => $validated['employee_number'],
                 'department'      => $validated['department'],
                 'email'  => $validated['email'],
-                'role'       => $validated['role']
+                'status'       => $validated['status']
             ]);
 
             DB::commit();

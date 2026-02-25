@@ -13,7 +13,7 @@ class Employee extends Model
         'department',
         'email',
         'hired_at',
-        'is_active'
+        'status'
     ];
 
     protected $appends = ['role', 'username'];

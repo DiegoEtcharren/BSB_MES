@@ -52,7 +52,7 @@ class AuthController extends Controller
                     'department'      => $validated['department'],
                     'email'           => $validated['email'],
                     'hired_at'        => now(),
-                    'is_active'       => true,
+                    'status'       => 'active',
                 ]);
 
                 $user = User::create([

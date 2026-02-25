@@ -38,22 +38,31 @@ export const getRoleFormatting = (role) => {
 };
 
 // Helper to handle Status badge styling
-export const getStatusFormatting = (isActive) => {
-  // Check if isActive is true, 1, or the string "active"
-  const active = isActive === true || isActive === 1 || String(isActive).toLowerCase() === "active";
+export const getStatusFormatting = (status) => {
+  const normalizedStatus = String(status).toLowerCase();
 
-  if (active) {
-    return {
-      wrapperClass: "bg-emerald-100 text-emerald-700",
-      dotClass: "bg-emerald-500",
-      label: "Active"
-    };
-  } else {
-    return {
-      wrapperClass: "bg-red-50 text-red-700",
-      dotClass: "bg-red-500",
-      label: "Inactive"
-    };
+switch (normalizedStatus) {
+    case "active": // Supporting both terms for flexibility
+      return {
+        wrapperClass: "bg-emerald-100 text-emerald-700",
+        dotClass: "bg-emerald-500",
+        label: "Available"
+      };
+
+    case "on_leave":
+      return {
+        wrapperClass: "bg-amber-100 text-amber-700",
+        dotClass: "bg-amber-500",
+        label: "On Leave"
+      };
+
+    case "inactive":
+    default:
+      return {
+        wrapperClass: "bg-red-50 text-red-700",
+        dotClass: "bg-red-500",
+        label: "Inactive"
+      };
   }
 };
 

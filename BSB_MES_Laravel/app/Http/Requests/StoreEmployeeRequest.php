@@ -51,6 +51,9 @@ class StoreEmployeeRequest extends FormRequest
                     : Rule::unique('employees', 'email')
             ],
             'role' => ['required', 'in:operator,supervisor,engineer'],
+            'status' => [$isUpdate
+                ? ['required', 'string', 'in:active,inactive,on_leave']
+                : ['nullable']]
         ];
     }
 

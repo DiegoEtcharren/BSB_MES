@@ -129,7 +129,7 @@ export default function EngOperators() {
               employees.data.map((employee) => {
                   const userInitials = getUserInitials(employee.first_name, employee.last_name);
                   const roleFormat = getRoleFormatting(employee.role);
-                  const statusFormatting = getStatusFormatting(employee.is_active);
+                  const statusFormatting = getStatusFormatting(employee.status);
                   const formattedDate = formatDate(employee.hired_at);
                 return (
                 <tr
