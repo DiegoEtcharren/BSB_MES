@@ -1,12 +1,15 @@
 import { useRef, createRef, useContext, useState } from "react";
 import MesContext from "../../context/MesProvider";
 import axiosClient from "../../config/axios";
+import { useEmployees } from "../../hooks/useEmployees";
 import { toast } from 'react-toastify';
 
 export default function OperatorForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const { saveEmployee } = useEmployees();
 
   const [formData, setFormData] = useState({
     first_name: initialData?.first_name || "",
@@ -29,22 +32,6 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
     }
   };
 
-  const userRegister = async (payload, id = null) => {
-    const isEdit = !!id;
-    const url = isEdit ? `/api/employees/${id}` : "api/register";
-    const method = isEdit ? "put" : "post";
-
-    try {
-      const { data } = await axiosClient[method](url, payload);
-      setErrors([]);
-      // Return both the data and the mode to the caller
-      return { data, isEdit };
-    } catch (error) {
-      setErrors( error.response?.data?.errors);
-      throw error;
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -52,13 +39,17 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
     const id = initialData?.id;
 
     toast
-      .promise(userRegister(formData, id), {
+      .promise(saveEmployee(formData, id), {
         pending: id ? "Updating MES user..." : "Registering new MES user...",
         success: {
           render({ data }) {
+            const employeeData = data.employee
+              ? data.data.employee
+              : data.data.data.employee;
+
             return data.isEdit
-              ? `User ${data.data.name} updated successfully`
-              : "New user registered successfully";
+              ? `User ${eemployeeData?.first_name} updated successfully`
+              : `User ${employeeData?.first_name} registered successfully`;
           },
         },
         error: "Registration failed. Please check the inputs.",
