@@ -31,24 +31,18 @@ class EmployeeController extends Controller
             });
         }
 
-        if (isset($validated['status'])) {
+        if (isset($validated['status']) && $validated['status'] !== '') {
             if ($validated['status'] === 'active') {
-                $query->where('is_active', true);
+                $query->where('status', 'active');
             } elseif ($validated['status'] === 'inactive') {
-                $query->where('is_active', false);
+                $query->where('status', 'inactive');
+            } elseif ($validated['status'] === 'on_leave') {
+                $query->where('status', 'on_leave');
             }
         }
 
-        if (isset($validated['status']) && $validated['status'] !== '') {
-        if ($validated['status'] === 'active') {
-            $query->where('is_active', true);
-        } elseif ($validated['status'] === 'inactive') {
-            $query->where('is_active', false);
-        }
-    }
-
-        // Search logic:
-        if (!empty($validated['search'])) {
+            // Search logic:
+            if (!empty($validated['search'])) {
             $searchTerm = $validated['search'];
 
             // We wrap the search clauses in a function to group the SQL 'OR' statements:

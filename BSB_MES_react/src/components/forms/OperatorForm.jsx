@@ -318,7 +318,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
                 >
                   <option value="active">Active</option>
                   <option value="on_leave">On Leave</option>
-                  <option value="deactivated">Deactivated</option>
+                  <option value="inactive">Inactive</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                   <span className="material-symbols-outlined text-sm">
