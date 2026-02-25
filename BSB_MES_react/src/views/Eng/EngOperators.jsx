@@ -191,7 +191,7 @@ export default function EngOperators() {
                           `Update account details for Employee: ${employee.employee_number}`
                         );
                       }}
-                        className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-charcoal rounded transition-colors cursor-pointer"
+                        className="p-1.5 hover:bg-indigo-100 hover:text-indigo-600 text-slate-500 hover:text-charcoal rounded transition-colors cursor-pointer"
                         title="Edit User"
                       >
                         <span className="material-symbols-outlined text-[18px]">
@@ -199,7 +199,7 @@ export default function EngOperators() {
                         </span>
                       </button>
                       <button
-                        className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors"
+                        className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors cursor-pointer"
                         title="Delete User"
                       >
                         <span className="material-symbols-outlined text-[18px]">
