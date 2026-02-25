@@ -51,9 +51,8 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
 
     const id = initialData?.id;
 
-    toast.promise(
-      userRegister(formData, id),
-      {
+    toast
+      .promise(userRegister(formData, id), {
         pending: id ? "Updating MES user..." : "Registering new MES user...",
         success: {
           render({ data }) {
@@ -63,11 +62,14 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
           },
         },
         error: "Registration failed. Please check the inputs.",
-      }
-    ).then(() => {
-      closeModal();
-    }).catch(() => {
-    });
+      })
+      .then(() => {
+        if (onSuccess) {
+          onSuccess();
+        }
+        closeModal();
+      })
+      .catch(() => {});
   };
 
   const getInputClass = (fieldName) => {

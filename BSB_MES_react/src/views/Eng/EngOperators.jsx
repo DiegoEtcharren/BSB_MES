@@ -20,7 +20,7 @@ export default function EngOperators() {
       icon: "person",
       onClick: () => {
         openModal(
-          <OperatorForm />,
+          <OperatorForm onSuccess={() => fetchOperators()}/>,
           "Add New Operator",
           "Create a new user account for system access",
         );
@@ -183,7 +183,10 @@ export default function EngOperators() {
                       <button
                       onClick={() => {
                         openModal(
-                          <OperatorForm initialData={employee} />,
+                          <OperatorForm
+                            initialData={employee}
+                            onSuccess={() => fetchOperators()}
+                          />,
                           "Edit Operator",
                           `Update account details for Employee: ${employee.employee_number}`
                         );
