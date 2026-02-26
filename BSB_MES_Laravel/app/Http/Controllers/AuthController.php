@@ -39,7 +39,8 @@ class AuthController extends Controller
         return ['user' => null];
     }
 
-    public function register(StoreEmployeeRequest $request) {
+    public function register(StoreEmployeeRequest $request)
+    {
         $validated = $request->validated();
 
         try {
@@ -67,7 +68,6 @@ class AuthController extends Controller
                     'user'     => $user
                 ];
             });
-
             return response()->json([
                 'message' => 'Employee registered successfully',
                 'data'    => $result

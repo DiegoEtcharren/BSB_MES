@@ -121,7 +121,10 @@ class EmployeeController extends Controller
 
             return response()->json([
                 'message' => 'Employee updated successfully',
-                'employee' => $employee->load('user') // Return updated data
+                'data'    => [
+                    'employee' => $employee->fresh(), // fresh() retrieves the updated model from DB
+                    'user'     => $user->fresh()
+                ]
             ], 200);
 
         } catch (\Exception $e) {

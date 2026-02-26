@@ -38,18 +38,16 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
 
     const id = initialData?.id;
 
-    toast
-      .promise(saveEmployee(formData, id), {
+    toast.promise(
+      saveEmployee(formData, id),
+      {
         pending: id ? "Updating MES user..." : "Registering new MES user...",
         success: {
           render({ data }) {
-            const employeeData = data.employee
-              ? data.data.employee
-              : data.data.data.employee;
-
-            return data.isEdit
-              ? `User ${eemployeeData?.first_name} updated successfully`
-              : `User ${employeeData?.first_name} registered successfully`;
+            const employee_number = data?.data?.employee.employee_number;
+            return id
+              ? `User ${employee_number} updated successfully`
+              : `User ${employee_number} registered successfully`;
           },
         },
         error: "Registration failed. Please check the inputs.",

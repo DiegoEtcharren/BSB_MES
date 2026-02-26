@@ -9,13 +9,12 @@ export const useEmployees = () => {
   const fetchOperators = useCallback(async (params = {}) => {
     setLoading(true);
     try {
-      const response = await axiosClient.get("/api/employees", { params }); // Pass pagination parameters
-      setEmployees(response.data.data); // Adjust based on Laravel pagination wrap
+      const response = await axiosClient.get("/api/employees", { params });
+      setEmployees(response.data.data);
     } catch (err) {
       setError(err.response?.data?.message || "Could not load employees.");
     } finally {
       setLoading(false);
-      console.log(employees);
     }
   }, []);
 
@@ -23,16 +22,8 @@ export const useEmployees = () => {
     const isEdit = !!id;
     const url = isEdit ? `/api/employees/${id}` : "api/register";
     const method = isEdit ? "put" : "post";
-
-    try {
-      const { data } = await axiosClient[method](url, payload);
-      setErrors([]);
-      // Return both the data and the mode to the caller
-      return { data, isEdit };
-    } catch (error) {
-      setErrors(error.response?.data?.errors);
-      throw error;
-    }
+    const { data }  = await axiosClient[method](url, payload);
+    return data;
   };
 
   const deleteEmployee = async (id) => {
