@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { getUserInitials, getRoleFormatting, getStatusFormatting, formatDate } from "../../utilities/tableFormatters";
 import { useEmployees } from "../../hooks/useEmployees";
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 export default function EngOperators() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
@@ -15,9 +16,18 @@ export default function EngOperators() {
   const [page, setPage] = useState(1); // Pagination configuration
 
   const handleDelete = async (id, employee_number) => {
-    const isConfirmed = window.confirm(`Are you sure you want to eliminate user ${employee_number}?`);
+    const result = await Swal.fire({
+      title: "Eliminate User?",
+      text: `Are you sure you want to eliminate user ${employee_number}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Yes",
+      cancelButtonText: "Cancel",
+    });
 
-    if (!isConfirmed) return;
+    if (!result.isConfirmed) return;
 
     toast.promise(
       deleteEmployee(id),
