@@ -1,18 +1,47 @@
 import MesContext from "../../context/MesProvider";
 import OperatorForm from "../../components/forms/OperatorForm"
 import { useContext, useEffect, useState } from "react";
-import { useEmployees } from "../../hooks/useEmployees";
 import { getUserInitials, getRoleFormatting, getStatusFormatting, formatDate } from "../../utilities/tableFormatters";
+import { useEmployees } from "../../hooks/useEmployees";
+import { toast } from 'react-toastify';
 
 export default function EngOperators() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
-  const { employees, isLoading, error, fetchOperators } = useEmployees();
+  const { employees, isLoading, error, fetchOperators, deleteEmployee } = useEmployees();
 
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1); // Pagination configuration
 
+  const handleDelete = async (id, employee_number) => {
+    const isConfirmed = window.confirm(`Are you sure you want to eliminate user ${employee_number}?`);
+
+    if (!isConfirmed) return;
+
+    toast.promise(
+      deleteEmployee(id),
+      {
+        pending: `Eliminating ${employee_number}...`,
+        success: `User ${employee_number} has been successfully eliminated.`,
+        error: {
+          render({ data: error }) {
+            return `Failed to eliminate user ${employee_number}.`;
+          }
+        }
+      }
+    )
+    .then(() => {
+      const params = { page };
+      if (roleFilter) params.role = roleFilter;
+      if (statusFilter) params.status = statusFilter;
+      if (searchQuery) params.search = searchQuery;
+
+      fetchOperators(params);
+    })
+    .catch(() => {
+    });
+  };
 
   useEffect(() => {
     setHeaderConfig("Operators", {
@@ -133,83 +162,94 @@ export default function EngOperators() {
                   const statusFormatting = getStatusFormatting(employee.status);
                   const formattedDate = formatDate(employee.hired_at);
                 return (
-                <tr
-                  key={employee.id}
-                  className="hover:bg-slate-50 transition-colors group"
-                >
-                  {/* Name Column: */}
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
-                        {userInitials}
-                      </div>
-                      <div>
-                        <div className="font-bold text-charcoal text-sm">
-                          {employee.first_name} {employee.last_name}
+                  <tr
+                    key={employee.id}
+                    className="hover:bg-slate-50 transition-colors group"
+                  >
+                    {/* Name Column: */}
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                          {userInitials}
                         </div>
-                        <div className="text-xs text-slate-400">
-                          Joined {formattedDate}
+                        <div>
+                          <div className="font-bold text-charcoal text-sm">
+                            {employee.first_name} {employee.last_name}
+                          </div>
+                          <div className="text-xs text-slate-400">
+                            Joined {formattedDate}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  {/* Employee ID Column: */}
-                  <td className="px-6 py-4 text-sm font-medium text-slate-600">
-                    {employee.employee_number}
-                  </td>
-                  {/* Employee Email Column: */}
-                  <td className="px-6 py-4 text-sm text-slate-500">
-                    {employee.email}
-                  </td>
-                  {/* Role Column:  */}
-                  <td className="px-6 py-4 text-sm">
-                    <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold ${roleFormat.wrapperClass}`}>
-                      <span className={`material-symbols-outlined text-[14px] ${roleFormat.iconClass}`}>
-                        {roleFormat.icon}
-                      </span>{" "}
-                      {employee.role}
-                    </span>
-                  </td>
-                  {/* Status Column: */}
-                  <td className="px-6 py-4 text-sm">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusFormatting.wrapperClass}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${statusFormatting.dotClass}`}></span>{" "}
-                      {statusFormatting.label}
-                    </span>
-                  </td>
-                  {/* Actions Column; */}
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                      <button
-                      onClick={() => {
-                        openModal(
-                          <OperatorForm
-                            initialData={employee}
-                            onSuccess={() => fetchOperators()}
-                          />,
-                          "Edit Operator",
-                          `Update account details for Employee: ${employee.employee_number}`
-                        );
-                      }}
-                        className="p-1.5 hover:bg-indigo-100 hover:text-indigo-600 text-slate-500 hover:text-charcoal rounded transition-colors cursor-pointer"
-                        title="Edit User"
+                    </td>
+                    {/* Employee ID Column: */}
+                    <td className="px-6 py-4 text-sm font-medium text-slate-600">
+                      {employee.employee_number}
+                    </td>
+                    {/* Employee Email Column: */}
+                    <td className="px-6 py-4 text-sm text-slate-500">
+                      {employee.email}
+                    </td>
+                    {/* Role Column:  */}
+                    <td className="px-6 py-4 text-sm">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-semibold ${roleFormat.wrapperClass}`}
                       >
-                        <span className="material-symbols-outlined text-[18px]">
-                          edit
-                        </span>
-                      </button>
-                      <button
-                        className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors cursor-pointer"
-                        title="Delete User"
+                        <span
+                          className={`material-symbols-outlined text-[14px] ${roleFormat.iconClass}`}
+                        >
+                          {roleFormat.icon}
+                        </span>{" "}
+                        {employee.role}
+                      </span>
+                    </td>
+                    {/* Status Column: */}
+                    <td className="px-6 py-4 text-sm">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusFormatting.wrapperClass}`}
                       >
-                        <span className="material-symbols-outlined text-[18px]">
-                          delete
-                        </span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )})
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${statusFormatting.dotClass}`}
+                        ></span>{" "}
+                        {statusFormatting.label}
+                      </span>
+                    </td>
+                    {/* Actions Column; */}
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => {
+                            openModal(
+                              <OperatorForm
+                                initialData={employee}
+                                onSuccess={() => fetchOperators()}
+                              />,
+                              "Edit Operator",
+                              `Update account details for Employee: ${employee.employee_number}`,
+                            );
+                          }}
+                          className="p-1.5 hover:bg-indigo-100 hover:text-indigo-600 text-slate-500 hover:text-charcoal rounded transition-colors cursor-pointer"
+                          title="Edit User"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">
+                            edit
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleDelete(employee.id, employee.employee_number)
+                          }}
+                          className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors cursor-pointer"
+                          title="Delete User"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">
+                            delete
+                          </span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );})
             ) : (
               // Empty Operators:
               <tr className="hover:bg-slate-50 transition-colors group">

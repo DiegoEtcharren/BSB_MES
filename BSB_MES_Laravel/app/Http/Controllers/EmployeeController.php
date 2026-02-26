@@ -141,6 +141,25 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            DB::transaction(function () use ($id) {
+                $employee = Employee::findOrFail($id);
+
+                if ($employee->user) {
+                    $employee->user->delete();
+                }
+
+                $employee->delete();
+            });
+
+            return response()->json([
+                'message' => 'Employee deactivated successfully'
+            ], 200);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'An error occurred while deactivating the employee.'
+            ], 500);
+        }
     }
 }

@@ -27,13 +27,8 @@ export const useEmployees = () => {
   };
 
   const deleteEmployee = async (id) => {
-    try {
-      await axiosClient.delete(`/api/employees/${id}`);
-      fetchOperators();
-      return true;
-    } catch (err) {
-      throw err;
-    }
+    const { data } = await axiosClient.delete(`/api/employees/${id}`);
+    return data;
   };
 
   return { employees, isLoading, error, fetchOperators, saveEmployee, deleteEmployee};
