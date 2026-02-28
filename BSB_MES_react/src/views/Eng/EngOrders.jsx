@@ -1,17 +1,22 @@
 import MesContext from "../../context/MesProvider";
+import OrderForm from "../../components/forms/OrderForm"
 import { useContext, useEffect } from "react";
 
 export default function EngOrders() {
-  const { setHeaderConfig } = useContext(MesContext);
+  const { setHeaderConfig, openModal } = useContext(MesContext);
   useEffect(() => {
-    setHeaderConfig("Orders", {
+    setHeaderConfig("Operators", {
       label: "Add New Order",
-      icon: "person",
+      icon: "post_add",
       onClick: () => {
-        console.log("Add Orders Modal...");
-        // Open your modal logic here
+        openModal(
+          <OrderForm onSuccess={() => fetchOperators()}/>,
+          "Add New Order",
+          "Create a new order",
+        );
       },
     });
+    // fetchOperators();
   }, []);
   return <div>EngOrders</div>;
 }

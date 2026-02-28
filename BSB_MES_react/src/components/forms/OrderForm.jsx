@@ -3,7 +3,7 @@ import MesContext from "../../context/MesProvider";
 import { useEmployees } from "../../hooks/useEmployees";
 import { toast } from 'react-toastify';
 
-export default function OperatorForm({ initialData = null, onSuccess }) {
+export default function OrderForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
   const [errors, setErrors] = useState({});
   const { saveEmployee } = useEmployees();
@@ -110,7 +110,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
           </div>
         ) : null}
         <form
-          id="operator-form"
+          id="order_form"
           onSubmit={handleSubmit}
           className="space-y-6 overflow-y-auto max-h-[50vh] pr-2 pb-4"
         >
@@ -118,20 +118,20 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
             <div className="space-y-2">
               <label
                 className="text-sm font-bold text-charcoal"
-                htmlFor="first_name"
+                htmlFor="so_number"
               >
-                First Name
+                SO #
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  name="first_name"
-                  value={formData.first_name}
+                  name="so_number"
+                  value={formData.so_number}
                   onChange={handleChange}
                   // required
-                  id="first_name"
-                  placeholder="e.g. Juan"
-                  className={`${getInputClass("first_name")}`}
+                  id="so_number"
+                  placeholder="e.g. XXXXXXX-X"
+                  className={`${getInputClass("so_number")}`}
                 />
                 {errors?.first_name && (
                   <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
@@ -350,7 +350,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
         </button>
         <button
           type="submit"
-          form="operator-form"
+          form="order_form"
           className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] cursor-pointer"
         >
           {initialData ? "Save Changes" : "Create Account"}
@@ -359,3 +359,4 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
     </>
   );
 }
+
