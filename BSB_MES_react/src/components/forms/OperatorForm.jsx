@@ -1,14 +1,11 @@
 import { useRef, createRef, useContext, useState } from "react";
 import MesContext from "../../context/MesProvider";
-import axiosClient from "../../config/axios";
 import { useEmployees } from "../../hooks/useEmployees";
 import { toast } from 'react-toastify';
 
 export default function OperatorForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
-  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-
   const { saveEmployee } = useEmployees();
 
   const [formData, setFormData] = useState({
@@ -38,27 +35,45 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
 
     const id = initialData?.id;
 
-    toast.promise(
-      saveEmployee(formData, id),
-      {
-        pending: id ? "Updating MES user..." : "Registering new MES user...",
-        success: {
-          render({ data }) {
-            const employee_number = data?.data?.employee.employee_number;
-            return id
-              ? `User ${employee_number} updated successfully`
-              : `User ${employee_number} registered successfully`;
+    toast
+      .promise(
+        saveEmployee(formData, id).catch((error) => {
+          if (error.response && error.response.status === 422) {
+            setErrors(error.response.data.errors);
+          }
+          throw error;
+        }),
+        {
+          pending: id ? "Updating MES user..." : "Registering new MES user...",
+          success: {
+            render({ data }) {
+              const employee_number = data?.data?.employee?.employee_number;
+              return id
+                ? `User ${employee_number} updated successfully`
+                : `User ${employee_number} registered successfully`;
+            },
+          },
+          error: {
+            render({ data }) {
+              if (data?.response?.status === 422) {
+                return "Validation failed. Please correct the highlighted fields.";
+              }
+              return (
+                data?.response?.data?.message ||
+                "System error. Could not register user."
+              );
+            },
           },
         },
-        error: "Registration failed. Please check the inputs.",
-      })
+      )
       .then(() => {
         if (onSuccess) {
           onSuccess();
         }
         closeModal();
       })
-      .catch(() => {});
+      .catch(() => {
+      });
   };
 
   const getInputClass = (fieldName) => {
