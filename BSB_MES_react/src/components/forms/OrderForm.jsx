@@ -109,29 +109,60 @@ export default function OrderForm({ initialData = null, onSuccess }) {
             </div>
           </div>
         ) : null}
+
+        {/* Steps: */}
+        <div class="flex items-center justify-between w-full relative max-w-2xl mx-auto">
+          <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-300 -z-10 transform -translate-y-1/2"></div>
+          <div class="flex flex-col items-center gap-2 z-10">
+            <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-red-500/20 ring-4 ring-[#f0f4f8]">
+              1
+            </div>
+            <span class="text-xs font-bold text-primary">Info</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 z-10">
+            <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+              2
+            </div>
+            <span class="text-xs font-medium text-slate-400">Items</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 z-10">
+            <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+              3
+            </div>
+            <span class="text-xs font-medium text-slate-400">Shipping</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 z-10">
+            <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+              4
+            </div>
+            <span class="text-xs font-medium text-slate-400">Review</span>
+          </div>
+        </div>
         <form
           id="order_form"
           onSubmit={handleSubmit}
-          className="space-y-6 overflow-y-auto max-h-[50vh] pr-2 pb-4"
+          className="my-5 space-y-6 overflow-y-auto pr-2 pb-4"
         >
+          <div>
+            <h3 class="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+              Order Details
+            </h3>
+          </div>
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label
-                className="text-sm font-bold text-charcoal"
-                htmlFor="so_number"
-              >
-                SO #
+              <label className="text-sm  text-charcoal" htmlFor="order_number">
+                Order Number
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  name="so_number"
-                  value={formData.so_number}
+                  name="order_number"
+                  value={formData.order_number}
                   onChange={handleChange}
                   // required
-                  id="so_number"
-                  placeholder="e.g. XXXXXXX-X"
-                  className={`${getInputClass("so_number")}`}
+                  id="order_number"
+                  placeholder="XXXXXXX-X"
+                  className={`${getInputClass("order_number")}`}
                 />
                 {errors?.first_name && (
                   <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
@@ -148,21 +179,23 @@ export default function OrderForm({ initialData = null, onSuccess }) {
               )}
             </div>
             <div className="space-y-2">
-              <label
-                className="text-sm font-bold text-charcoal"
-                htmlFor="last_name"
-              >
-                Last Name
+              <label className="text-sm text-charcoal" htmlFor="last_name">
+                Previous Order Number
               </label>
               <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                  <span className="material-symbols-outlined text-[18px]">
+                    search
+                  </span>
+                </span>
                 <input
                   type="text"
                   name="last_name"
                   id="last_name"
                   value={formData.last_name}
                   onChange={handleChange}
-                  placeholder="e.g. Jenkins"
-                  className={`${getInputClass("last_name")}`}
+                  placeholder="XXXXXXX-X"
+                  className={`${getInputClass("last_name")} pl-10`}
                 />
                 {errors?.last_name && (
                   <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
@@ -185,7 +218,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
                 className="text-sm font-bold text-charcoal"
                 htmlFor="employee_number"
               >
-                Employee ID
+                Customer
               </label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
@@ -311,7 +344,10 @@ export default function OrderForm({ initialData = null, onSuccess }) {
           </div>
           {initialData && (
             <div className="space-y-2">
-              <label className="text-sm font-bold text-charcoal" htmlFor="status">
+              <label
+                className="text-sm font-bold text-charcoal"
+                htmlFor="status"
+              >
                 Account Status
               </label>
               <div className="relative">

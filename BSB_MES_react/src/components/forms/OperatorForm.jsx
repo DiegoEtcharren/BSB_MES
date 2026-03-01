@@ -117,7 +117,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <label
-                className="text-sm font-bold text-charcoal"
+                className="text-sm text-charcoal"
                 htmlFor="first_name"
               >
                 First Name
@@ -149,7 +149,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
             </div>
             <div className="space-y-2">
               <label
-                className="text-sm font-bold text-charcoal"
+                className="text-sm text-charcoal"
                 htmlFor="last_name"
               >
                 Last Name
@@ -182,7 +182,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <label
-                className="text-sm font-bold text-charcoal"
+                className="text-sm text-charcoal"
                 htmlFor="employee_number"
               >
                 Employee ID
@@ -218,7 +218,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
             </div>
             <div className="space-y-2">
               <label
-                className="text-sm font-bold text-charcoal"
+                className="text-sm text-charcoal"
                 htmlFor="department"
               >
                 Department
@@ -249,7 +249,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-bold text-charcoal" htmlFor="email">
+            <label className="text-sm text-charcoal" htmlFor="email">
               Email Address
             </label>
             <div className="relative">
@@ -282,7 +282,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
             )}
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-bold text-charcoal" htmlFor="role">
+            <label className="text-sm text-charcoal" htmlFor="role">
               Access Level
             </label>
             <div className="relative">
@@ -311,7 +311,7 @@ export default function OperatorForm({ initialData = null, onSuccess }) {
           </div>
           {initialData && (
             <div className="space-y-2">
-              <label className="text-sm font-bold text-charcoal" htmlFor="status">
+              <label className="text-sm text-charcoal" htmlFor="status">
                 Account Status
               </label>
               <div className="relative">
