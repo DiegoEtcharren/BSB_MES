@@ -95,7 +95,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
 
   return (
     <>
-      <div className="p-6 pb-2 overflow-y-auto">
+      <div className="flex flex-col flex-1 h-full overflow-hidden">
         {Object.keys(errors).length > 0 ? (
           <div className="bg-red-50 border border-primary/20 text-primary px-4 py-3 rounded-lg mb-6 flex items-start gap-3">
             <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5">
