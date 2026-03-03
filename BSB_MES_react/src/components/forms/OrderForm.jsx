@@ -95,7 +95,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
 
   return (
     <>
-      <div className="p-6 pb-2">
+      <div className="p-6 pb-2 overflow-y-auto">
         {Object.keys(errors).length > 0 ? (
           <div className="bg-red-50 border border-primary/20 text-primary px-4 py-3 rounded-lg mb-6 flex items-start gap-3">
             <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5">
@@ -110,274 +110,241 @@ export default function OrderForm({ initialData = null, onSuccess }) {
           </div>
         ) : null}
 
-        {/* Steps: */}
-        <div class="flex items-center justify-between w-full relative max-w-2xl mx-auto">
-          <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-300 -z-10 transform -translate-y-1/2"></div>
-          <div class="flex flex-col items-center gap-2 z-10">
-            <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-red-500/20 ring-4 ring-[#f0f4f8]">
-              1
+        <div class="flex flex-col flex-1 overflow-hidden">
+          {/* Steps: */}
+          <div class="shrink-0 pb-6 w-full relative max-w-2xl mx-auto flex items-center justify-between">
+            <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-300 -z-10 transform -translate-y-1/2"></div>
+            <div class="flex flex-col items-center gap-2 z-10">
+              <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-red-500/20 ring-4 ring-[#f0f4f8]">
+                1
+              </div>
+              <span class="text-xs font-bold text-primary">Info</span>
             </div>
-            <span class="text-xs font-bold text-primary">Info</span>
-          </div>
-          <div class="flex flex-col items-center gap-2 z-10">
-            <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-              2
+            <div class="flex flex-col items-center gap-2 z-10">
+              <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+                2
+              </div>
+              <span class="text-xs font-medium text-slate-400">Items</span>
             </div>
-            <span class="text-xs font-medium text-slate-400">Items</span>
-          </div>
-          <div class="flex flex-col items-center gap-2 z-10">
-            <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-              3
+            <div class="flex flex-col items-center gap-2 z-10">
+              <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+                3
+              </div>
+              <span class="text-xs font-medium text-slate-400">Shipping</span>
             </div>
-            <span class="text-xs font-medium text-slate-400">Shipping</span>
-          </div>
-          <div class="flex flex-col items-center gap-2 z-10">
-            <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-              4
+            <div class="flex flex-col items-center gap-2 z-10">
+              <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+                4
+              </div>
+              <span class="text-xs font-medium text-slate-400">Review</span>
             </div>
-            <span class="text-xs font-medium text-slate-400">Review</span>
           </div>
-        </div>
-        <form
-          id="order_form"
-          onSubmit={handleSubmit}
-          className="my-5 space-y-6 overflow-y-auto pr-2 pb-4"
-        >
-          <div>
-            <h3 class="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
-              Order Details
-            </h3>
-          </div>
-          <div className="grid grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm  text-charcoal" htmlFor="order_number">
-                Order Number
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="order_number"
-                  value={formData.order_number}
-                  onChange={handleChange}
-                  // required
-                  id="order_number"
-                  placeholder="XXXXXXX-X"
-                  className={`${getInputClass("order_number")}`}
-                />
-                {errors?.first_name && (
-                  <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                    <span className="material-symbols-outlined text-[18px]">
-                      error
+          {/* EndSteps */}
+          <div class="px-8 py-4 flex-1 overflow-y-auto">
+            <form
+              id="order_form"
+              onSubmit={handleSubmit}
+              className="my-5 space-y-6 pr-2 pb-4 flex-1"
+            >
+              <div>
+                <h3 class="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+                  Order Details
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm  text-charcoal" htmlFor="order_number">
+                    Order Number
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="order_number"
+                      value={formData.order_number}
+                      onChange={handleChange}
+                      // required
+                      id="order_number"
+                      placeholder="XXXXXXX-X"
+                      className={`${getInputClass("order_number")}`}
+                    />
+                    {errors?.first_name && (
+                      <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                        <span className="material-symbols-outlined text-[18px]">
+                          error
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                  {errors?.first_name && (
+                    <p className="text-xs text-primary font-medium mt-1">
+                      {getErrorMsg("first_name")}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-charcoal" htmlFor="previous_order">
+                    Previous Order Number
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                      <span className="material-symbols-outlined text-[18px]">
+                        search
+                      </span>
                     </span>
-                  </span>
-                )}
-              </div>
-              {errors?.first_name && (
-                <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg("first_name")}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm text-charcoal" htmlFor="last_name">
-                Previous Order Number
-              </label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                  <span className="material-symbols-outlined text-[18px]">
-                    search
-                  </span>
-                </span>
-                <input
-                  type="text"
-                  name="last_name"
-                  id="last_name"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                  placeholder="XXXXXXX-X"
-                  className={`${getInputClass("last_name")} pl-10`}
-                />
-                {errors?.last_name && (
-                  <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                    <span className="material-symbols-outlined text-[18px]">
-                      error
-                    </span>
-                  </span>
-                )}
-              </div>
-              {errors?.last_name && (
-                <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg("last_name")}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label
-                className="text-sm font-bold text-charcoal"
-                htmlFor="employee_number"
-              >
-                Customer
-              </label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                  <span className="material-symbols-outlined text-[18px]">
-                    badge
-                  </span>
-                </span>
-                <input
-                  type="text"
-                  name="employee_number"
-                  id="employee_number"
-                  value={formData.employee_number}
-                  onChange={handleChange}
-                  placeholder="XXXX"
-                  className={`${getInputClass("employee_number")} pl-10`}
-                />
-                {errors?.employee_number && (
-                  <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                    <span className="material-symbols-outlined text-[18px]">
-                      error
-                    </span>
-                  </span>
-                )}
-              </div>
-              {errors?.employee_number && (
-                <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg("employee_number")}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <label
-                className="text-sm font-bold text-charcoal"
-                htmlFor="department"
-              >
-                Department
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="department"
-                  id="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  placeholder="e.g. Manufacturing"
-                  className={getInputClass("department")}
-                />
-                {errors?.department && (
-                  <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                    <span className="material-symbols-outlined text-[18px]">
-                      error
-                    </span>
-                  </span>
-                )}
-              </div>
-              {errors?.department && (
-                <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg("department")}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-charcoal" htmlFor="email">
-              Email Address
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <span className="material-symbols-outlined text-[18px]">
-                  mail
-                </span>
-              </span>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="name@bsbsystems.com"
-                className={`${getInputClass("email")} pl-10`}
-              />
-              {errors?.email && (
-                <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                  <span className="material-symbols-outlined text-[18px]">
-                    error
-                  </span>
-                </span>
-              )}
-            </div>
-            {errors?.email && (
-              <p className="text-xs text-primary font-medium mt-1">
-                {getErrorMsg("email")}
-              </p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-charcoal" htmlFor="role">
-              Access Level
-            </label>
-            <div className="relative">
-              <select
-                value={formData.role}
-                onChange={handleChange}
-                className={`${getInputClass("role")} appearance-none bg-white`}
-                name="role"
-                id="role"
-              >
-                <option value="">Select a role...</option>
-                <option value="operator">Operator (Standard Access)</option>
-                <option value="engineer">Engineering (Full Access)</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                <span className="material-symbols-outlined text-sm">
-                  expand_more
-                </span>
-              </div>
-            </div>
-            {errors?.role && (
-              <p className="text-xs text-primary font-medium mt-1">
-                {getErrorMsg("role")}
-              </p>
-            )}
-          </div>
-          {initialData && (
-            <div className="space-y-2">
-              <label
-                className="text-sm font-bold text-charcoal"
-                htmlFor="status"
-              >
-                Account Status
-              </label>
-              <div className="relative">
-                <select
-                  value={formData.status}
-                  onChange={handleChange}
-                  className={`${getInputClass("status")} appearance-none bg-white`}
-                  name="status"
-                  id="status"
-                >
-                  <option value="active">Active</option>
-                  <option value="on_leave">On Leave</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                  <span className="material-symbols-outlined text-sm">
-                    expand_more
-                  </span>
+                    <input
+                      type="text"
+                      name="previous_order"
+                      id="previous_order"
+                      value={formData.previous_order}
+                      onChange={handleChange}
+                      placeholder="XXXXXXX-X"
+                      className={`${getInputClass("previous_order")} pl-10`}
+                    />
+                    {errors?.previous_order && (
+                      <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                        <span className="material-symbols-outlined text-[18px]">
+                          error
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                  {errors?.previous_order && (
+                    <p className="text-xs text-primary font-medium mt-1">
+                      {getErrorMsg("previous_order")}
+                    </p>
+                  )}
                 </div>
               </div>
-              {errors?.role && (
-                <p className="text-xs text-primary font-medium mt-1">
-                  {getErrorMsg("role")}
-                </p>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label
+                    className="text-sm text-charcoal"
+                    htmlFor="customer"
+                  >
+                    Customer
+                  </label>
+                  <input
+                    type="text"
+                    name="customer"
+                    id="customer"
+                    value={formData.customer}
+                    onChange={handleChange}
+                    placeholder="XXXX"
+                    className={`${getInputClass("customer")}`}
+                  />
+                  {errors?.customer && (
+                    <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                      <span className="material-symbols-outlined text-[18px]">
+                        error
+                      </span>
+                    </span>
+                  )}
+                  {errors?.customer && (
+                    <p className="text-xs text-primary font-medium mt-1">
+                      {getErrorMsg("customer")}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-charcoal" htmlFor="customer_po">
+                    Customer PO
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="customer_po"
+                      id="customer_po"
+                      value={formData.customer_po}
+                      onChange={handleChange}
+                      placeholder="e.g. Manufacturing"
+                      className={getInputClass("customer_po")}
+                    />
+                    {errors?.customer_po && (
+                      <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                        <span className="material-symbols-outlined text-[18px]">
+                          error
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                  {errors?.customer_po && (
+                    <p className="text-xs text-primary font-medium mt-1">
+                      {getErrorMsg("customer_po")}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div class="pt-2 border-t border-slate-100">
+                <h3 class="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+                  Timeline
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      class="block text-sm font-semibold text-charcoal mb-1.5"
+                      for="date_entered"
+                    >
+                      Date Entered
+                    </label>
+                    <input
+                      class="w-full rounded-md border-slate-300 bg-slate-50 text-slate-500 shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
+                      id="date_entered"
+                      type="date"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-semibold text-charcoal mb-1.5"
+                      for="required_date"
+                    >
+                      Required Date <span class="text-primary">*</span>
+                    </label>
+                    <input
+                      class="w-full rounded-md border-slate-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
+                      id="required_date"
+                      type="date"
+                    />
+                  </div>
+                </div>
+              </div>
+              {initialData && (
+                <div className="space-y-2">
+                  <label
+                    className="text-sm font-bold text-charcoal"
+                    htmlFor="status"
+                  >
+                    Account Status
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={formData.status}
+                      onChange={handleChange}
+                      className={`${getInputClass("status")} appearance-none bg-white`}
+                      name="status"
+                      id="status"
+                    >
+                      <option value="active">Active</option>
+                      <option value="on_leave">On Leave</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                      <span className="material-symbols-outlined text-sm">
+                        expand_more
+                      </span>
+                    </div>
+                  </div>
+                  {errors?.role && (
+                    <p className="text-xs text-primary font-medium mt-1">
+                      {getErrorMsg("role")}
+                    </p>
+                  )}
+                </div>
               )}
-            </div>
-          )}
-        </form>
+            </form>
+          </div>
+        </div>
       </div>
-      <div className="px-8 py-5 bg-slate-50 border-t border-border-subtle flex items-center justify-end gap-3">
+      <div className="shrink-0 px-8 py-5 bg-slate-50 border-t border-border-subtle flex items-center justify-end gap-3">
         <button
           className="px-6 py-2.5 rounded-lg font-bold text-sm text-charcoal bg-white border border-slate-300 hover:bg-slate-50 hover:border-slate-400 transition-colors shadow-sm cursor-pointer"
           onClick={closeModal}
