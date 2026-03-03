@@ -1,21 +1,22 @@
 import { useContext, useState } from "react";
+import { getStepIndicatorClass, getStepTextClass } from '../../utilities/stepperUtils';
 import MesContext from "../../context/MesProvider";
 import { useEmployees } from "../../hooks/useEmployees";
 import { toast } from 'react-toastify';
 
 export default function OrderForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
+  const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState({});
-  const { saveEmployee } = useEmployees();
-
   const [formData, setFormData] = useState({
-    first_name: initialData?.first_name || "",
-    last_name: initialData?.last_name || "",
-    employee_number: initialData?.employee_number || "",
-    department: initialData?.department || "",
-    email: initialData?.email || "",
-    role: initialData?.role || "",
-    status: initialData?.status ?? 1,
+    order_number: initialData?.order_number || '',
+    previous_order: initialData?.previous_order || '',
+    customer: initialData?.customer || '',
+    customer_po: initialData?.customer_po || '',
+    unit_price: initialData?.unit_price || '',
+    quantity: initialData?.quantity || '',
+    date_entered: initialData?.date_entered || '',
+    required_date: initialData?.required_date || '',
   });
 
   const handleChange = (e) => {
@@ -27,6 +28,14 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
     }
+  };
+
+  const nextStep = () => {
+    setCurrentStep((prev) => Math.min(prev + 1, 4));
+  };
+
+  const prevStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = async (e) => {
@@ -112,32 +121,32 @@ export default function OrderForm({ initialData = null, onSuccess }) {
 
         <div class="flex flex-col flex-1 h-full overflow-hidden">
           {/* Stepper: */}
-          <div className="shrink-0 px-8 pt-6 pb-4 border-b border-slate-100">
+          <div className="bg-slate-100 shrink-0 px-8 pt-6 pb-4 border-b border-slate-200">
             <div className="flex items-center justify-between w-full relative max-w-2xl mx-auto">
-              <div class="flex flex-col items-center gap-2 z-10">
-                <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-red-500/20 ring-4 ring-[#f0f4f8]">
-                  1
+              {[
+                { num: 1, label: "Order Information" },
+                { num: 2, label: "Items" },
+                { num: 3, label: "Shipping" },
+                { num: 4, label: "Review" },
+              ].map((step) => (
+                <div
+                  key={step.num}
+                  className="flex flex-col items-center gap-2 z-10"
+                >
+                  <div className={getStepIndicatorClass(step.num, currentStep)}>
+                    {currentStep > step.num ? (
+                      <span className="material-symbols-outlined text-[16px]">
+                        check
+                      </span>
+                    ) : (
+                      step.num
+                    )}
+                  </div>
+                  <span className={getStepTextClass(step.num, currentStep)}>
+                    {step.label}
+                  </span>
                 </div>
-                <span class="text-xs font-bold text-primary">Info</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 z-10">
-                <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-                  2
-                </div>
-                <span class="text-xs font-medium text-slate-400">Items</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 z-10">
-                <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-                  3
-                </div>
-                <span class="text-xs font-medium text-slate-400">Shipping</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 z-10">
-                <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-                  4
-                </div>
-                <span class="text-xs font-medium text-slate-400">Review</span>
-              </div>
+              ))}
             </div>
           </div>
           {/* EndStepper */}
@@ -167,7 +176,6 @@ export default function OrderForm({ initialData = null, onSuccess }) {
                       name="order_number"
                       value={formData.order_number}
                       onChange={handleChange}
-                      // required
                       id="order_number"
                       placeholder="XXXXXXX-X"
                       className={`${getInputClass("order_number")}`}
@@ -278,6 +286,61 @@ export default function OrderForm({ initialData = null, onSuccess }) {
                   {errors?.customer_po && (
                     <p className="text-xs text-primary font-medium mt-1">
                       {getErrorMsg("customer_po")}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-charcoal" htmlFor="unit_price">
+                    Unit Price
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none">
+                      $
+                    </span>
+                    <input
+                      type="number"
+                      name="unit_price"
+                      id="unit_price"
+                      step="0.01"
+                      min="0"
+                      placeholder="0.00"
+                      value={formData.unit_price}
+                      onChange={handleChange}
+                      className={`${getInputClass("unit_price")} pl-7`}
+                    />
+                  </div>
+                  {errors?.unit_price && (
+                    <p className="text-xs text-primary font-medium mt-1">
+                      {getErrorMsg("unit_price")}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-charcoal" htmlFor="quantity">
+                    Quantity
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      name="quantity"
+                      id="quantity"
+                      value={formData.quantity}
+                      onChange={handleChange}
+                      step="1"
+                      min="0"
+                      className={getInputClass("quantity")}
+                    />
+                    {errors?.quantity && (
+                      <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+                        <span className="material-symbols-outlined text-[18px]">
+                          error
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                  {errors?.quantity && (
+                    <p className="text-xs text-primary font-medium mt-1">
+                      {getErrorMsg("quantity")}
                     </p>
                   )}
                 </div>
