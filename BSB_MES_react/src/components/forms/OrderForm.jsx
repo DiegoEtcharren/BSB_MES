@@ -110,36 +110,38 @@ export default function OrderForm({ initialData = null, onSuccess }) {
           </div>
         ) : null}
 
-        <div class="flex flex-col flex-1 overflow-hidden">
-          {/* Steps: */}
-          <div class="shrink-0 pb-6 w-full relative max-w-2xl mx-auto flex items-center justify-between">
-            <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-300 -z-10 transform -translate-y-1/2"></div>
-            <div class="flex flex-col items-center gap-2 z-10">
-              <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-red-500/20 ring-4 ring-[#f0f4f8]">
-                1
+        <div class="flex flex-col flex-1 h-full overflow-hidden">
+          {/* Stepper: */}
+          <div className="shrink-0 px-8 pt-6 pb-4 border-b border-slate-100">
+            <div className="flex items-center justify-between w-full relative max-w-2xl mx-auto">
+              <div class="flex flex-col items-center gap-2 z-10">
+                <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-red-500/20 ring-4 ring-[#f0f4f8]">
+                  1
+                </div>
+                <span class="text-xs font-bold text-primary">Info</span>
               </div>
-              <span class="text-xs font-bold text-primary">Info</span>
-            </div>
-            <div class="flex flex-col items-center gap-2 z-10">
-              <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-                2
+              <div class="flex flex-col items-center gap-2 z-10">
+                <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+                  2
+                </div>
+                <span class="text-xs font-medium text-slate-400">Items</span>
               </div>
-              <span class="text-xs font-medium text-slate-400">Items</span>
-            </div>
-            <div class="flex flex-col items-center gap-2 z-10">
-              <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-                3
+              <div class="flex flex-col items-center gap-2 z-10">
+                <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+                  3
+                </div>
+                <span class="text-xs font-medium text-slate-400">Shipping</span>
               </div>
-              <span class="text-xs font-medium text-slate-400">Shipping</span>
-            </div>
-            <div class="flex flex-col items-center gap-2 z-10">
-              <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
-                4
+              <div class="flex flex-col items-center gap-2 z-10">
+                <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-300 text-slate-400 flex items-center justify-center font-bold text-sm ring-4 ring-[#f0f4f8]">
+                  4
+                </div>
+                <span class="text-xs font-medium text-slate-400">Review</span>
               </div>
-              <span class="text-xs font-medium text-slate-400">Review</span>
             </div>
           </div>
-          {/* EndSteps */}
+          {/* EndStepper */}
+          {/* Form */}
           <div class="px-8 py-4 flex-1 overflow-y-auto">
             <form
               id="order_form"
@@ -153,7 +155,10 @@ export default function OrderForm({ initialData = null, onSuccess }) {
               </div>
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm  text-charcoal" htmlFor="order_number">
+                  <label
+                    className="text-sm  text-charcoal"
+                    htmlFor="order_number"
+                  >
                     Order Number
                   </label>
                   <div className="relative">
@@ -182,7 +187,10 @@ export default function OrderForm({ initialData = null, onSuccess }) {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm text-charcoal" htmlFor="previous_order">
+                  <label
+                    className="text-sm text-charcoal"
+                    htmlFor="previous_order"
+                  >
                     Previous Order Number
                   </label>
                   <div className="relative">
@@ -217,10 +225,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
               </div>
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label
-                    className="text-sm text-charcoal"
-                    htmlFor="customer"
-                  >
+                  <label className="text-sm text-charcoal" htmlFor="customer">
                     Customer
                   </label>
                   <input
@@ -246,7 +251,10 @@ export default function OrderForm({ initialData = null, onSuccess }) {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm text-charcoal" htmlFor="customer_po">
+                  <label
+                    className="text-sm text-charcoal"
+                    htmlFor="customer_po"
+                  >
                     Customer PO
                   </label>
                   <div className="relative">
@@ -342,22 +350,25 @@ export default function OrderForm({ initialData = null, onSuccess }) {
               )}
             </form>
           </div>
+          {/* EndForm */}
+          {/* Footer: */}
+          <div className="shrink-0 px-8 py-5 bg-slate-50 border-t border-border-subtle flex items-center justify-end gap-3">
+            <button
+              className="px-6 py-2.5 rounded-lg font-bold text-sm text-charcoal bg-white border border-slate-300 hover:bg-slate-50 hover:border-slate-400 transition-colors shadow-sm cursor-pointer"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              form="order_form"
+              className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] cursor-pointer"
+            >
+              {initialData ? "Save Changes" : "Create Account"}
+            </button>
+          </div>
+          {/* EndFooter */}
         </div>
-      </div>
-      <div className="shrink-0 px-8 py-5 bg-slate-50 border-t border-border-subtle flex items-center justify-end gap-3">
-        <button
-          className="px-6 py-2.5 rounded-lg font-bold text-sm text-charcoal bg-white border border-slate-300 hover:bg-slate-50 hover:border-slate-400 transition-colors shadow-sm cursor-pointer"
-          onClick={closeModal}
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          form="order_form"
-          className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] cursor-pointer"
-        >
-          {initialData ? "Save Changes" : "Create Account"}
-        </button>
       </div>
     </>
   );

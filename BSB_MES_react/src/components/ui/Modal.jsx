@@ -21,7 +21,9 @@ export default function ModalOperator() {
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
-        {modalConfig.show}
+        <div className="flex flex-col flex-1 overflow-hidden">
+          {modalConfig.show}
+        </div>
       </div>
     </div>
   );
