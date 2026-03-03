@@ -415,20 +415,52 @@ export default function OrderForm({ initialData = null, onSuccess }) {
           </div>
           {/* EndForm */}
           {/* Footer: */}
-          <div className="shrink-0 px-8 py-5 bg-slate-50 border-t border-border-subtle flex items-center justify-end gap-3">
-            <button
-              className="px-6 py-2.5 rounded-lg font-bold text-sm text-charcoal bg-white border border-slate-300 hover:bg-slate-50 hover:border-slate-400 transition-colors shadow-sm cursor-pointer"
-              onClick={closeModal}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              form="order_form"
-              className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] cursor-pointer"
-            >
-              {initialData ? "Save Changes" : "Create Account"}
-            </button>
+          <div className="shrink-0 px-8 py-5 bg-slate-50 border-t border-border-subtle flex items-center justify-between gap-3">
+            <div>
+              {currentStep === 1 ? (
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="px-6 py-2.5 rounded-lg font-bold text-sm text-slate-500 hover:text-charcoal hover:bg-slate-200 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className="px-6 py-2.5 rounded-lg font-bold text-sm text-charcoal bg-white border border-slate-300 hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    arrow_back
+                  </span>{" "}
+                  Back
+                </button>
+              )}
+            </div>
+
+            <div>
+              {currentStep < 4 ? (
+                <button
+                  type="button"
+                  onClick={nextStep}
+                  className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] flex items-center gap-2 cursor-pointer"
+                >
+                  Next Step{" "}
+                  <span className="material-symbols-outlined text-[18px]">
+                    arrow_forward
+                  </span>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  form="order_form"
+                  className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-green-600 hover:bg-green-700 shadow-lg shadow-green-500/20 transition-all active:scale-[0.98] cursor-pointer"
+                >
+                  {initialData ? "Save Changes" : "Create Order"}
+                </button>
+              )}
+            </div>
           </div>
           {/* EndFooter */}
         </div>
