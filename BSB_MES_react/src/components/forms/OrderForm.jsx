@@ -121,7 +121,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
 
         <div class="flex flex-col flex-1 h-full overflow-hidden">
           {/* Stepper: */}
-          <div className="bg-slate-100 shrink-0 px-8 pt-6 pb-4 border-b border-slate-200">
+          <div className="bg-slate-100 shrink-0 px-8 py-2 border-b border-slate-200">
             <div className="flex items-center justify-between w-full relative max-w-2xl mx-auto">
               {[
                 { num: 1, label: "Order Information" },
@@ -157,6 +157,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
               onSubmit={handleSubmit}
               className="my-5 space-y-6 pr-2 pb-4 flex-1"
             >
+              {/* Order Details: */}
               <div>
                 <h3 class="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
                   Order Details
@@ -358,7 +359,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
                       Date Entered
                     </label>
                     <input
-                      class="w-full rounded-md border-slate-300 bg-slate-50 text-slate-500 shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
+                      class="w-full rounded-md border-slate-300  shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
                       id="date_entered"
                       type="date"
                     />
