@@ -1,7 +1,12 @@
 import { useContext, useState } from "react";
-import { getStepIndicatorClass, getStepTextClass } from '../../utilities/stepperUtils';
-import MesContext from "../../context/MesProvider";
-import { useEmployees } from "../../hooks/useEmployees";
+import { getStepIndicatorClass, getStepTextClass } from '../../../utilities/stepperUtils';
+import MesContext from "../../../context/MesProvider";
+import OrderFormHeader from "./OrderFormHeader";
+import OrderFormFooter from "./OrderFormFooter";
+import Step1OrderDetails from "./steps/Step1OrderDetails";
+import Step2Items from "./steps/Step2OrderItems";
+import Step3OrderInstructions from "./steps/Step3OrderInstructions";
+import { useEmployees } from "../../../hooks/useEmployees";
 import { toast } from 'react-toastify';
 
 export default function OrderForm({ initialData = null, onSuccess }) {
@@ -100,6 +105,21 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     return Array.isArray(errors[fieldName])
       ? errors[fieldName][0]
       : errors[fieldName];
+  };
+
+  const renderActiveStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <Step1OrderDetails formData={formData} handleChange={handleChange} errors={errors} />;
+      case 2:
+        return <Step2Items formData={formData} setFormData={setFormData} errors={errors} />;
+      case 3:
+        return <Step3Shipping formData={formData} handleChange={handleChange} errors={errors} />;
+      case 4:
+        return <Step4Review formData={formData} />;
+      default:
+        return <Step1OrderDetails formData={formData} handleChange={handleChange} errors={errors} />;
+    }
   };
 
   return (
