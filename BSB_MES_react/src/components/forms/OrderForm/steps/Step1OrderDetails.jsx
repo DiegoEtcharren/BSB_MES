@@ -1,5 +1,5 @@
 import { getInputClass } from '../../../../utilities/formUtilities';
-export default function Step1OrderDetails({ formData, handleChange, errors, initialData }) {
+export default function Step1OrderDetails({ formData, handleChange, errors }) {
   return (
     <>
       <div>

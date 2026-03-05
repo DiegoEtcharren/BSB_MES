@@ -6,7 +6,7 @@ export default function OrderFormFooter({currentStep, closeModal, prevStep, next
           <button
             type="button"
             onClick={closeModal}
-            className="px-6 py-2.5 rounded-lg font-bold text-sm text-slate-500 hover:text-charcoal hover:bg-slate-200 transition-colors cursor-pointer"
+            className="px-6 py-2.5 rounded-lg text-sm text-charcoal text-slate-500 bg-white border border-slate-300 hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
           >
             Cancel
           </button>
@@ -14,7 +14,7 @@ export default function OrderFormFooter({currentStep, closeModal, prevStep, next
           <button
             type="button"
             onClick={prevStep}
-            className="px-6 py-2.5 rounded-lg font-bold text-sm text-charcoal bg-white border border-slate-300 hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+            className="px-6 py-2.5 rounded-lg text-sm text-charcoal text-slate-500 bg-white border border-slate-300 hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
           >
             <span className="material-symbols-outlined text-[18px]">
               arrow_back
