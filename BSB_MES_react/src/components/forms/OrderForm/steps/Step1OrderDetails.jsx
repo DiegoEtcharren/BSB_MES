@@ -1,4 +1,5 @@
-export default function Step1OrderDetails({ formData, handleChange, errors, getInputClass, initialData }) {
+import { getInputClass } from '../../../../utilities/formUtilities';
+export default function Step1OrderDetails({ formData, handleChange, errors, initialData }) {
   return (
     <>
       <div>
@@ -19,7 +20,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors, getI
               onChange={handleChange}
               id="order_number"
               placeholder="XXXXXXX-X"
-              className={`${getInputClass("order_number")}`}
+              className={getInputClass(!!errors?.order_number)}
             />
             {errors?.first_name && (
               <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
@@ -52,7 +53,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors, getI
               value={formData.previous_order}
               onChange={handleChange}
               placeholder="XXXXXXX-X"
-              className={`${getInputClass("previous_order")} pl-10`}
+              className={`${getInputClass(!!errors?.previous_order)} pl-10`}
             />
             {errors?.previous_order && (
               <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
@@ -81,7 +82,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors, getI
             value={formData.customer}
             onChange={handleChange}
             placeholder="XXXX"
-            className={`${getInputClass("customer")}`}
+            className={`${getInputClass(!!errors?.customer)}`}
           />
           {errors?.customer && (
             <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
@@ -108,7 +109,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors, getI
               value={formData.customer_po}
               onChange={handleChange}
               placeholder="e.g. Manufacturing"
-              className={getInputClass("customer_po")}
+              className={`${getInputClass(!!errors?.customer_po)}`}
             />
             {errors?.customer_po && (
               <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
@@ -141,7 +142,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors, getI
               placeholder="0.00"
               value={formData.unit_price}
               onChange={handleChange}
-              className={`${getInputClass("unit_price")} pl-7`}
+              className={`${getInputClass(!!errors?.unit_price)} pl-7`}
             />
           </div>
           {errors?.unit_price && (
@@ -163,7 +164,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors, getI
               onChange={handleChange}
               step="1"
               min="0"
-              className={getInputClass("quantity")}
+              className={`${getInputClass(!!errors?.quantity)}`}
             />
             {errors?.quantity && (
               <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
@@ -187,7 +188,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors, getI
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label
-              class="block text-sm font-semibold text-charcoal mb-1.5"
+              class="block text-sm text-charcoal mb-1.5"
               for="date_entered"
             >
               Date Entered
@@ -196,53 +197,25 @@ export default function Step1OrderDetails({ formData, handleChange, errors, getI
               class="w-full rounded-md border-slate-300  shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
               id="date_entered"
               type="date"
+              className={`${getInputClass(!!errors?.date_entered)}`}
             />
           </div>
           <div>
             <label
-              class="block text-sm font-semibold text-charcoal mb-1.5"
+              class="block text-sm text-charcoal mb-1.5"
               for="required_date"
             >
-              Required Date <span class="text-primary">*</span>
+              Required Date
             </label>
             <input
               class="w-full rounded-md border-slate-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
               id="required_date"
               type="date"
+              className={`${getInputClass(!!errors?.required_date)}`}
             />
           </div>
         </div>
       </div>
-      {initialData && (
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-charcoal" htmlFor="status">
-            Account Status
-          </label>
-          <div className="relative">
-            <select
-              value={formData.status}
-              onChange={handleChange}
-              className={`${getInputClass("status")} appearance-none bg-white`}
-              name="status"
-              id="status"
-            >
-              <option value="active">Active</option>
-              <option value="on_leave">On Leave</option>
-              <option value="inactive">Inactive</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-              <span className="material-symbols-outlined text-sm">
-                expand_more
-              </span>
-            </div>
-          </div>
-          {errors?.role && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("role")}
-            </p>
-          )}
-        </div>
-      )}
     </>
   );
 }
