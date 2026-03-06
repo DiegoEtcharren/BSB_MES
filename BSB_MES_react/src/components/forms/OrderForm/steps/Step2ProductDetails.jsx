@@ -215,21 +215,46 @@ export default function Step2ProductDetails({
           )}
         </div>
         <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="previous_order">
-            Standard Size
+          <label className="text-sm text-charcoal" htmlFor="temperature_units">
+            Temperature
+          </label>
+            <input
+              type="number"
+              name="temperature_units"
+              value={formData.temperature_units}
+              onChange={handleChange}
+              id="temperature_units"
+              placeholder="72"
+              className={getInputClass(!!errors?.temperature_units)}
+            />
+          {errors?.size_units && (
+            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
+              <span className="material-symbols-outlined text-[18px]">
+                error
+              </span>
+            </span>
+          )}
+          {errors?.size_units && (
+            <p className="text-xs text-primary font-medium mt-1">
+              {getErrorMsg("size_units")}
+            </p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm text-charcoal" htmlFor="temperature_units">
+            Temperature Units
           </label>
           <div className="relative">
             <select
-              value={formData.size_units}
+              value={formData.temperature_units}
               onChange={handleChange}
-              className={`${getInputClass("size_units")} appearance-none bg-white`}
-              name="size_units"
-              id="size_units"
+              className={`${getInputClass("temperature_units")} appearance-none bg-white`}
+              name="temperature_units"
+              id="temperature_units"
             >
-              <option value="">Select a Size...</option>
-              <option value="operator">1"</option>
-              <option value="engineer">2"</option>
-              <option value="engineer">3"</option>
+              <option value="">Select a Product...</option>
+              <option value="operator">Celsius</option>
+              <option value="engineer">Fahreinheit</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
               <span className="material-symbols-outlined text-sm">
@@ -237,42 +262,16 @@ export default function Step2ProductDetails({
               </span>
             </div>
           </div>
-          {errors?.previous_order && (
+          {errors?.size_units && (
             <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
               <span className="material-symbols-outlined text-[18px]">
                 error
               </span>
             </span>
           )}
-          {errors?.previous_order && (
+          {errors?.size_units && (
             <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("previous_order")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="previous_order">
-            Custom Size
-          </label>
-          <input
-            type="text"
-            name="previous_order"
-            id="previous_order"
-            value={formData.previous_order}
-            onChange={handleChange}
-            placeholder="XXXXXXX-X"
-            className={`${getInputClass(!!errors?.previous_order)}`}
-          />
-          {errors?.previous_order && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
-            </span>
-          )}
-          {errors?.previous_order && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("previous_order")}
+              {getErrorMsg("size_units")}
             </p>
           )}
         </div>
