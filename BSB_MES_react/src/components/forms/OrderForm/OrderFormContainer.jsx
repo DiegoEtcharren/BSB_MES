@@ -4,7 +4,7 @@ import MesContext from "../../../context/MesProvider";
 import OrderFormHeader from "./OrderFormHeader";
 import OrderFormFooter from "./OrderFormFooter";
 import Step1OrderDetails from "./steps/Step1OrderDetails";
-import Step2Items from "./steps/Step2OrderItems";
+import Step2ProductDetails from "./steps/Step2ProductDetails";
 import Step3OrderInstructions from "./steps/Step3OrderInstructions";
 import { useEmployees } from "../../../hooks/useEmployees";
 import { toast } from 'react-toastify';
@@ -22,6 +22,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     quantity: initialData?.quantity || '',
     date_entered: initialData?.date_entered || '',
     required_date: initialData?.required_date || '',
+
   });
 
   const handleChange = (e) => {
@@ -103,7 +104,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
         );
       case 2:
         return (
-          <Step2Items
+          <Step2ProductDetails
             formData={formData}
             setFormData={setFormData}
             errors={errors}
@@ -153,7 +154,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
             <div className="flex items-center justify-between w-full relative max-w-2xl mx-auto">
               {[
                 { num: 1, label: "Order Information" },
-                { num: 2, label: "Items" },
+                { num: 2, label: "Product Details" },
                 { num: 3, label: "Order Insturctions"},
                 { num: 4, label: "Review" },
               ].map((step) => (
