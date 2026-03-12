@@ -3,7 +3,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
   return (
     <>
       <div>
-        <h3 class="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
           Order Details
         </h3>
       </div>
@@ -181,20 +181,20 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
           )}
         </div>
       </div>
-      <div class="pt-2 border-t border-slate-100">
-        <h3 class="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+      <div className="pt-2 border-t border-slate-100">
+        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
           Timeline
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label
-              class="block text-sm text-charcoal mb-1.5"
-              for="date_entered"
+              className="block text-sm text-charcoal mb-1.5"
+              htmlFor="date_entered"
             >
               Date Entered
             </label>
             <input
-              class="w-full rounded-md border-slate-300  shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
+              className="w-full rounded-md border-slate-300  shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
               id="date_entered"
               type="date"
               className={`${getInputClass(!!errors?.date_entered)}`}
@@ -202,13 +202,13 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
           </div>
           <div>
             <label
-              class="block text-sm text-charcoal mb-1.5"
-              for="required_date"
+              className="block text-sm text-charcoal mb-1.5"
+              htmlFor="required_date"
             >
               Required Date
             </label>
             <input
-              class="w-full rounded-md border-slate-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
+              className="w-full rounded-md border-slate-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
               id="required_date"
               type="date"
               className={`${getInputClass(!!errors?.required_date)}`}
