@@ -6,11 +6,11 @@ export default function Step2ProductDetails({
 }) {
   return (
     <>
-      <div>
+      <header>
         <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
           Order Size
         </h3>
-      </div>
+      </header>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="space-y-2">
           <label className="text-sm text-charcoal" htmlFor="product_type_id">

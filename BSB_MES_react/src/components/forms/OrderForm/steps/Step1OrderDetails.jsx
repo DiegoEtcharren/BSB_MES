@@ -194,7 +194,6 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
               Date Entered
             </label>
             <input
-              className="w-full rounded-md border-slate-300  shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
               id="date_entered"
               type="date"
               className={`${getInputClass(!!errors?.date_entered)}`}
@@ -208,7 +207,6 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
               Required Date
             </label>
             <input
-              className="w-full rounded-md border-slate-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-2.5"
               id="required_date"
               type="date"
               className={`${getInputClass(!!errors?.required_date)}`}
