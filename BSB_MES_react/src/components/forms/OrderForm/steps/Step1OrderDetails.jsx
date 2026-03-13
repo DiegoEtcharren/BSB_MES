@@ -30,6 +30,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
             className={getInputClass(!!errors?.previous_order)}
           />
         </FormField>
+
         <FormField label="Customer" name="customer" errors={errors}>
           <input
             type="text"
@@ -41,6 +42,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
             className={getInputClass(!!errors?.customer)}
           />
         </FormField>
+
         <FormField label="Customer PO" name="customer_po" errors={errors}>
           <input
             type="text"
@@ -52,6 +54,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
             className={getInputClass(!!errors?.customer_po)}
           />
         </FormField>
+
         <FormField label="Unit Price" name="unit_price" errors={errors}>
           <span className="absolute inset-y-0 text-sm left-0 pl-3 flex items-center  pointer-events-none">
             $
@@ -68,6 +71,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
             className={`${getInputClass(!!errors?.unit_price)} pl-8`}
           />
         </FormField>
+
         <FormField label="Quantity" name="quantity" errors={errors}>
           <input
             type="number"
@@ -94,6 +98,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
             className={getInputClass(!!errors?.date_entered)}
           />
         </FormField>
+
         <FormField label="Date Entered" name="required_date" errors={errors}>
           <input
             type="date"

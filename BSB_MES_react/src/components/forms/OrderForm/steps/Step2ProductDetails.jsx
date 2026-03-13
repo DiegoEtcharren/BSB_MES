@@ -1,3 +1,4 @@
+import FormField from '../../../../components/forms/FormField';
 import { getInputClass } from "../../../../utilities/formUtilities";
 export default function Step2ProductDetails({
   formData,
@@ -12,140 +13,82 @@ export default function Step2ProductDetails({
         </h3>
       </header>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="product_type_id">
-            Product Type
-          </label>
-          <div className="relative">
-            <select
-              value={formData.product_type_id}
-              onChange={handleChange}
-              className={`${getInputClass(!!errors?.product_type_id)} appearance-none bg-white`}
-              name="product_type_id"
-              id="product_type_id"
-            >
-              <option value="">Select a Product...</option>
-              <option value="1">JRS</option>
-              <option value="2">AV</option>
-              <option value="3">AVV</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-              <span className="material-symbols-outlined text-sm">
-                expand_more
-              </span>
-            </div>
+        <FormField label="Product Type" name="product_type_id" errors={errors}>
+          <select
+            value={formData.product_type_id}
+            onChange={handleChange}
+            className={`${getInputClass(!!errors?.product_type_id)} appearance-none bg-white pr-10`}
+            name="product_type_id"
+            id="product_type_id"
+          >
+            <option className="text-slate-400" value="">
+              Select a Product...
+            </option>
+            <option value="1">JRS</option>
+            <option value="2">AV</option>
+            <option value="3">AVV</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
+            <span className="material-symbols-outlined text-sm">
+              expand_more
+            </span>
           </div>
+        </FormField>
 
-          {errors?.product_type_id && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
+        <FormField label="Size Units" name="size_units" errors={errors}>
+          <select
+            value={formData.size_units}
+            onChange={handleChange}
+            className={`${getInputClass(!!errors?.size_units)} appearance-none bg-white pr-10`}
+            name="size_units"
+            id="size_units"
+          >
+            <option className="text-slate-400" value="">
+              Select Units...
+            </option>
+            <option value="1">inches</option>
+            <option value="2">mm</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
+            <span className="material-symbols-outlined text-sm">
+              expand_more
             </span>
-          )}
-          {errors?.product_type_id && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("product_type_id")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="size_units">
-            Size Units
-          </label>
-          <div className="relative">
-            <select
-              value={formData.size_units}
-              onChange={handleChange}
-              className={`${getInputClass(!!errors?.size_units)} appearance-none bg-white`}
-              name="size_units"
-              id="size_units"
-            >
-              <option value="">Select a Product...</option>
-              <option value="1">Standard</option>
-              <option value="2">Milimetric</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-              <span className="material-symbols-outlined text-sm">
-                expand_more
-              </span>
-            </div>
           </div>
-          {errors?.size_units && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
+        </FormField>
+
+        <FormField label="Product Size" name="product_size_id" errors={errors}>
+          <select
+            value={formData.product_size_id}
+            onChange={handleChange}
+            className={`${getInputClass(!!errors?.product_size_id)} appearance-none bg-white pr-10`}
+            name="product_size_id"
+            id="product_size_id"
+          >
+            <option className="text-slate-400" value="">
+              Select a Size...
+            </option>
+            <option value="1">1"</option>
+            <option value="2">2"</option>
+            <option value="3">3"</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
+            <span className="material-symbols-outlined text-sm">
+              expand_more
             </span>
-          )}
-          {errors?.size_units && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("size_units")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="product_size_id">
-            Product Size
-          </label>
-          <div className="relative">
-            <select
-              value={formData.product_size_id}
-              onChange={handleChange}
-              className={`${getInputClass(!!errors?.product_size_id)} appearance-none bg-white`}
-              name="product_size_id"
-              id="product_size_id"
-            >
-              <option value="">Select a Size...</option>
-              <option value="1">1"</option>
-              <option value="2">2"</option>
-              <option value="3">3"</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-              <span className="material-symbols-outlined text-sm">
-                expand_more
-              </span>
-            </div>
           </div>
-          {errors?.product_size_id && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
-            </span>
-          )}
-          {errors?.product_size_id && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("product_size_id")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="custom_size_uom">
-            Custom Size
-          </label>
+        </FormField>
+
+        <FormField label="Custom Size" name="custom_size_uom" errors={errors}>
           <input
             type="text"
             name="custom_size_uom"
             id="custom_size_uom"
             value={formData.custom_size_uom}
             onChange={handleChange}
-            placeholder="XXXXXXX-X"
-            className={`${getInputClass(!!errors?.custom_size_uom)} appearance-none bg-white`}
+            placeholder="300in"
+            className={getInputClass(!!errors?.custom_size_uom)}
           />
-          {errors?.custom_size_uom && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
-            </span>
-          )}
-          {errors?.custom_size_uom && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("custom_size_uom")}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
       <div>
         <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
@@ -153,128 +96,71 @@ export default function Step2ProductDetails({
         </h3>
       </div>
       <div className="grid grid-cols-4 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="burst_pressure">
-            Burst Pressure
-          </label>
+        <FormField label="Burst Pressure" name="burst_pressure" errors={errors}>
           <input
-            type="number"
+            type="text"
             name="burst_pressure"
+            id="burst_pressure"
             value={formData.burst_pressure}
             onChange={handleChange}
-            id="burst_pressure"
-            placeholder="20"
+            placeholder="300in"
             className={getInputClass(!!errors?.burst_pressure)}
           />
-          {errors?.burst_pressure && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
+        </FormField>
+
+        <FormField label="Product Size" name="product_size_id" errors={errors}>
+          <select
+            value={formData.product_size_id}
+            onChange={handleChange}
+            className={`${getInputClass(!!errors?.product_size_id)} appearance-none bg-white pr-10`}
+            name="product_size_id"
+            id="product_size_id"
+          >
+            <option className="text-slate-400" value="">
+              Select Units...
+            </option>
+            <option value="1">PSI</option>
+            <option value="2">kg/cm2</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
+            <span className="material-symbols-outlined text-sm">
+              expand_more
             </span>
-          )}
-          {errors?.burst_pressure && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("burst_pressure")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="pressure_unit_id">
-            Pressure Units
-          </label>
-          <div className="relative">
-            <select
-              value={formData.pressure_unit_id}
-              onChange={handleChange}
-              className={`${getInputClass(!!errors?.burst_pressure)} appearance-none bg-white`}
-              name="pressure_unit_id"
-              id="pressure_unit_id"
-            >
-              <option value="">Select a Product...</option>
-              <option value="1">PSI</option>
-              <option value="2">kg/cm2</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-              <span className="material-symbols-outlined text-sm">
-                expand_more
-              </span>
-            </div>
           </div>
-          {errors?.pressure_unit_id && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
+        </FormField>
+
+        <FormField label="Temperature" name="temperature" errors={errors}>
+          <input
+            type="text"
+            name="temperature"
+            id="temperature"
+            value={formData.temperature}
+            onChange={handleChange}
+            placeholder="300in"
+            className={getInputClass(!!errors?.temperature)}
+          />
+        </FormField>
+
+        <FormField label="Temperature Units" name="temperature_units" errors={errors}>
+          <select
+            value={formData.temperature_units}
+            onChange={handleChange}
+            className={`${getInputClass(!!errors?.temperature_units)} appearance-none bg-white pr-10`}
+            name="temperature_units"
+            id="temperature_units"
+          >
+            <option className="text-slate-400" value="">
+              Select Units...
+            </option>
+            <option value="1">PSI</option>
+            <option value="2">kg/cm2</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
+            <span className="material-symbols-outlined text-sm">
+              expand_more
             </span>
-          )}
-          {errors?.pressure_unit_id && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("pressure_unit_id")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="temperature">
-            Temperature
-          </label>
-            <input
-              type="number"
-              name="temperature"
-              value={formData.temperature}
-              onChange={handleChange}
-              id="temperature"
-              placeholder="72"
-              className={getInputClass(!!errors?.temperature)}
-            />
-          {errors?.temperature && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
-            </span>
-          )}
-          {errors?.temperature && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("temperature")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="temperature_units">
-            Temperature Units
-          </label>
-          <div className="relative">
-            <select
-              value={formData.temperature_units}
-              onChange={handleChange}
-              className={`${getInputClass(!!errors?.temperature_units)} appearance-none bg-white`}
-              name="temperature_units"
-              id="temperature_units"
-            >
-              <option value="">Select a Product...</option>
-              <option value="celsius">Celsius</option>
-              <option value="fahreinheit">Fahreinheit</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-              <span className="material-symbols-outlined text-sm">
-                expand_more
-              </span>
-            </div>
           </div>
-          {errors?.temperature_units && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
-            </span>
-          )}
-          {errors?.temperature_units && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("temperature_units")}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
     </>
   );
