@@ -9,7 +9,7 @@ export const getInputClass = (hasError) => {
   return `${baseClass} border-slate-300 focus:outline-primary focus:border-primary focus:ring-primary/20`;
 };
 
-export const getErrorMsg = (fieldName) => {
+export const getErrorMsg = (errors, fieldName) => {
   if (!errors || !errors[fieldName]) return null;
   return Array.isArray(errors[fieldName])
     ? errors[fieldName][0]

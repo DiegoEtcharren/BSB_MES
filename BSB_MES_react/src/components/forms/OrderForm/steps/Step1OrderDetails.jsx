@@ -1,218 +1,109 @@
+import FormField from '../../../../components/forms/FormField';
 import { getInputClass } from '../../../../utilities/formUtilities';
 export default function Step1OrderDetails({ formData, handleChange, errors }) {
   return (
     <>
-      <div>
-        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
-          Order Details
-        </h3>
-      </div>
+      <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+        Order Details
+      </h3>
       <div className="grid grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm  text-charcoal" htmlFor="order_number">
-            Order Number
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              name="order_number"
-              value={formData.order_number}
-              onChange={handleChange}
-              id="order_number"
-              placeholder="XXXXXXX-X"
-              className={getInputClass(!!errors?.order_number)}
-            />
-            {errors?.first_name && (
-              <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                <span className="material-symbols-outlined text-[18px]">
-                  error
-                </span>
-              </span>
-            )}
-          </div>
-          {errors?.first_name && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("first_name")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="previous_order">
-            Previous Order Number
-          </label>
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-              <span className="material-symbols-outlined text-[18px]">
-                search
-              </span>
-            </span>
-            <input
-              type="text"
-              name="previous_order"
-              id="previous_order"
-              value={formData.previous_order}
-              onChange={handleChange}
-              placeholder="XXXXXXX-X"
-              className={`${getInputClass(!!errors?.previous_order)} pl-10`}
-            />
-            {errors?.previous_order && (
-              <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                <span className="material-symbols-outlined text-[18px]">
-                  error
-                </span>
-              </span>
-            )}
-          </div>
-          {errors?.previous_order && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("previous_order")}
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="customer">
-            Customer
-          </label>
+        <FormField label="Order Number" name="order_number" errors={errors}>
+          <input
+            type="text"
+            name="order_number"
+            id="order_number"
+            value={formData.order_number}
+            onChange={handleChange}
+            placeholder="XXXXXXX-X"
+            className={getInputClass(!!errors?.order_number)}
+          />
+        </FormField>
+
+        <FormField label="Order Number" name="previous_order" errors={errors}>
+          <input
+            type="text"
+            name="previous_order"
+            id="previous_order"
+            value={formData.previous_order}
+            onChange={handleChange}
+            placeholder="XXXXXXX-X"
+            className={getInputClass(!!errors?.previous_order)}
+          />
+        </FormField>
+        <FormField label="Customer" name="customer" errors={errors}>
           <input
             type="text"
             name="customer"
             id="customer"
             value={formData.customer}
             onChange={handleChange}
-            placeholder="XXXX"
-            className={`${getInputClass(!!errors?.customer)}`}
+            placeholder="BS&B"
+            className={getInputClass(!!errors?.customer)}
           />
-          {errors?.customer && (
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-              <span className="material-symbols-outlined text-[18px]">
-                error
-              </span>
-            </span>
-          )}
-          {errors?.customer && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("customer")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="customer_po">
-            Customer PO
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              name="customer_po"
-              id="customer_po"
-              value={formData.customer_po}
-              onChange={handleChange}
-              placeholder="e.g. Manufacturing"
-              className={`${getInputClass(!!errors?.customer_po)}`}
-            />
-            {errors?.customer_po && (
-              <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                <span className="material-symbols-outlined text-[18px]">
-                  error
-                </span>
-              </span>
-            )}
-          </div>
-          {errors?.customer_po && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("customer_po")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="unit_price">
-            Unit Price
-          </label>
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none">
-              $
-            </span>
-            <input
-              type="number"
-              name="unit_price"
-              id="unit_price"
-              step="0.01"
-              min="0"
-              placeholder="0.00"
-              value={formData.unit_price}
-              onChange={handleChange}
-              className={`${getInputClass(!!errors?.unit_price)} pl-7`}
-            />
-          </div>
-          {errors?.unit_price && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("unit_price")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm text-charcoal" htmlFor="quantity">
-            Quantity
-          </label>
-          <div className="relative">
-            <input
-              type="number"
-              name="quantity"
-              id="quantity"
-              value={formData.quantity}
-              onChange={handleChange}
-              step="1"
-              min="0"
-              className={`${getInputClass(!!errors?.quantity)}`}
-            />
-            {errors?.quantity && (
-              <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary pointer-events-none">
-                <span className="material-symbols-outlined text-[18px]">
-                  error
-                </span>
-              </span>
-            )}
-          </div>
-          {errors?.quantity && (
-            <p className="text-xs text-primary font-medium mt-1">
-              {getErrorMsg("quantity")}
-            </p>
-          )}
-        </div>
+        </FormField>
+        <FormField label="Customer PO" name="customer_po" errors={errors}>
+          <input
+            type="text"
+            name="customer_po"
+            id="customer_po"
+            value={formData.customer_po}
+            onChange={handleChange}
+            placeholder="PO: XXXX"
+            className={getInputClass(!!errors?.customer_po)}
+          />
+        </FormField>
+        <FormField label="Unit Price" name="unit_price" errors={errors}>
+          <span className="absolute inset-y-0 text-sm left-0 pl-3 flex items-center  pointer-events-none">
+            $
+          </span>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            name="unit_price"
+            id="unit_price"
+            value={formData.unit_price}
+            onChange={handleChange}
+            placeholder="0.00"
+            className={`${getInputClass(!!errors?.unit_price)} pl-8`}
+          />
+        </FormField>
+        <FormField label="Quantity" name="quantity" errors={errors}>
+          <input
+            type="number"
+            name="quantity"
+            id="quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            placeholder="0"
+            className={getInputClass(!!errors?.quantity)}
+          />
+        </FormField>
       </div>
-      <div className="pt-2 border-t border-slate-100">
-        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
-          Timeline
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label
-              className="block text-sm text-charcoal mb-1.5"
-              htmlFor="date_entered"
-            >
-              Date Entered
-            </label>
-            <input
-              id="date_entered"
-              type="date"
-              className={`${getInputClass(!!errors?.date_entered)}`}
-            />
-          </div>
-          <div>
-            <label
-              className="block text-sm text-charcoal mb-1.5"
-              htmlFor="required_date"
-            >
-              Required Date
-            </label>
-            <input
-              id="required_date"
-              type="date"
-              className={`${getInputClass(!!errors?.required_date)}`}
-            />
-          </div>
-        </div>
+      <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+        Timeline
+      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField label="Date Entered" name="date_entered" errors={errors}>
+          <input
+            type="date"
+            name="date_entered"
+            id="date_entered"
+            value={formData.date_entered}
+            onChange={handleChange}
+            className={getInputClass(!!errors?.date_entered)}
+          />
+        </FormField>
+        <FormField label="Date Entered" name="required_date" errors={errors}>
+          <input
+            type="date"
+            name="required_date"
+            id="required_date"
+            value={formData.required_date}
+            onChange={handleChange}
+            className={getInputClass(!!errors?.required_date)}
+          />
+        </FormField>
       </div>
     </>
   );
