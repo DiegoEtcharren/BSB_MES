@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { MesProvider } from './context/MesProvider';
+import { UnitProvider } from './context/UnitContext';
 import { toast, ToastContainer, Bounce } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import router from './router';
@@ -9,21 +10,24 @@ import './index.css';
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-  <MesProvider>
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick={true}
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-      transition={Bounce}
+  <UnitProvider>
+    <MesProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
       />
-    <RouterProvider router={router} />
-  </MesProvider>,
+      <RouterProvider router={router} />
+    </MesProvider>
+    ,
+  </UnitProvider>,
   // </StrictMode>,
 );

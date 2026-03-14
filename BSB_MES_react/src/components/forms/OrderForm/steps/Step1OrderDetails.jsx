@@ -6,7 +6,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
       <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
         Order Details
       </h3>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <FormField label="Order Number" name="order_number" errors={errors}>
           <input
             type="text"
@@ -87,7 +87,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
       <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
         Timeline
       </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         <FormField label="Date Entered" name="date_entered" errors={errors}>
           <input
             type="date"

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PressureUnitController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -26,7 +27,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Routes for all authenticated staff
     Route::middleware('role:operator,supervisor,engineer')->group(function () {
-        // Route::post('/production/log', [ProductionController::class, 'store']);
+
+        // Version 1 prefix added:
+        Route::prefix('v1')->group(function () {
+            Route::get('/pressure-units', [PressureUnitController::class, 'index']);
+            Route::get('/pressure-units/{id}', [PressureUnitController::class, 'show']);
+        });
+
+
     });
 });
 

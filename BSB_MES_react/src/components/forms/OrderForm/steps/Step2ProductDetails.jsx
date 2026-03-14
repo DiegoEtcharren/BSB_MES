@@ -1,10 +1,15 @@
 import FormField from '../../../../components/forms/FormField';
 import { getInputClass } from "../../../../utilities/formUtilities";
+import { useUnits } from "../../../../context/UnitContext";
+
 export default function Step2ProductDetails({
   formData,
   handleChange,
   errors,
 }) {
+
+  const { pressureUnits } = useUnits();
+
   return (
     <>
       <header>
@@ -64,9 +69,7 @@ export default function Step2ProductDetails({
             name="product_size_id"
             id="product_size_id"
           >
-            <option className="text-slate-400" value="">
-              Select a Size...
-            </option>
+            <option disabled hidden className="text-slate-400" value="">Select a Size...</option>
             <option value="1">1"</option>
             <option value="2">2"</option>
             <option value="3">3"</option>
@@ -103,25 +106,31 @@ export default function Step2ProductDetails({
             id="burst_pressure"
             value={formData.burst_pressure}
             onChange={handleChange}
-            placeholder="300in"
+            placeholder="Nominal BP"
             className={getInputClass(!!errors?.burst_pressure)}
           />
         </FormField>
 
-        <FormField label="Product Size" name="product_size_id" errors={errors}>
+        <FormField
+          label="Pressure Units"
+          name="pressure_unit_id"
+          errors={errors}
+        >
           <select
-            value={formData.product_size_id}
+            value={formData.pressure_unit_id}
             onChange={handleChange}
-            className={`${getInputClass(!!errors?.product_size_id)} appearance-none bg-white pr-10`}
-            name="product_size_id"
-            id="product_size_id"
+            className={`${getInputClass(!!errors?.pressure_unit_id)} appearance-none bg-white pr-10`}
+            name="pressure_unit_id"
+            id="pressure_unit_id"
           >
-            <option className="text-slate-400" value="">
-              Select Units...
-            </option>
-            <option value="1">PSI</option>
-            <option value="2">kg/cm2</option>
+            <option disabled hidden className="text-slate-400" value="">Select Units...</option>
+            {pressureUnits.map((unit) => (
+              <option key={unit.id} value={unit.id}>
+                {unit.symbol.toUpperCase()}
+              </option>
+            ))}
           </select>
+
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
             <span className="material-symbols-outlined text-sm">
               expand_more
@@ -136,12 +145,16 @@ export default function Step2ProductDetails({
             id="temperature"
             value={formData.temperature}
             onChange={handleChange}
-            placeholder="300in"
+            placeholder="Rated Temperature"
             className={getInputClass(!!errors?.temperature)}
           />
         </FormField>
 
-        <FormField label="Temperature Units" name="temperature_units" errors={errors}>
+        <FormField
+          label="Temperature Units"
+          name="temperature_units"
+          errors={errors}
+        >
           <select
             value={formData.temperature_units}
             onChange={handleChange}
@@ -149,11 +162,9 @@ export default function Step2ProductDetails({
             name="temperature_units"
             id="temperature_units"
           >
-            <option className="text-slate-400" value="">
-              Select Units...
-            </option>
-            <option value="1">PSI</option>
-            <option value="2">kg/cm2</option>
+            <option disabled hidden className="text-slate-400" value="">Select Units...</option>
+            <option value="fahrenheit">°F</option>
+            <option value="celsius">°C</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
             <span className="material-symbols-outlined text-sm">
