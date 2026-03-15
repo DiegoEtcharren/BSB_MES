@@ -14,27 +14,64 @@ export default function OrderForm({ initialData = null, onSuccess }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    order_number: initialData?.order_number || '',
-    previous_order: initialData?.previous_order || '',
-    customer: initialData?.customer || '',
-    customer_po: initialData?.customer_po || '',
-    unit_price: initialData?.unit_price || '',
-    quantity: initialData?.quantity || '',
-    date_entered: initialData?.date_entered || '',
-    required_date: initialData?.required_date || '',
+    // --- Step 1: Basic Order Information ---
+    order_number: initialData?.order_number || "",
+    previous_order: initialData?.previous_order || "",
+    customer: initialData?.customer || "",
+    customer_po: initialData?.customer_po || "",
+    unit_price: initialData?.unit_price || "",
+    quantity: initialData?.quantity || "",
+    date_entered: initialData?.date_entered || "",
+    required_date: initialData?.required_date || "",
 
+    // --- Step 2: Product Specifications ---
+    product_type_id: initialData?.product_type_id || "",
+    size_units: initialData?.size_units || "",
+    product_size_id: initialData?.product_size_id || "",
+    custom_size_uom: initialData?.custom_size_uom || "",
+
+    // --- Step 2: Pressure & Temperature Requirements ---
+    burst_pressure: initialData?.burst_pressure || "",
+    pressure_unit_id: initialData?.pressure_unit_id || "",
+    temperature: initialData?.temperature || "",
+    temperature_units: initialData?.temperature_units || "",
+
+    // --- Step 3: Production Instructions ---
+    special_instructions: initialData?.special_instructions || "",
+    packaging_notes: initialData?.packaging_notes || "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
+const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  setFormData((prev) => {
+    const nextState = {
       ...prev,
       [name]: value,
-    }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: null }));
+    };
+
+    // LOGIC: If selecting a Standard Size, clear Custom Size
+    if (name === 'product_size_id' && value !== '') {
+      nextState.custom_size_uom = '';
     }
-  };
+
+    // LOGIC: If typing a Custom Size, clear Standard Size
+    if (name === 'custom_size_uom' && value.trim() !== '') {
+      nextState.product_size_id = '';
+    }
+
+    // Existing logic for clearing sizes when units change
+    if (name === 'size_units') {
+      nextState.product_size_id = '';
+    }
+
+    return nextState;
+  });
+
+  if (errors[name]) {
+    setErrors((prev) => ({ ...prev, [name]: null }));
+  }
+};
 
   const nextStep = () => {
     setCurrentStep((prev) => Math.min(prev + 1, 4));
@@ -106,6 +143,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
         return (
           <Step2ProductDetails
             formData={formData}
+            handleChange={handleChange}
             setFormData={setFormData}
             errors={errors}
           />

@@ -8,7 +8,7 @@ export default function Step3OrderInstructions({
   return (
     <>
       <div>
-        <h3 class="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
           Order Instructions
         </h3>
       </div>

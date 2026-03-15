@@ -8,7 +8,14 @@ export default function Step2ProductDetails({
   errors,
 }) {
 
-  const { pressureUnits } = useMasterData();
+  const { pressureUnits, productTypes, productStandardSizes } = useMasterData();
+  const filteredSizes = (productStandardSizes || []).filter(size => size.units === formData.size_units);
+
+  // Helper variables for mutual exclusion
+  const hasStandardSize = formData.product_size_id !== "";
+  const hasCustomSize = formData.custom_size_uom && formData.custom_size_uom.trim() !== "";
+
+  console.log(filteredSizes);
 
   return (
     <>
@@ -26,12 +33,14 @@ export default function Step2ProductDetails({
             name="product_type_id"
             id="product_type_id"
           >
-            <option className="text-slate-400" value="">
-              Select a Product...
+            <option disabled hidden className="text-slate-400" value="">
+              -- Select Product --
             </option>
-            <option value="1">JRS</option>
-            <option value="2">AV</option>
-            <option value="3">AVV</option>
+            {productTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name.toUpperCase()}
+              </option>
+            ))}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
             <span className="material-symbols-outlined text-sm">
@@ -48,11 +57,11 @@ export default function Step2ProductDetails({
             name="size_units"
             id="size_units"
           >
-            <option className="text-slate-400" value="">
-              Select Units...
+            <option disabled hidden className="text-slate-400" value="">
+              -- Select Units --
             </option>
-            <option value="1">inches</option>
-            <option value="2">mm</option>
+            <option value="in">inches</option>
+            <option value="mm">mm</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
             <span className="material-symbols-outlined text-sm">
@@ -65,14 +74,21 @@ export default function Step2ProductDetails({
           <select
             value={formData.product_size_id}
             onChange={handleChange}
-            className={`${getInputClass(!!errors?.product_size_id)} appearance-none bg-white pr-10`}
             name="product_size_id"
             id="product_size_id"
+            disabled={hasCustomSize || !formData.size_units}
+            className={`${getInputClass(!!errors?.product_size_id)} appearance-none bg-white pr-10 ${
+              hasCustomSize ? "bg-slate-100 opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            <option disabled hidden className="text-slate-400" value="">Select a Size...</option>
-            <option value="1">1"</option>
-            <option value="2">2"</option>
-            <option value="3">3"</option>
+            <option disabled hidden className="text-slate-400" value="">
+              -- Select Size --
+            </option>
+            {filteredSizes.map((size) => (
+              <option key={size.id} value={size.id}>
+                {size.display_name}
+              </option>
+            ))}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-500">
             <span className="material-symbols-outlined text-sm">
@@ -88,8 +104,13 @@ export default function Step2ProductDetails({
             id="custom_size_uom"
             value={formData.custom_size_uom}
             onChange={handleChange}
+            disabled={hasStandardSize}
             placeholder="300in"
-            className={getInputClass(!!errors?.custom_size_uom)}
+            className={`${getInputClass(!!errors?.custom_size_uom)} ${
+              hasStandardSize
+                ? "bg-slate-100 opacity-50 cursor-not-allowed"
+                : ""
+            }`}
           />
         </FormField>
       </div>
@@ -123,7 +144,9 @@ export default function Step2ProductDetails({
             name="pressure_unit_id"
             id="pressure_unit_id"
           >
-            <option disabled hidden className="text-slate-400" value="">Select Units...</option>
+            <option value="" disabled hidden className="text-slate-400">
+              -- Select Units --
+            </option>
             {pressureUnits.map((unit) => (
               <option key={unit.id} value={unit.id}>
                 {unit.symbol.toUpperCase()}
@@ -162,7 +185,9 @@ export default function Step2ProductDetails({
             name="temperature_units"
             id="temperature_units"
           >
-            <option disabled hidden className="text-slate-400" value="">Select Units...</option>
+            <option disabled hidden className="text-slate-400" value="">
+              -- Select Units --
+            </option>
             <option value="fahrenheit">°F</option>
             <option value="celsius">°C</option>
           </select>
