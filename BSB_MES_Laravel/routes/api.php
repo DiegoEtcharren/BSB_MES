@@ -4,7 +4,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProductTypeController;
 use App\Http\Controllers\Api\PressureUnitController;
+use App\Http\Controllers\Api\StandardProductSizeController;
+
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -28,13 +31,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes for all authenticated staff
     Route::middleware('role:operator,supervisor,engineer')->group(function () {
 
-        // Version 1 prefix added:
+        // Version 1 API routes:
         Route::prefix('v1')->group(function () {
             Route::get('/pressure-units', [PressureUnitController::class, 'index']);
             Route::get('/pressure-units/{id}', [PressureUnitController::class, 'show']);
+            Route::get('/product-types', [ProductTypeController::class, 'index']);
+            Route::get('/sizes', [StandardProductSizeController::class, 'index']);
         });
-
-
     });
 });
 

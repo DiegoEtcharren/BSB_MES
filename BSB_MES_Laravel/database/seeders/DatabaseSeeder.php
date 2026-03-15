@@ -17,6 +17,8 @@ public function run(): void
 {
     $this->call([
         PressureUnitsSeeder::class,
+        ProductTypeSeeder::class,
+        StandardProductSizeSeeder::class,
     ]);
 }
 }
