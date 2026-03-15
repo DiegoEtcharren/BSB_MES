@@ -1,6 +1,6 @@
 import FormField from '../../../../components/forms/FormField';
 import { getInputClass } from "../../../../utilities/formUtilities";
-import { useUnits } from "../../../../context/UnitContext";
+import { useMasterData } from '../../../../context/MasterDataContext';
 
 export default function Step2ProductDetails({
   formData,
@@ -8,7 +8,7 @@ export default function Step2ProductDetails({
   errors,
 }) {
 
-  const { pressureUnits } = useUnits();
+  const { pressureUnits } = useMasterData();
 
   return (
     <>
