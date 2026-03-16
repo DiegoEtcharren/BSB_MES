@@ -193,8 +193,8 @@ const handleChange = (e) => {
               {[
                 { num: 1, label: "Order Information" },
                 { num: 2, label: "Product Details" },
-                { num: 3, label: "Order Insturctions"},
-                { num: 4, label: "Review" },
+                { num: 3, label: "Order Instructions"},
+                { num: 4, label: "BOM" },
               ].map((step) => (
                 <div
                   key={step.num}
