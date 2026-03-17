@@ -3,7 +3,7 @@ import { getInputClass } from '../../../../utilities/formUtilities';
 export default function Step1OrderDetails({ formData, handleChange, errors }) {
   return (
     <>
-      <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+      <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
         Order Details
       </h3>
       <div className="grid grid-cols-3 gap-6">
@@ -84,7 +84,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
           />
         </FormField>
       </div>
-      <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+      <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
         Timeline
       </h3>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">

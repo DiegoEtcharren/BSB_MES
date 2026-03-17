@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import FormField from '../../../../components/forms/FormField';
 import { getInputClass } from "../../../../utilities/formUtilities";
 import { useMasterData } from '../../../../context/MasterDataContext';
-import { useStandardProductComponents } from "../../../../hooks/useStandardProductComponents";
 
 export default function Step2ProductDetails({
   formData,
@@ -10,20 +9,9 @@ export default function Step2ProductDetails({
   errors,
 }) {
 
-  const { productComponents, fetchProductComponents } = useStandardProductComponents();
   const { pressureUnits, productTypes, productStandardSizes } = useMasterData();
 
-  useEffect(() => {
-    // Fetch until product and size have been selected:
-    if (formData.product_type_id && formData.product_size_id) {
-      fetchProductComponents({
-        product_type_id: formData.product_type_id,
-        product_size_id: formData.product_size_id,
-      });
-      console.log(productComponents);
-    }
-  }, [formData.product_type_id, formData.product_size_id]);
-
+  // Function to filter sizes based on units:
   const filteredSizes = (productStandardSizes || []).filter(size => size.units === formData.size_units);
 
   // Helper variables for mutual exclusion
@@ -32,7 +20,7 @@ export default function Step2ProductDetails({
   return (
     <>
       <header>
-        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+        <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
           Order Size
         </h3>
       </header>
@@ -127,7 +115,7 @@ export default function Step2ProductDetails({
         </FormField>
       </div>
       <div>
-        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest mb-4">
+        <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
           Order Pressure
         </h3>
       </div>

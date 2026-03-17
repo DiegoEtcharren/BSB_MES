@@ -85,46 +85,6 @@ const handleChange = (e) => {
     setErrors({});
 
     const id = initialData?.id;
-
-    toast
-      .promise(
-        saveEmployee(formData, id).catch((error) => {
-          if (error.response && error.response.status === 422) {
-            setErrors(error.response.data.errors);
-          }
-          throw error;
-        }),
-        {
-          pending: id ? "Updating MES user..." : "Registering new MES user...",
-          success: {
-            render({ data }) {
-              const employee_number = data?.data?.employee?.employee_number;
-              return id
-                ? `User ${employee_number} updated successfully`
-                : `User ${employee_number} registered successfully`;
-            },
-          },
-          error: {
-            render({ data }) {
-              if (data?.response?.status === 422) {
-                return "Validation failed. Please correct the highlighted fields.";
-              }
-              return (
-                data?.response?.data?.message ||
-                "System error. Could not register user."
-              );
-            },
-          },
-        },
-      )
-      .then(() => {
-        if (onSuccess) {
-          onSuccess();
-        }
-        closeModal();
-      })
-      .catch(() => {
-      });
   };
 
   const renderActiveStep = () => {
