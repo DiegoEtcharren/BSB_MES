@@ -19,7 +19,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
           />
         </FormField>
 
-        <FormField label="Order Number" name="previous_order" errors={errors}>
+        <FormField label="Previous Order Number" name="previous_order" errors={errors}>
           <input
             type="text"
             name="previous_order"

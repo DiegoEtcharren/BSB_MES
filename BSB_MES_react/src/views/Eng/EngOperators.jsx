@@ -13,7 +13,7 @@ export default function EngOperators() {
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1); // Pagination configuration
+  const [page, setPage] = useState(1);
 
   const handleDelete = async (id, employee_number) => {
     const result = await Swal.fire({

@@ -1,12 +1,11 @@
 import { useContext, useState } from "react";
 import { getStepIndicatorClass, getStepTextClass } from '../../../utilities/stepperUtilities';
 import MesContext from "../../../context/MesProvider";
-import OrderFormHeader from "./OrderFormHeader";
 import OrderFormFooter from "./OrderFormFooter";
 import Step1OrderDetails from "./steps/Step1OrderDetails";
 import Step2ProductDetails from "./steps/Step2ProductDetails";
-import Step3OrderInstructions from "./steps/Step3OrderInstructions";
-import { useEmployees } from "../../../hooks/useEmployees";
+import Step3OrderBOM from "./steps/Step3OrderBOM";
+import Step4OrderInstructions from "./steps/Step4OrderInstructions";
 import { toast } from 'react-toastify';
 
 export default function OrderForm({ initialData = null, onSuccess }) {
@@ -150,14 +149,20 @@ const handleChange = (e) => {
         );
       case 3:
         return (
-          <Step3OrderInstructions
+          <Step3OrderBOM
             formData={formData}
             handleChange={handleChange}
             errors={errors}
           />
         );
       case 4:
-        return <Step4Review formData={formData} />;
+        return (
+          <Step4OrderInstructions
+            formData={formData}
+            handleChange={handleChange}
+            errors={errors}
+          />
+        );
       default:
         return (
           <Step1OrderDetails
@@ -193,8 +198,8 @@ const handleChange = (e) => {
               {[
                 { num: 1, label: "Order Information" },
                 { num: 2, label: "Product Details" },
-                { num: 3, label: "Order Instructions"},
-                { num: 4, label: "BOM" },
+                { num: 3, label: "BOM"},
+                { num: 4, label: "Order Instructions"},
               ].map((step) => (
                 <div
                   key={step.num}

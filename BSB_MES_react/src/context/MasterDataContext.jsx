@@ -10,11 +10,11 @@ export function MasterDataProvider({ children }) {
 
 const fetchMasterData = async () => {
         try {
-            // Fetching data from DB to be used on interface:
+            // Fetching data from DB:
             const [unitsRes, typesRes, sizesRes] = await Promise.all([
                 axiosClient.get('/api/v1/pressure-units'),
                 axiosClient.get('/api/v1/product-types'),
-                axiosClient.get('/api/v1/sizes')
+                axiosClient.get('/api/v1/sizes'),
             ]);
 
             setPressureUnits(unitsRes.data);

@@ -26,7 +26,6 @@ class StandardProductComponentController extends Controller
             $query->where('product_type_id', $request->input('product_type_id'));
         }
 
-        // Filter by Product Size (e.g., 1.5")
         if ($request->has('product_size_id')) {
             $query->where('product_size_id', $request->input('product_size_id'));
         }

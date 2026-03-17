@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import FormField from '../../../../components/forms/FormField';
 import { getInputClass } from "../../../../utilities/formUtilities";
 import { useMasterData } from '../../../../context/MasterDataContext';
+import { useStandardProductComponents } from "../../../../hooks/useStandardProductComponents";
 
 export default function Step2ProductDetails({
   formData,
@@ -8,15 +10,25 @@ export default function Step2ProductDetails({
   errors,
 }) {
 
+  const { productComponents, fetchProductComponents } = useStandardProductComponents();
   const { pressureUnits, productTypes, productStandardSizes } = useMasterData();
+
+  useEffect(() => {
+    // Fetch until product and size have been selected:
+    if (formData.product_type_id && formData.product_size_id) {
+      fetchProductComponents({
+        product_type_id: formData.product_type_id,
+        product_size_id: formData.product_size_id,
+      });
+      console.log(productComponents);
+    }
+  }, [formData.product_type_id, formData.product_size_id]);
+
   const filteredSizes = (productStandardSizes || []).filter(size => size.units === formData.size_units);
 
   // Helper variables for mutual exclusion
   const hasStandardSize = formData.product_size_id !== "";
   const hasCustomSize = formData.custom_size_uom && formData.custom_size_uom.trim() !== "";
-
-  console.log(filteredSizes);
-
   return (
     <>
       <header>
