@@ -35,7 +35,11 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     temperature: initialData?.temperature || "",
     temperature_units: initialData?.temperature_units || "",
 
-    // --- Step 3: Production Instructions ---
+    // --- Step 3: BOM:
+
+    // --- Step 4: Production Instructions ---
+    stamping_mode: initialData?.stamping_mode || "none",
+    stamping_data: initialData?.stamping_data || [],
     special_instructions: initialData?.special_instructions || "",
     packaging_notes: initialData?.packaging_notes || "",
   });
@@ -112,6 +116,7 @@ const handleChange = (e) => {
           <Step3OrderBOM
             formData={formData}
             handleChange={handleChange}
+            setFormData={setFormData}
             errors={errors}
           />
         );
@@ -120,6 +125,7 @@ const handleChange = (e) => {
           <Step4OrderInstructions
             formData={formData}
             handleChange={handleChange}
+            setFormData={setFormData}
             errors={errors}
           />
         );
@@ -128,6 +134,7 @@ const handleChange = (e) => {
           <Step1OrderDetails
             formData={formData}
             handleChange={handleChange}
+            setFormData={setFormData}
             errors={errors}
           />
         );
