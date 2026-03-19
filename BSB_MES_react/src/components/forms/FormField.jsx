@@ -11,7 +11,7 @@ export default function FormField({
   const hasError = !!errorMsg;
   return (
     <div className={`space-y-2 ${className}`}>
-      <label className="text-sm text-charcoal" htmlFor={name}>
+      <label className="text-sm font-medium text-slate-600 w-32 shrink-0" htmlFor={name}>
         {label}
       </label>
 

@@ -32,23 +32,24 @@ export default function Step3OrderInstructions({
     });
   };
 
-  const renderInput = (item, index) => {
-    const keyName = Object.keys(item)[0];
-    return (
-      <div key={index} className="flex flex-col space-y-1">
-        <label className="text-xs font-semibold text-slate-500 uppercase">
-          {keyName.replace("_", " ")}
-        </label>
-        <input
-          className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-primary focus:border-primary focus:ring-primary/20"
-          type="text"
-          placeholder="Enter text..."
-          value={item[keyName]}
-          onChange={(e) => handleChange(e, index, keyName)}
-        />
-      </div>
-    );
-  };
+// Handle form data of nametag:
+const handleNametagDataChange = (e, index, keyName) => {
+  const newValue = e.target.value;
+
+  setFormData((prev) => {
+    const updatedStampingData = [...prev.stamping_data];
+
+    updatedStampingData[index] = {
+      ...updatedStampingData[index],
+      [keyName]: newValue,
+    };
+    return {
+      ...prev,
+      stamping_data: updatedStampingData,
+    };
+  });
+};
+
 
   return (
     <>
@@ -61,7 +62,7 @@ export default function Step3OrderInstructions({
         </label>
         <div className="flex-1">
           <Tabs
-            defaultValue="none"
+            value={formData.stamping_mode || "none"}
             onValueChange={handleStampingModeChange}
             className="w-full"
           >
@@ -105,17 +106,31 @@ export default function Step3OrderInstructions({
                 className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-primary focus:border-primary focus:ring-primary/20"
                 type="text"
                 placeholder="Enter text..."
-                value={formData.label_1}
-                onChange={(e) => handleChange(e, 1, label_1)}
+                value={formData.stamping_data[0].label_1 || ""}
+                onChange={(e) => handleNametagDataChange(e, 0, "label_1")}
               />
             </div>
           </div>
         ) : (
           /* Condition 3: More than 1 label (Individual Mode) */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {formData.stamping_data.map((item, index) =>
-              renderInput(item, index),
-            )}
+            {formData.stamping_data.map((item, index) => {
+              const keyName = Object.keys(item)[0];
+              return (
+              <div key={index} className="flex flex-col space-y-1">
+                <label className="text-xs font-semibold text-slate-500 uppercase">
+                  {keyName.replace("_", " ")}
+                </label>
+                <input
+                  className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-primary focus:border-primary focus:ring-primary/20"
+                  type="text"
+                  placeholder="Enter text..."
+                  value={item[keyName] || ""}
+                  onChange={(e) => handleNametagDataChange(e, index, keyName)}
+                />
+              </div>
+              );
+            })}
           </div>
         )}
       </div>
