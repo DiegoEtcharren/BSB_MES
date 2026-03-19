@@ -61,11 +61,15 @@ const handleNametagDataChange = (e, index, keyName) => {
           </h3>
           <div className="flex flex-col items-start space-x-4 mb-6 mt-4">
             <div className="flex flex-col w-full">
-              <label className="text-sm font-medium text-slate-600 w-32 shrink-0 mb-2">
+              <label 
+                htmlFor="stamping_mode_tabs"
+                className="text-sm font-medium text-slate-600 w-32 shrink-0 mb-2"
+              >
                 Stamping Info:
               </label>
               <div className="w-full max-w-md flex flex-col items-center">
                 <Tabs
+                  id="stamping_mode_tabs"
                   value={formData.stamping_mode || "none"}
                   onValueChange={handleStampingModeChange}
                   className=""
@@ -103,10 +107,14 @@ const handleNametagDataChange = (e, index, keyName) => {
               formData.stamping_data.length === 1 ? (
                 <div className="grid grid-cols-1 gap-4">
                   <div className="flex flex-row items-center">
-                    <label className="text-xs font-semibold text-slate-500 uppercase whitespace-nowrap shrink-0 w-16">
+                    <label
+                      htmlFor="bulk_label_input_1"
+                      className="text-xs font-semibold text-slate-500 uppercase whitespace-nowrap shrink-0 w-16"
+                      >
                       Label
                     </label>
                     <input
+                      id="bulk_label_input_1"
                       className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-primary focus:border-primary focus:ring-primary/20"
                       type="text"
                       placeholder="Enter text..."
@@ -122,7 +130,10 @@ const handleNametagDataChange = (e, index, keyName) => {
                     const keyName = Object.keys(item)[0];
                     return (
                       <div key={index} className="flex flex-row items-center">
-                        <label className="text-xs font-semibold text-slate-500 uppercase whitespace-nowrap shrink-0 w-16">
+                        <label 
+                          htmlFor={uniqueInputId}
+                          className="text-xs font-semibold text-slate-500 uppercase whitespace-nowrap shrink-0 w-16"
+                        >
                           {keyName.replace("_", " ")}
                         </label>
                         <input
@@ -150,6 +161,7 @@ const handleNametagDataChange = (e, index, keyName) => {
             <FormField
               label="Special Instructions"
               name="special_instructions"
+              htmlFor="special_instructions"
               errors={errors}
             >
               <textarea
@@ -165,6 +177,7 @@ const handleNametagDataChange = (e, index, keyName) => {
             <FormField
               label="Shipping Instructions"
               name="shipping_instructions"
+              htmlFor="shipping_instructions"
               errors={errors}
             >
               <textarea
