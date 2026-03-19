@@ -194,7 +194,7 @@ const handleChange = (e) => {
             <form
               id="order_form"
               onSubmit={handleSubmit}
-              className="my-5 space-y-6 pr-2 pb-4 flex-1"
+              className="my-2 space-y-6 pr-2 pb-4 flex-1"
             >
               {renderActiveStep()}
             </form>
