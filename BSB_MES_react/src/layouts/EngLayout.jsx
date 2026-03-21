@@ -26,16 +26,16 @@ export default function Layout() {
   return (
     <div className="flex h-screen overflow-hidden">
       <EngSidebar />
-      <div className='flex-1 flex flex-col overflow-hidden'>
+      <div className="flex-1 flex flex-col overflow-hidden">
         <EngHeader />
-        <main className="flex-1 h-screen overflow-y-scroll bg-gray-100 p-3">
+        <main className="flex-1 flex flex-col overflow-y-auto bg-gray-100 p-3 min-h-0">
           <Outlet />
           <footer className="mt-8 text-center opacity-60">
-          <p className="text-slate-600 text-xs">
-            © 2026 BS&B Safety Systems. All rights reserved.
-          </p>
-        </footer>
-      </main>
+            <p className="text-slate-600 text-xs">
+              © 2026 BS&B Safety Systems. All rights reserved.
+            </p>
+          </footer>
+        </main>
       </div>
       <Modal />
     </div>

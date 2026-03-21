@@ -1,5 +1,18 @@
 import { useContext, useState } from "react";
-import { getStepIndicatorClass, getStepTextClass } from '../../../utilities/stepperUtilities';
+import {
+  ClipboardList,
+  Factory,
+  Package,
+  CheckCircle,
+  X,
+  ChevronRight,
+  AlertCircle,
+  Gauge,
+  Boxes,
+  FileText,
+  FileCheck
+} from 'lucide-react';
+import { getStepperContainerClasses, getStepperLineClasses, getStepperIconClasses, getStepperTextClasses} from '../../../utilities/stepperUtilities';
 import MesContext from "../../../context/MesProvider";
 import OrderFormFooter from "./OrderFormFooter";
 import Step1OrderDetails from "./steps/Step1OrderDetails";
@@ -12,7 +25,7 @@ import { toast } from 'react-toastify';
 
 export default function OrderForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     // --- Step 1: Basic Order Information ---
@@ -45,6 +58,45 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     special_instructions: initialData?.special_instructions || "",
     packaging_notes: initialData?.packaging_notes || "",
   });
+
+  const steps = [
+    {
+      id: "order-info",
+      title: "Order Information",
+      icon: ClipboardList,
+      description: "Basic production requirements",
+    },
+    {
+      id: "product-details",
+      title: "Product Details",
+      icon: Package,
+      description: "Specific product configurations",
+    },
+    {
+      id: "pressure-tolerances",
+      title: "Pressure Tolerances",
+      icon: Gauge,
+      description: "Required testing margins",
+    },
+    {
+      id: "bom",
+      title: "BOM",
+      icon: Boxes,
+      description: "Verify bill of materials",
+    },
+    {
+      id: "order-instructions",
+      title: "Order Instructions",
+      icon: FileText,
+      description: "Special operator notes",
+    },
+    {
+      id: "certificates",
+      title: "Certificates",
+      icon: FileCheck,
+      description: "Compliance and QA documents",
+    },
+  ];
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -83,7 +135,7 @@ const handleChange = (e) => {
   };
 
   const prevStep = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
   const handleSubmit = async (e) => {
@@ -95,7 +147,7 @@ const handleChange = (e) => {
 
   const renderActiveStep = () => {
     switch (currentStep) {
-      case 1:
+      case 0:
         return (
           <Step1OrderDetails
             formData={formData}
@@ -104,7 +156,7 @@ const handleChange = (e) => {
             errors={errors}
           />
         );
-      case 2:
+      case 1:
         return (
           <Step2ProductDetails
             formData={formData}
@@ -113,7 +165,7 @@ const handleChange = (e) => {
             errors={errors}
           />
         );
-      case 3:
+      case 2:
         return (
           <Step3OrderTol
             formData={formData}
@@ -122,7 +174,7 @@ const handleChange = (e) => {
             errors={errors}
           />
         );
-      case 4:
+      case 3:
         return (
           <Step4OrderBOM
             formData={formData}
@@ -131,7 +183,7 @@ const handleChange = (e) => {
             errors={errors}
           />
         );
-      case 5:
+      case 4:
         return (
           <Step5OrderCerts
             formData={formData}
@@ -140,7 +192,7 @@ const handleChange = (e) => {
             errors={errors}
           />
         );
-      case 6:
+      case 5:
         return (
           <Step6OrderInstructions
             formData={formData}
@@ -163,76 +215,74 @@ const handleChange = (e) => {
 
   return (
     <>
-      <div className="flex flex-col flex-1 h-full overflow-hidden">
-        {Object.keys(errors).length > 0 ? (
-          <div className="bg-red-50 border border-primary/20 text-primary px-4 py-3 rounded-lg mb-6 flex items-start gap-3">
-            <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5">
-              error
-            </span>
-            <div>
-              <p className="font-bold text-sm">Action Failed</p>
-              <p className="text-sm opacity-90">
-                Please correct the errors below to continue.
-              </p>
-            </div>
-          </div>
-        ) : null}
+        {/* Modal Container */}
+        <div className="flex flex-col md:flex-row w-full max-w-6xl h-[85vh] bg-white rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          {/* Left Side Stepper: */}
+          <div className="hidden md:flex flex-col w-full md:w-1/3 lg:w-1/4 bg-slate-50 border-r border-slate-200 p-6">
+            <div className="flex-1 overflow-y-auto pr-2">
+              <nav className="space-y-4">
+                {steps.map((step, index) => {
+                  const Icon = step.icon;
+                  const isActive = index === currentStep;
+                  const isCompleted = index < currentStep;
+                  const textClasses = getStepperTextClasses(
+                    isActive,
+                    isCompleted,
+                  );
+                  return (
+                    <div
+                      key={step.id}
+                      className={getStepperContainerClasses(isActive)}
+                    >
+                      {/* Connecting Line (except last item) */}
+                      {index !== steps.length - 1 && (
+                        <div className={getStepperLineClasses(isCompleted)} />
+                      )}
 
-        <div className="flex flex-col flex-1 h-full overflow-hidden">
-          {/* Stepper: */}
-          <div className="bg-slate-100 shrink-0 px-4 py-2 border-b border-slate-200">
-            <div className="flex items-center justify-between w-full relative max-w-2xl mx-auto">
-              {[
-                { num: 1, label: "Order Information" },
-                { num: 2, label: "Product Details" },
-                { num: 3, label: "Pressure Tolerances" },
-                { num: 4, label: "BOM"},
-                { num: 5, label: "Order Instructions"},
-                { num: 6, label: "Certificates"},
-              ].map((step) => (
-                <div
-                  key={step.num}
-                  className="flex flex-col items-center gap-2 z-10"
-                >
-                  <div className={getStepIndicatorClass(step.num, currentStep)}>
-                    {currentStep > step.num ? (
-                      <span className="material-symbols-outlined text-[16px]">
-                        check
-                      </span>
-                    ) : (
-                      step.num
-                    )}
-                  </div>
-                  <span className={getStepTextClass(step.num, currentStep)}>
-                    {step.label}
-                  </span>
-                </div>
-              ))}
+                      <div
+                        className={getStepperIconClasses(isActive, isCompleted)}
+                      >
+                        {isCompleted ? (
+                          <CheckCircle className="w-5 h-5" />
+                        ) : (
+                          <Icon className="w-5 h-5" />
+                        )}
+                      </div>
+
+                      <div className="ml-4">
+                        <h3 className={textClasses.title}>{step.title}</h3>
+                        <p className={textClasses.description}>
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </nav>
             </div>
           </div>
-          {/* EndStepper */}
-          {/* Form */}
-          <div className="px-8 py-4 flex-1 overflow-y-auto">
-            <form
-              id="order_form"
-              onSubmit={handleSubmit}
-              className="my-2 space-y-6 pr-2 pb-4 flex-1"
-            >
-              {renderActiveStep()}
-            </form>
+          {/* Right Side Form: */}
+          <div className="flex-1 flex flex-col relative h-full">
+            <div className="flex-1 p-6 md:p-10 pt-12 md:pt-10 overflow-y-auto">
+              <form
+                id="order_form"
+                onSubmit={handleSubmit}
+                className="space-y-6"
+              >
+                {renderActiveStep()}
+              </form>
+            </div>
+
+            <OrderFormFooter
+              currentStep={currentStep}
+              closeModal={closeModal}
+              prevStep={prevStep}
+              nextStep={nextStep}
+              initialData={initialData}
+            />
           </div>
-          {/* EndForm */}
-          {/* Footer: */}
-          <OrderFormFooter
-            currentStep= {currentStep}
-            closeModal={closeModal}
-            prevStep={prevStep}
-            nextStep={nextStep}
-            initialData={initialData}
-          />
-          {/* EndFooter */}
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 }

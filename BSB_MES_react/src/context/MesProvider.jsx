@@ -4,7 +4,7 @@ import axiosClient from '../config/axios.js';
 const MesContext = createContext();
 
 const MesProvider = ({ children }) => {
-  const [title, setTitle] = useState("Dashboard");
+  const [title, setTitle] = useState("");
   const [actionButton, setActionButton] = useState(null);
   const setHeaderConfig = (pageTitle, buttonConfig = null) => {
     setTitle(pageTitle);

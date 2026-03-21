@@ -77,7 +77,7 @@ export default function EngOperators() {
   }, [page, searchQuery, roleFilter, statusFilter, fetchOperators]);
 
   return (
-    <div className="bg-white rounded-xl border border-border-subtle shadow-sm overflow-hidden flex flex-col h-full max-h-[calc(100vh-8rem)]">
+    <div className="bg-white rounded-xl border border-border-subtle shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
       {/* Search Bar: */}
       <div className="p-6 border-b border-border-subtle flex items-center justify-between bg-white shrink-0">
         <div className="flex items-center gap-4">
@@ -131,7 +131,7 @@ export default function EngOperators() {
       {/* End Search Bar */}
 
       {/* Table: */}
-      <div className="overflow-x-auto flex-1">
+      <div className="overflow-auto flex-1 min-h-0">
         <table className="w-full text-left">
           <thead className="sticky top-0 z-10 bg-slate-50 border-b border-border-subtle shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
             <tr>

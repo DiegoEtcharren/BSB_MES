@@ -12,6 +12,8 @@
   --color-text-main: #0f172a;
   --color-text-muted: #64748b;
   --color-border-subtle: #e2e8f0;
+  --color-industrial-red: #E31E24;
+  --color-industrial-red-hover: #b9151a;
 
   /* Fonts */
   --font-sans: "Inter", sans-serif;

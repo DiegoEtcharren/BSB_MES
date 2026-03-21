@@ -1,8 +1,8 @@
 export default function OrderFormFooter({currentStep, closeModal, prevStep, nextStep, initialData}) {
   return (
-    <div className="shrink-0 px-8 py-5 bg-slate-50 border-t border-border-subtle flex items-center justify-between gap-3">
+    <div className="p-4 md:p-6 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
       <div>
-        {currentStep === 1 ? (
+        {currentStep === 0 ? (
           <button
             type="button"
             onClick={closeModal}

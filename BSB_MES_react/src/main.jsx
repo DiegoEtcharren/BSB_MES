@@ -26,7 +26,7 @@ createRoot(document.getElementById("root")).render(
         transition={Bounce}
       />
       <RouterProvider router={router} />
-    </MesProvider>,
-  </MasterDataProvider>,
+    </MesProvider>
+  </MasterDataProvider>
   // </StrictMode>,
 );
