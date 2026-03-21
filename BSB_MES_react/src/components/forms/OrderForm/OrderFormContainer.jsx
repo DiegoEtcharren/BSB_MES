@@ -4,8 +4,10 @@ import MesContext from "../../../context/MesProvider";
 import OrderFormFooter from "./OrderFormFooter";
 import Step1OrderDetails from "./steps/Step1OrderDetails";
 import Step2ProductDetails from "./steps/Step2ProductDetails";
-import Step3OrderBOM from "./steps/Step3OrderBOM";
-import Step4OrderInstructions from "./steps/Step4OrderInstructions";
+import Step3OrderTol from "./steps/Step3OrderTol";
+import Step4OrderBOM from "./steps/Step4OrderBOM";
+import Step5OrderCerts from "./steps/Step5OrderCerts";
+import Step6OrderInstructions from "./steps/Step6OrderInstructions";
 import { toast } from 'react-toastify';
 
 export default function OrderForm({ initialData = null, onSuccess }) {
@@ -77,7 +79,7 @@ const handleChange = (e) => {
 };
 
   const nextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 4));
+    setCurrentStep((prev) => Math.min(prev + 1, 6));
   };
 
   const prevStep = () => {
@@ -113,7 +115,7 @@ const handleChange = (e) => {
         );
       case 3:
         return (
-          <Step3OrderBOM
+          <Step3OrderTol
             formData={formData}
             handleChange={handleChange}
             setFormData={setFormData}
@@ -122,7 +124,25 @@ const handleChange = (e) => {
         );
       case 4:
         return (
-          <Step4OrderInstructions
+          <Step4OrderBOM
+            formData={formData}
+            handleChange={handleChange}
+            setFormData={setFormData}
+            errors={errors}
+          />
+        );
+      case 5:
+        return (
+          <Step5OrderCerts
+            formData={formData}
+            handleChange={handleChange}
+            setFormData={setFormData}
+            errors={errors}
+          />
+        );
+      case 6:
+        return (
+          <Step6OrderInstructions
             formData={formData}
             handleChange={handleChange}
             setFormData={setFormData}
@@ -160,13 +180,15 @@ const handleChange = (e) => {
 
         <div className="flex flex-col flex-1 h-full overflow-hidden">
           {/* Stepper: */}
-          <div className="bg-slate-100 shrink-0 px-8 py-2 border-b border-slate-200">
+          <div className="bg-slate-100 shrink-0 px-4 py-2 border-b border-slate-200">
             <div className="flex items-center justify-between w-full relative max-w-2xl mx-auto">
               {[
                 { num: 1, label: "Order Information" },
                 { num: 2, label: "Product Details" },
-                { num: 3, label: "BOM"},
-                { num: 4, label: "Order Instructions"},
+                { num: 3, label: "Pressure Tolerances" },
+                { num: 4, label: "BOM"},
+                { num: 5, label: "Order Instructions"},
+                { num: 6, label: "Certificates"},
               ].map((step) => (
                 <div
                   key={step.num}

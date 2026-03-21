@@ -218,6 +218,7 @@ export default function Step2ProductDetails({
             </FormField>
           </div>
         </div>
+
       </div>
     </>
   );

@@ -25,7 +25,7 @@ export default function OrderFormFooter({currentStep, closeModal, prevStep, next
       </div>
 
       <div>
-        {currentStep < 4 ? (
+        {currentStep < 6 ? (
           <button
             type="button"
             onClick={nextStep}

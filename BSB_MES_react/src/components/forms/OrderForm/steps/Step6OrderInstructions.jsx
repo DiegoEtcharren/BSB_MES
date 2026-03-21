@@ -1,5 +1,5 @@
 import { getInputClass } from "../../../../utilities/formUtilities";
-import FormField from '../../../../components/forms/FormField';
+import FormField from '../../FormField';
 import { Tabs, TabsList, TabsTrigger } from "../../../ui/tabs";
 
 export default function Step3OrderInstructions({
@@ -61,7 +61,7 @@ const handleNametagDataChange = (e, index, keyName) => {
           </h3>
           <div className="flex flex-col items-start space-x-4 mb-6 mt-4">
             <div className="flex flex-col w-full">
-              <label 
+              <label
                 htmlFor="stamping_mode_tabs"
                 className="text-sm font-medium text-slate-600 w-32 shrink-0 mb-2"
               >
@@ -100,7 +100,7 @@ const handleNametagDataChange = (e, index, keyName) => {
             <div className="mt-4 w-full max-h-45 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
               {/* Condition 1: Zero labels (Empty State) */}
               {formData.stamping_data.length === 0 ? (
-                <div className="text-slate-400 italic text-sm p-4 rounded-md">
+                <div className="text-center text-slate-400 italic text-sm p-4 rounded-md">
                   No stamping data required.
                 </div>
               ) : /* Condition 2: Exactly 1 label (Bulk/Single Mode) */
@@ -110,7 +110,7 @@ const handleNametagDataChange = (e, index, keyName) => {
                     <label
                       htmlFor="bulk_label_input_1"
                       className="text-xs font-semibold text-slate-500 uppercase whitespace-nowrap shrink-0 w-16"
-                      >
+                    >
                       Label
                     </label>
                     <input
@@ -130,13 +130,14 @@ const handleNametagDataChange = (e, index, keyName) => {
                     const keyName = Object.keys(item)[0];
                     return (
                       <div key={index} className="flex flex-row items-center">
-                        <label 
-                          htmlFor={uniqueInputId}
+                        <label
+                          htmlFor={keyName}
                           className="text-xs font-semibold text-slate-500 uppercase whitespace-nowrap shrink-0 w-16"
                         >
                           {keyName.replace("_", " ")}
                         </label>
                         <input
+                          id={keyName}
                           className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-primary focus:border-primary focus:ring-primary/20"
                           type="text"
                           placeholder="Enter text..."
