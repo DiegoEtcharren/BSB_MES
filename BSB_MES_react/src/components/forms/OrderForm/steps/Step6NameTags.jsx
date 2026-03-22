@@ -1,14 +1,11 @@
-import { getInputClass } from "../../../../utilities/formUtilities";
-import FormField from '../../FormField';
 import { Tabs, TabsList, TabsTrigger } from "../../../ui/tabs";
 
-export default function Step3OrderInstructions({
+export default function Step6NameTags({
   formData,
   handleChange,
   setFormData,
   errors
 }) {
-
   // Nametag status:
   const handleStampingModeChange = (newMode) => {
     setFormData((prev) => {
@@ -33,33 +30,31 @@ export default function Step3OrderInstructions({
     });
   };
 
-// Handle form data of nametag:
-const handleNametagDataChange = (e, index, keyName) => {
-  const newValue = e.target.value;
+  // Handle form data of nametag:
+  const handleNametagDataChange = (e, index, keyName) => {
+    const newValue = e.target.value;
 
-  setFormData((prev) => {
-    const updatedStampingData = [...prev.stamping_data];
+    setFormData((prev) => {
+      const updatedStampingData = [...prev.stamping_data];
 
-    updatedStampingData[index] = {
-      ...updatedStampingData[index],
-      [keyName]: newValue,
-    };
-    return {
-      ...prev,
-      stamping_data: updatedStampingData,
-    };
-  });
-};
-
-
+      updatedStampingData[index] = {
+        ...updatedStampingData[index],
+        [keyName]: newValue,
+      };
+      return {
+        ...prev,
+        stamping_data: updatedStampingData,
+      };
+    });
+  };
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-2">
+      <div className="grid grid-cols-1 gap-4 p-2">
+        <div>
           <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
             Nametag(s)
           </h3>
-          <div className="flex flex-col items-start space-x-4 mb-6 mt-4">
+          <div className="flex flex-col items-start space-x-4 mb-6 mt-4 px-4">
             <div className="flex flex-col w-full">
               <label
                 htmlFor="stamping_mode_tabs"
@@ -152,45 +147,6 @@ const handleNametagDataChange = (e, index, keyName) => {
                 </div>
               )}
             </div>
-          </div>
-        </div>
-        <div className="p-2">
-          <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
-            Order Instructions
-          </h3>
-          <div className="grid grid-cols-1 gap-2 mt-4">
-            <FormField
-              label="Special Instructions"
-              name="special_instructions"
-              htmlFor="special_instructions"
-              errors={errors}
-            >
-              <textarea
-                name="special_instructions"
-                value={formData.special_instructions}
-                onChange={handleChange}
-                rows="3"
-                id="special_instructions"
-                placeholder="Enter special manufacturing instructions here..."
-                className={getInputClass(!!errors?.special_instructions)}
-              />
-            </FormField>
-            <FormField
-              label="Shipping Instructions"
-              name="shipping_instructions"
-              htmlFor="shipping_instructions"
-              errors={errors}
-            >
-              <textarea
-                name="shipping_instructions"
-                value={formData.shipping_instructions}
-                onChange={handleChange}
-                rows="3"
-                id="shipping_instructions"
-                placeholder="Enter shipping instructions here..."
-                className={getInputClass(!!errors?.shipping_instructions)}
-              />
-            </FormField>
           </div>
         </div>
       </div>

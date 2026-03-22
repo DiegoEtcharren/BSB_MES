@@ -20,12 +20,12 @@ export default function Step2ProductDetails({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-2">
+      <div className="grid grid-cols-1 gap-4 p-2">
+        <div>
           <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
             Order Size
           </h3>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4">
             <FormField
               label="Product Type"
               name="product_type_id"
@@ -134,7 +134,7 @@ export default function Step2ProductDetails({
           <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
             Order Pressure
           </h3>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4 p-2">
             <FormField
               label="Burst Pressure"
               name="burst_pressure"

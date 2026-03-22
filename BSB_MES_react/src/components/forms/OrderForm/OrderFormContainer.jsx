@@ -1,26 +1,30 @@
 import { useContext, useState } from "react";
 import {
   ClipboardList,
+  Tag,
   Factory,
   Package,
   CheckCircle,
   X,
   ChevronRight,
   AlertCircle,
+  IdCard,
   Gauge,
   Boxes,
   FileText,
   FileCheck
 } from 'lucide-react';
 import { getStepperContainerClasses, getStepperLineClasses, getStepperIconClasses, getStepperTextClasses} from '../../../utilities/stepperUtilities';
+import { getTodayDateString } from '../../../utilities/generalUtilities';
 import MesContext from "../../../context/MesProvider";
 import OrderFormFooter from "./OrderFormFooter";
 import Step1OrderDetails from "./steps/Step1OrderDetails";
 import Step2ProductDetails from "./steps/Step2ProductDetails";
 import Step3OrderTol from "./steps/Step3OrderTol";
 import Step4OrderBOM from "./steps/Step4OrderBOM";
-import Step5OrderCerts from "./steps/Step5OrderCerts";
-import Step6OrderInstructions from "./steps/Step6OrderInstructions";
+import Step5OrderInstructions from "./steps/Step5OrderInstructions";
+import Step6NameTags from "./steps/Step6NameTags";
+import Step7OrderCerts from "./steps/Step7OrderCerts";
 import { toast } from 'react-toastify';
 
 export default function OrderForm({ initialData = null, onSuccess }) {
@@ -34,8 +38,8 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     customer: initialData?.customer || "",
     customer_po: initialData?.customer_po || "",
     unit_price: initialData?.unit_price || "",
-    quantity: initialData?.quantity || "",
-    date_entered: initialData?.date_entered || "",
+    quantity: initialData?.quantity || 0,
+    date_entered: initialData?.date_entered || getTodayDateString(),
     required_date: initialData?.required_date || "",
 
     // --- Step 2: Product Specifications ---
@@ -74,27 +78,33 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     },
     {
       id: "pressure-tolerances",
-      title: "Pressure Tolerances",
+      title: "Pressure Ranges",
       icon: Gauge,
-      description: "Required testing margins",
+      description: "Required pressure ranges",
     },
     {
       id: "bom",
       title: "BOM",
       icon: Boxes,
-      description: "Verify bill of materials",
+      description: "Order materials",
     },
     {
       id: "order-instructions",
       title: "Order Instructions",
       icon: FileText,
-      description: "Special operator notes",
+      description: "Special manufacturing instructions",
+    },
+    {
+      id: "nametags",
+      title: "Nametags",
+      icon: Tag,
+      description: "Special information on nametags",
     },
     {
       id: "certificates",
       title: "Certificates",
       icon: FileCheck,
-      description: "Compliance and QA documents",
+      description: "Required Quality Certificates",
     },
   ];
 
@@ -185,7 +195,7 @@ const handleChange = (e) => {
         );
       case 4:
         return (
-          <Step5OrderCerts
+          <Step5OrderInstructions
             formData={formData}
             handleChange={handleChange}
             setFormData={setFormData}
@@ -194,7 +204,16 @@ const handleChange = (e) => {
         );
       case 5:
         return (
-          <Step6OrderInstructions
+          <Step6NameTags
+            formData={formData}
+            handleChange={handleChange}
+            setFormData={setFormData}
+            errors={errors}
+          />
+        );
+      case 6:
+        return (
+          <Step7OrderCerts
             formData={formData}
             handleChange={handleChange}
             setFormData={setFormData}
@@ -264,7 +283,7 @@ const handleChange = (e) => {
           </div>
           {/* Right Side Form: */}
           <div className="flex-1 flex flex-col relative h-full">
-            <div className="flex-1 p-6 md:p-10 pt-12 md:pt-10 overflow-y-auto">
+            <div className="flex-1 p-6 md:p-10 pt-8 md:pt-4 overflow-y-auto">
               <form
                 id="order_form"
                 onSubmit={handleSubmit}
