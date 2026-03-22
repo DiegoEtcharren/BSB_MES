@@ -15,15 +15,17 @@ const MesProvider = ({ children }) => {
     isOpen: false,
     show: null,
     title: null,
-    description: null
+    description: null,
+    extraWidth: false
   });
 
-  const openModal = (component, title, description) => {
+  const openModal = (component, title, description, extraWidth = false) => {
     setModalConfig({
       isOpen: true,
       show: component,
       title: title,
-      description: description
+      description: description,
+      extraWidth: extraWidth
     });
   };
 

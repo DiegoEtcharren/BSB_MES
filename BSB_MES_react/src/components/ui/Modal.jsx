@@ -6,7 +6,9 @@ export default function ModalOperator() {
   if (!modalConfig.isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 sm:p-6">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[80vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div
+        className={`bg-white rounded-xl shadow-2xl w-full flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[80vh] ${modalConfig.extraWidth ? "max-w-6xl" : "max-w-4xl"}`}
+      >
         <div className="shrink-0 px-8 py-6 border-b border-border-subtle flex items-center justify-between bg-slate-50">
           <div>
             <h3 className="text-lg font-bold text-charcoal">
