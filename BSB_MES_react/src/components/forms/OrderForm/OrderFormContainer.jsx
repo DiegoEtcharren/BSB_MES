@@ -232,6 +232,7 @@ const handleChange = (e) => {
                   return (
                     <div
                       key={step.id}
+                      onClick={() => setCurrentStep(index)}
                       className={getStepperContainerClasses(isActive)}
                     >
                       {/* Connecting Line (except last item) */}

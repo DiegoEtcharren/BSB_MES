@@ -4,7 +4,7 @@ export const getStepperContainerClasses = (isActive) => {
   const baseClasses = "relative flex items-start p-4 rounded-lg transition-colors duration-200";
   const stateClasses = isActive
     ? "bg-red-50 border border-red-200 shadow-sm"
-    : "hover:bg-slate-100";
+    : "hover:bg-slate-100 cursor-pointer";
 
   return `${baseClasses} ${stateClasses}`;
 };
