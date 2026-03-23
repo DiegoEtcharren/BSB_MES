@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProductTypeController;
 use App\Http\Controllers\Api\PressureUnitController;
 use App\Http\Controllers\Api\StandardProductSizeController;
 use App\Http\Controllers\Api\StandardProductComponentController;
+use App\Http\Controllers\Api\ManufacturingRangeController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -37,6 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/product-types', [ProductTypeController::class, 'index']);
             Route::get('/sizes', [StandardProductSizeController::class, 'index']);
             Route::get('/standard-components', [StandardProductComponentController::class, 'index']);
+            Route::get('/rules/product/{productId}', [ManufacturingRangeController::class, 'getRulesByProduct']);
+            Route::get('/rules/{id}', [ManufacturingRangeController::class, 'show']);
         });
     });
 });

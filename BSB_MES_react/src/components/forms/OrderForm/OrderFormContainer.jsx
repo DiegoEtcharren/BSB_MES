@@ -1,14 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect} from "react";
+import axiosClient from '../../../config/axios';
 import {
   ClipboardList,
   Tag,
-  Factory,
   Package,
   CheckCircle,
-  X,
-  ChevronRight,
-  AlertCircle,
-  IdCard,
   Gauge,
   Boxes,
   FileText,
@@ -25,7 +21,6 @@ import Step4OrderBOM from "./steps/Step4OrderBOM";
 import Step5OrderInstructions from "./steps/Step5OrderInstructions";
 import Step6NameTags from "./steps/Step6NameTags";
 import Step7OrderCerts from "./steps/Step7OrderCerts";
-import { toast } from 'react-toastify';
 
 export default function OrderForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
@@ -63,6 +58,31 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     packaging_notes: initialData?.packaging_notes || "",
   });
 
+  const [manufacturingRanges, setManufacturingRanges] = useState([]);
+  useEffect(() => {
+    // Prevent API calls if no product is selected
+    if (!formData.product_type_id) return;
+
+    const fetchProductData = async () => {
+
+      try {
+        const response = await axiosClient.get(
+          `/api/v1/rules/product/${formData.product_type_id}`
+        );
+        setManufacturingRanges(response.data.data);
+        console.log(
+          `MES System: Loaded ${manufacturingRanges} rules for Product ${formData.product_type_id}`,
+        );
+      } catch (err) {
+        console.error("Critical MES Error: Could not fetch product rules.", err);
+        setManufacturingRanges([]);
+      }
+    };
+
+    fetchProductData();
+  }, [formData.product_type_id]);
+
+
   const steps = [
     {
       id: "order-info",
@@ -74,13 +94,13 @@ export default function OrderForm({ initialData = null, onSuccess }) {
       id: "product-details",
       title: "Product Details",
       icon: Package,
-      description: "Specific product configurations",
+      description: "Product Configuration",
     },
     {
       id: "pressure-tolerances",
       title: "Pressure Ranges",
       icon: Gauge,
-      description: "Required pressure ranges",
+      description: "Manufacturing Range and Design Range",
     },
     {
       id: "bom",
@@ -92,7 +112,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
       id: "order-instructions",
       title: "Order Instructions",
       icon: FileText,
-      description: "Special manufacturing instructions",
+      description: "Special manufacturing and shipping instructions",
     },
     {
       id: "nametags",

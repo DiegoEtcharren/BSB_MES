@@ -130,7 +130,7 @@ export default function Step2ProductDetails({
             </FormField>
           </div>
         </div>
-        <div className="p-2">
+        <div>
           <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
             Order Pressure
           </h3>
@@ -218,7 +218,6 @@ export default function Step2ProductDetails({
             </FormField>
           </div>
         </div>
-
       </div>
     </>
   );
