@@ -49,6 +49,11 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     temperature: initialData?.temperature || "",
     temperature_units: initialData?.temperature_units || "",
 
+    // --- Step 3: Manufacturing Ranges ---
+    manufacturing_range_id: initialData?.burst_pressure || "",
+    lower_manufacturing_range: initialData?.lower_manufacturing_range || "",
+    upper_manufacturing_range: initialData?.upper_manufacturing_range || "",
+
     // --- Step 3: BOM:
 
     // --- Step 4: Production Instructions ---
@@ -58,9 +63,8 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     packaging_notes: initialData?.packaging_notes || "",
   });
 
-  const [manufacturingRanges, setManufacturingRanges] = useState([]);
+  const [manufacturingRangesRules, setManufacturingRangesRules] = useState([]);
   useEffect(() => {
-    // Prevent API calls if no product is selected
     if (!formData.product_type_id) return;
 
     const fetchProductData = async () => {
@@ -69,18 +73,36 @@ export default function OrderForm({ initialData = null, onSuccess }) {
         const response = await axiosClient.get(
           `/api/v1/rules/product/${formData.product_type_id}`
         );
-        setManufacturingRanges(response.data.data);
-        console.log(
-          `MES System: Loaded ${manufacturingRanges} rules for Product ${formData.product_type_id}`,
-        );
+        setManufacturingRangesRules(response.data.data);
       } catch (err) {
         console.error("Critical MES Error: Could not fetch product rules.", err);
-        setManufacturingRanges([]);
+        setManufacturingRangesRules([]);
       }
     };
 
     fetchProductData();
   }, [formData.product_type_id]);
+
+    useEffect(() => {
+      if (!formData.burst_pressure || !formData.manufacturing_range_id) return;
+
+      const fetchProductData = async () => {
+        try {
+          const response = await axiosClient.get(
+            `/api/v1/rules/product/${formData.product_type_id}`,
+          );
+          setManufacturingRangesRules(response.data.data);
+        } catch (err) {
+          console.error(
+            "Critical MES Error: Could not fetch product rules.",
+            err,
+          );
+          setManufacturingRangesRules([]);
+        }
+      };
+
+      fetchProductData();
+    }, [formData.burst_pressure, formData.manufacturing_range_id]);
 
 
   const steps = [
@@ -129,8 +151,8 @@ export default function OrderForm({ initialData = null, onSuccess }) {
   ];
 
 const handleChange = (e) => {
-  const { name, value } = e.target;
 
+  const { name, value } = e.target;
   setFormData((prev) => {
     const nextState = {
       ...prev,
@@ -202,6 +224,7 @@ const handleChange = (e) => {
             handleChange={handleChange}
             setFormData={setFormData}
             errors={errors}
+            manufacturingRangesRules={manufacturingRangesRules}
           />
         );
       case 3:
