@@ -50,7 +50,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     temperature_units: initialData?.temperature_units || "",
 
     // --- Step 3: Manufacturing Ranges ---
-    manufacturing_range_id: initialData?.burst_pressure || "",
+    manufacturing_range_id: initialData?.manufacturing_range_id || "",
     lower_manufacturing_range: initialData?.lower_manufacturing_range || "",
     upper_manufacturing_range: initialData?.upper_manufacturing_range || "",
 

@@ -61,7 +61,7 @@ const InputRange = ({ unit, lowerValue, upperValue, handleChange }) => {
           {error}
         </div>
       ) : (
-        <div className="flex items-center gap-1.5 text-emerald-600 text-[10px] font-bold uppercase tracking-tight">
+        <div className="flex items-center gap-1.5 text-emerald-600 text-[10px] font-bold uppercase tracking-tight justify-center">
           <CheckCircle2 size={14} />
           Range Acceptable
         </div>
