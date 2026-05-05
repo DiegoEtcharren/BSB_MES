@@ -1,12 +1,10 @@
-import useSWR, { mutate } from 'swr'; // Install: npm install swr
+import useSWR from 'swr'; // Install: npm install swr
 import axiosClient from '../config/axios.js';
 import { useNavigate } from 'react-router-dom';
-import { createRef, useEffect, useState} from "react";
+import { useEffect } from "react";
 
 
-export const useAuth = ({middleware, url}) => { // Middleware is to indenfity what kind of user is available to see the component, and url is the page to be redirected incase its needed.
-    const token = localStorage.getItem('AUTH_TOKEN'); // Get the token from the authentication, store on the local user.
-
+export const useAuth = ({middleware}) => { // Middleware is to identify what kind of user is available to see the component.
     const navigate = useNavigate();
 
     const { data: user, error, mutate} = useSWR('/api/user', () => // SWR, will first look in the user cache to see if the data is available if not, it will make the fetch. The first argument of the function is the ID of this information, how SWR will look for the information.
