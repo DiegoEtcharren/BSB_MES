@@ -131,7 +131,7 @@ class EmployeeController extends Controller
             DB::rollBack();
             return response()->json([
                 'message' => 'An error occurred while updating the operator',
-                'error' => $e->getMessage()
+                'error' => 'An unexpected error occurred while updating the employee.'
             ], 500);
         }
     }

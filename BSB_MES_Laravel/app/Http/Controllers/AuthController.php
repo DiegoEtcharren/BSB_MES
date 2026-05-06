@@ -76,7 +76,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to register employee.',
-                'error'   => $e->getMessage()
+                'error'   => 'An unexpected error occurred during registration.'
             ], 500);
         }
     }
