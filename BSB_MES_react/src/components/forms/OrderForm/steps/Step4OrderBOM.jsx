@@ -8,7 +8,7 @@ export default function Step3OrderBOM({
 }) {
 
   const {isLoading, productComponents, fetchProductComponents} = useStandardProductComponents();
-  const [bomRows, setBomRows] = useState([]);
+  const [bomRows, setBomRows] = useState(formData.bom || []);
 
   useEffect(() => {
     // Fetch until product and size have been selected:
@@ -23,6 +23,7 @@ export default function Step3OrderBOM({
   useEffect(() => {
     if (productComponents.length > 0) {
       setBomRows(productComponents);
+      handleChange({ target: { name: 'bom', value: productComponents } });
     }
   }, [productComponents]);
 
@@ -30,23 +31,27 @@ export default function Step3OrderBOM({
   const handleAddRow = () => {
     const newRow = {
       id: `temp-${Date.now()}`,
-      name: "",
-      part_number: "",
+      component_name: "",
+      component_part_number: "",
       material: "316 SST"
     };
-    setBomRows([...bomRows, newRow]);
+    const newRows = [...bomRows, newRow];
+    setBomRows(newRows);
+    handleChange({ target: { name: 'bom', value: newRows } });
   };
 
   const handleDeleteRow = (idToRemove) => {
-    setBomRows(bomRows.filter((row) => row.id !== idToRemove));
+    const newRows = bomRows.filter((row) => row.id !== idToRemove);
+    setBomRows(newRows);
+    handleChange({ target: { name: 'bom', value: newRows } });
   };
 
   const handleInputChange = (id, field, value) => {
-    setBomRows(
-      bomRows.map((row) =>
+    const newRows = bomRows.map((row) =>
         row.id === id ? { ...row, [field]: value } : row
-      )
     );
+    setBomRows(newRows);
+    handleChange({ target: { name: 'bom', value: newRows } });
   };
 
   return (
@@ -113,6 +118,7 @@ export default function Step3OrderBOM({
                           placeholder="Enter name..."
                           type="text"
                           value={item.component_name}
+                          onChange={(e) => handleInputChange(item.id, 'component_name', e.target.value)}
                         />
                       </td>
                       <td className="px-6 py-4">
@@ -121,12 +127,14 @@ export default function Step3OrderBOM({
                           placeholder="PN-XXXX"
                           type="text"
                           value={item.component_part_number}
+                          onChange={(e) => handleInputChange(item.id, 'component_part_number', e.target.value)}
                         />
                       </td>
                       <td className="px-6 py-4">
                         <select
                           className="w-full bg-transparent border-none focus:ring-0 text-sm p-0"
-                          value={item.material}
+                          value={item.material || item.component_material || "316 SST"}
+                          onChange={(e) => handleInputChange(item.id, 'material', e.target.value)}
                         >
                           <option value="Stainless Steel 316L">316 SST</option>
                           <option value="Carbon Steel">Carbon Steel</option>

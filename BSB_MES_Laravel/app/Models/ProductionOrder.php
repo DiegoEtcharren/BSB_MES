@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ProductionOrder extends Model
+{
+    protected $fillable = [
+        'order_number',
+        'previous_order_id',
+        'legacy_previous_order_number',
+        'customer',
+        'customer_po',
+        'unit_price',
+        'quantity',
+        'date_entered',
+        'required_date',
+        'product_type_id',
+        'product_size_id',
+        'custom_product_size',
+        'custom_size_uom',
+        'status',
+    ];
+
+    public function specs()
+    {
+        return $this->hasOne(ProductionOrderSpec::class);
+    }
+
+    public function instructions()
+    {
+        return $this->hasOne(ProductionOrderInstruction::class);
+    }
+
+    public function boms()
+    {
+        return $this->hasMany(ProductionOrderBom::class, 'order_id');
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(ProductionOrderCertificate::class);
+    }
+}
