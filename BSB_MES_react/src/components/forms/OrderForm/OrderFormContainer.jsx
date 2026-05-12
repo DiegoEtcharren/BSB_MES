@@ -23,10 +23,12 @@ import Step5OrderInstructions from "./steps/Step5OrderInstructions";
 import Step6NameTags from "./steps/Step6NameTags";
 import Step7OrderCerts from "./steps/Step7OrderCerts";
 import Step8Attachments from "./steps/Step8Attachments";
+import { useProductionOrders } from "../../../hooks/useProductionOrders";
 
 export default function OrderForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
   const [currentStep, setCurrentStep] = useState(0);
+  const { saveProductionOrder } = useProductionOrders();
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     // --- Step 1: Basic Order Information ---
@@ -43,6 +45,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     product_type_id: initialData?.product_type_id || "",
     size_units: initialData?.size_units || "",
     product_size_id: initialData?.product_size_id || "",
+    custom_product_size: initialData?.custom_product_size || "",
     custom_size_uom: initialData?.custom_size_uom || "",
 
     // --- Step 2: Pressure & Temperature Requirements ---
@@ -57,12 +60,17 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     upper_manufacturing_range: initialData?.upper_manufacturing_range || "",
 
     // --- Step 3: BOM:
+    bom: initialData?.bom || [],
 
     // --- Step 4: Production Instructions ---
     stamping_mode: initialData?.stamping_mode || "none",
     stamping_data: initialData?.stamping_data || [],
     special_instructions: initialData?.special_instructions || "",
     packaging_notes: initialData?.packaging_notes || "",
+
+    // --- Step 7: Certificates ---
+    certificates: initialData?.certificates || [],
+    custom_certificates: initialData?.custom_certificates || [],
 
     // --- Step 8: Attachments ---
     attachments: initialData?.attachments || [],
@@ -172,12 +180,14 @@ const handleChange = (e) => {
 
     // LOGIC: If selecting a Standard Size, clear Custom Size
     if (name === 'product_size_id' && value !== '') {
+      nextState.custom_product_size = '';
       nextState.custom_size_uom = '';
     }
 
     // LOGIC: If typing a Custom Size, clear Standard Size
-    if (name === 'custom_size_uom' && value.trim() !== '') {
+    if (name === 'custom_product_size' && value.trim() !== '') {
       nextState.product_size_id = '';
+      nextState.custom_size_uom = nextState.size_units; // ensure uom tracks units
     }
 
     // Existing logic for clearing sizes when units change
@@ -205,7 +215,18 @@ const handleChange = (e) => {
     e.preventDefault();
     setErrors({});
 
-    const id = initialData?.id;
+    try {
+      await saveProductionOrder(formData);
+      if (onSuccess) onSuccess();
+      closeModal();
+    } catch (err) {
+      if (err.response && err.response.status === 422) {
+        setErrors(err.response.data.errors);
+        console.error("Validation errors:", err.response.data.errors);
+      } else {
+        console.error("Error saving production order", err);
+      }
+    }
   };
 
   const renderActiveStep = () => {

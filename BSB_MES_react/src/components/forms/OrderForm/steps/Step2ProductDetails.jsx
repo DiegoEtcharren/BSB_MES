@@ -16,7 +16,7 @@ export default function Step2ProductDetails({
 
   // Helper variables for mutual exclusion
   const hasStandardSize = formData.product_size_id !== "";
-  const hasCustomSize = formData.custom_size_uom && formData.custom_size_uom.trim() !== "";
+  const hasCustomSize = formData.custom_product_size && formData.custom_product_size.trim() !== "";
 
   return (
     <>
@@ -110,18 +110,18 @@ export default function Step2ProductDetails({
 
             <FormField
               label="Custom Size"
-              name="custom_size_uom"
+              name="custom_product_size"
               errors={errors}
             >
               <input
                 type="text"
-                name="custom_size_uom"
-                id="custom_size_uom"
-                value={formData.custom_size_uom}
+                name="custom_product_size"
+                id="custom_product_size"
+                value={formData.custom_product_size}
                 onChange={handleChange}
                 disabled={hasStandardSize}
-                placeholder="300in"
-                className={`${getInputClass(!!errors?.custom_size_uom)} ${
+                placeholder="300"
+                className={`${getInputClass(!!errors?.custom_product_size)} ${
                   hasStandardSize
                     ? "bg-slate-100 opacity-50 cursor-not-allowed"
                     : ""

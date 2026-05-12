@@ -20,7 +20,8 @@ public function run(): void
         PressureUnitsSeeder::class,
         ProductTypeSeeder::class,
         StandardProductSizeSeeder::class,
-        StandardManufacturingRangesSeeder::class
+        StandardManufacturingRangesSeeder::class,
+        CertificateSeeder::class,
     ]);
 }
 }
