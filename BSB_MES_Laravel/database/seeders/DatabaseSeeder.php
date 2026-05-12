@@ -20,6 +20,7 @@ public function run(): void
         PressureUnitsSeeder::class,
         ProductTypeSeeder::class,
         StandardProductSizeSeeder::class,
+        StandardProductComponentsJRSSeeder::class,
         StandardManufacturingRangesSeeder::class,
         CertificateSeeder::class,
     ]);
