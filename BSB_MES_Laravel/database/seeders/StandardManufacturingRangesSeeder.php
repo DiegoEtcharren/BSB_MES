@@ -40,7 +40,7 @@ class StandardManufacturingRangesSeeder extends Seeder
                 'range_name_long' => '2% JRS',
                 'range_rules' => json_encode([
                     ["operator" => "<=", "threshold" => 49, "lower_bound" => ["offset" => -2, "multiplier" => 1], "upper_bound" => ["offset" => 1, "multiplier" => 1]],
-                    ["operator" => ">", "threshold" => 49, "lower_bound" => ["offset" => 0, "multiplier" => 1.02], "upper_bound" => ["offset" => 0, "multiplier" => 0.96]]
+                    ["operator" => ">", "threshold" => 49, "lower_bound" => ["offset" => 0, "multiplier" => 0.96], "upper_bound" => ["offset" => 0, "multiplier" => 1.02]]
                 ]),
             ],
             [
