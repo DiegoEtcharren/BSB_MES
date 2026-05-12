@@ -21,11 +21,24 @@ class ProductionOrderController extends Controller
 
             $validated = $request->validated();
 
+            // Determine previous order routing
+            $previousOrderId = null;
+            $legacyPreviousOrderNumber = null;
+
+            if (!empty($validated['previous_order'])) {
+                $existingOrder = ProductionOrder::where('order_number', $validated['previous_order'])->first();
+                if ($existingOrder) {
+                    $previousOrderId = $existingOrder->id;
+                } else {
+                    $legacyPreviousOrderNumber = $validated['previous_order'];
+                }
+            }
+
             // Create Production Order
             $order = ProductionOrder::create([
                 'order_number' => $validated['order_number'],
-                // Assuming legacy_previous_order_number is what gets mapped to previous_order string field for now
-                'legacy_previous_order_number' => $validated['previous_order'] ?? null,
+                'previous_order_id' => $previousOrderId,
+                'legacy_previous_order_number' => $legacyPreviousOrderNumber,
                 'customer' => $validated['customer'],
                 'customer_po' => $validated['customer_po'] ?? null,
                 'unit_price' => $validated['unit_price'] ?? 0,
@@ -34,6 +47,7 @@ class ProductionOrderController extends Controller
                 'required_date' => $validated['required_date'],
                 'product_type_id' => $validated['product_type_id'],
                 'product_size_id' => $validated['product_size_id'] ?? null,
+                'custom_product_size' => $validated['custom_product_size'] ?? null,
                 'custom_size_uom' => $validated['custom_size_uom'] ?? null,
                 'status' => 'pending',
             ]);

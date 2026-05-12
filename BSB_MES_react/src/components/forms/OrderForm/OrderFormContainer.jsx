@@ -45,6 +45,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     product_type_id: initialData?.product_type_id || "",
     size_units: initialData?.size_units || "",
     product_size_id: initialData?.product_size_id || "",
+    custom_product_size: initialData?.custom_product_size || "",
     custom_size_uom: initialData?.custom_size_uom || "",
 
     // --- Step 2: Pressure & Temperature Requirements ---
@@ -179,12 +180,14 @@ const handleChange = (e) => {
 
     // LOGIC: If selecting a Standard Size, clear Custom Size
     if (name === 'product_size_id' && value !== '') {
+      nextState.custom_product_size = '';
       nextState.custom_size_uom = '';
     }
 
     // LOGIC: If typing a Custom Size, clear Standard Size
-    if (name === 'custom_size_uom' && value.trim() !== '') {
+    if (name === 'custom_product_size' && value.trim() !== '') {
       nextState.product_size_id = '';
+      nextState.custom_size_uom = nextState.size_units; // ensure uom tracks units
     }
 
     // Existing logic for clearing sizes when units change

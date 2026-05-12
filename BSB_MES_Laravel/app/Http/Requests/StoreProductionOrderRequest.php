@@ -35,6 +35,7 @@ class StoreProductionOrderRequest extends FormRequest
             // Product Size
             'product_type_id' => 'required|exists:product_types,id',
             'product_size_id' => 'nullable|exists:standard_product_sizes,id',
+            'custom_product_size' => 'nullable|string',
             'custom_size_uom' => 'nullable|string',
 
             // Pressure & Temp
