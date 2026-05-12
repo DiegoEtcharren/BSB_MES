@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { getInputClass } from "../../../../utilities/formUtilities";
 import { calculatePressureLimits } from "../../../../utilities/pressureLogic";
+import { convertToPSI, convertFromPSI } from "../../../../utilities/pressureConversions";
 import InputRange from "../ranges/InputRange";
 import { useMasterData } from '../../../../context/MasterDataContext';
 
@@ -23,6 +24,7 @@ export default function Step33OrderTol({
 }) {
 
   const [rangeMode, setRangeMode] = useState('mdr');
+  const { pressureUnits } = useMasterData();
 
   useEffect(() => {
     if (
@@ -39,26 +41,45 @@ export default function Step33OrderTol({
     );
 
     if (selectedRange?.range_rules) {
+      let nominalPressure = Number(formData.burst_pressure);
+      let multiplier = 1;
+
+      if (formData.pressure_unit_id && pressureUnits && pressureUnits.length > 0) {
+        const selectedUnit = pressureUnits.find(unit => unit.id == formData.pressure_unit_id);
+        if (selectedUnit) {
+          multiplier = selectedUnit.conversion_multiplier;
+          nominalPressure = convertToPSI(nominalPressure, multiplier);
+        }
+      }
+
       const pressureLimits = calculatePressureLimits(
-        formData.burst_pressure,
+        nominalPressure,
         selectedRange.range_rules,
       );
+
+      let minVal = pressureLimits.min;
+      let maxVal = pressureLimits.max;
+
+      if (multiplier !== 1) {
+        minVal = Number(convertFromPSI(minVal, multiplier).toFixed(2));
+        maxVal = Number(convertFromPSI(maxVal, multiplier).toFixed(2));
+      }
 
       handleChange({
         target: {
           name: "lower_manufacturing_range",
-          value: pressureLimits.min,
+          value: minVal,
         },
       });
 
       handleChange({
         target: {
           name: "upper_manufacturing_range",
-          value: pressureLimits.max,
+          value: maxVal,
         },
       });
     }
-  }, [formData.manufacturing_range_id, formData.burst_pressure]);
+  }, [formData.manufacturing_range_id, formData.burst_pressure, formData.pressure_unit_id, pressureUnits]);
 
   const handleManualRangeChange = (e) => {
     handleChange(e);
@@ -175,7 +196,7 @@ export default function Step33OrderTol({
         {/* Lower Bound */}
         <div className="w-48">
           <label className="block text-xs font-bold text-primary mb-2 uppercase">
-            Lower Bound (PSI)
+            Lower Bound {formData.pressure_unit_id && pressureUnits?.length > 0 ? `(${pressureUnits.find(u => u.id == formData.pressure_unit_id)?.symbol.toUpperCase() || 'PSI'})` : '(PSI)'}
           </label>
           <input
             type="number"
@@ -193,7 +214,7 @@ export default function Step33OrderTol({
         {/* Upper Bound */}
         <div className="w-48">
           <label className="block text-xs font-bold text-primary mb-2 uppercase">
-            Upper Bound (PSI)
+            Upper Bound {formData.pressure_unit_id && pressureUnits?.length > 0 ? `(${pressureUnits.find(u => u.id == formData.pressure_unit_id)?.symbol.toUpperCase() || 'PSI'})` : '(PSI)'}
           </label>
           <input
             type="number"
