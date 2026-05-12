@@ -8,7 +8,8 @@ import {
   Gauge,
   Boxes,
   FileText,
-  FileCheck
+  FileCheck,
+  Paperclip
 } from 'lucide-react';
 import { getStepperContainerClasses, getStepperLineClasses, getStepperIconClasses, getStepperTextClasses} from '../../../utilities/stepperUtilities';
 import { getTodayDateString } from '../../../utilities/generalUtilities';
@@ -21,6 +22,7 @@ import Step4OrderBOM from "./steps/Step4OrderBOM";
 import Step5OrderInstructions from "./steps/Step5OrderInstructions";
 import Step6NameTags from "./steps/Step6NameTags";
 import Step7OrderCerts from "./steps/Step7OrderCerts";
+import Step8Attachments from "./steps/Step8Attachments";
 
 export default function OrderForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
@@ -61,6 +63,9 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     stamping_data: initialData?.stamping_data || [],
     special_instructions: initialData?.special_instructions || "",
     packaging_notes: initialData?.packaging_notes || "",
+
+    // --- Step 8: Attachments ---
+    attachments: initialData?.attachments || [],
   });
 
   const [manufacturingRangesRules, setManufacturingRangesRules] = useState([]);
@@ -148,6 +153,12 @@ export default function OrderForm({ initialData = null, onSuccess }) {
       icon: FileCheck,
       description: "Required Quality Certificates",
     },
+    {
+      id: "attachments",
+      title: "Attachments",
+      icon: Paperclip,
+      description: "Upload order files",
+    },
   ];
 
 const handleChange = (e) => {
@@ -183,7 +194,7 @@ const handleChange = (e) => {
 };
 
   const nextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 6));
+    setCurrentStep((prev) => Math.min(prev + 1, 7));
   };
 
   const prevStep = () => {
@@ -257,6 +268,15 @@ const handleChange = (e) => {
       case 6:
         return (
           <Step7OrderCerts
+            formData={formData}
+            handleChange={handleChange}
+            setFormData={setFormData}
+            errors={errors}
+          />
+        );
+      case 7:
+        return (
+          <Step8Attachments
             formData={formData}
             handleChange={handleChange}
             setFormData={setFormData}
