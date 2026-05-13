@@ -9,6 +9,7 @@ use App\Models\ProductionOrderBom;
 use App\Models\ProductionOrderCertificate;
 use App\Models\ProductionOrderInstruction;
 use App\Models\ProductionOrderSpec;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -92,12 +93,13 @@ class ProductionOrderController extends Controller
             // Create BOM
             if (!empty($validated['bom'])) {
                 foreach ($validated['bom'] as $index => $bomItem) {
+                    $material = Material::find($bomItem['material']);
                     ProductionOrderBom::create([
                         'order_id' => $order->id,
                         'component_name' => $bomItem['component_name'],
                         'component_part_number' => $bomItem['component_part_number'],
                         'component_sequence' => $index + 1,
-                        'component_material' => $bomItem['material'],
+                        'component_material' => $material ? $material->material : (string)$bomItem['material'],
                     ]);
                 }
             }

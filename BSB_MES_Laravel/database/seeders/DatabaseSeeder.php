@@ -23,6 +23,7 @@ public function run(): void
         StandardProductComponentsJRSSeeder::class,
         StandardManufacturingRangesSeeder::class,
         CertificateSeeder::class,
+        MaterialSeeder::class,
     ]);
 }
 }

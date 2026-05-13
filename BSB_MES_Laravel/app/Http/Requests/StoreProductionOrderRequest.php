@@ -52,7 +52,7 @@ class StoreProductionOrderRequest extends FormRequest
             'bom' => 'nullable|array',
             'bom.*.component_name' => 'required|string',
             'bom.*.component_part_number' => 'required|string',
-            'bom.*.material' => 'required|string',
+            'bom.*.material' => 'required|integer|exists:materials,id',
 
             // Instructions & Nametags
             'special_instructions' => 'nullable|string',
