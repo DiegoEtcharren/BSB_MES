@@ -26,6 +26,7 @@ export default function Step3OrderBOM({
     if (productComponents.length > 0) {
       setBomRows(productComponents);
       handleChange({ target: { name: 'bom', value: productComponents } });
+      console.log("Product Components:", productComponents);
     }
   }, [productComponents]);
 
@@ -35,7 +36,7 @@ export default function Step3OrderBOM({
       id: `temp-${Date.now()}`,
       component_name: "",
       component_part_number: "",
-      material: materials.length > 0 ? materials[0].id : ""
+      material: ""
     };
     const newRows = [...bomRows, newRow];
     setBomRows(newRows);
@@ -135,9 +136,10 @@ export default function Step3OrderBOM({
                       <td className="px-6 py-4">
                         <select
                           className="w-full bg-transparent border-none focus:ring-0 text-sm p-0"
-                          value={item.material || item.component_material || (materials.length > 0 ? materials[0].id : "")}
+                          value={item.material || ""}
                           onChange={(e) => handleInputChange(item.id, 'material', e.target.value)}
                         >
+                          <option value="" disabled>-Select Material-</option>
                           {materials.map((mat) => (
                             <option key={mat.id} value={mat.id}>
                               {mat.small_description}

@@ -10,14 +10,13 @@ export default function EngOrders() {
       icon: "post_add",
       onClick: () => {
         openModal(
-          <OrderForm onSuccess={() => fetchOperators()}/>,
+          <OrderForm />,
           "Add New Order",
           "Create a new order",
           true
         );
       },
     });
-    // fetchOperators();
   }, []);
   return <div>EngOrders</div>;
 }

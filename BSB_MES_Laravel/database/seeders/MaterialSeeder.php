@@ -19,19 +19,19 @@ class MaterialSeeder extends Seeder
                 'small_description' => '316 sst',
             ],
             [
-                'material' => 'Carbon Steel',
-                'description' => 'Carbon Steel',
-                'small_description' => 'Carbon Steel',
+                'material' => 'Nickel 400',
+                'description' => 'Nickel 400 (Monel 400)',
+                'small_description' => 'Monel',
             ],
             [
-                'material' => 'Alloy 400',
-                'description' => 'Alloy 400',
-                'small_description' => 'Alloy 400',
+                'material' => 'Inconel 600',
+                'description' => 'Nickel 600 (Inconel 600)',
+                'small_description' => 'Inconel',
             ],
             [
-                'material' => 'Titanium Grade 2',
-                'description' => 'Titanium Grade 2',
-                'small_description' => 'Titanium Grade 2',
+                'material' => 'Hastelloy C-276',
+                'description' => 'Hastelloy C-276',
+                'small_description' => 'Hastelloy C-276',
             ],
         ];
 
