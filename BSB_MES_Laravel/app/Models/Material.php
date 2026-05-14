@@ -10,6 +10,5 @@ class Material extends Model
         'material',
         'description',
         'small_description',
-        'raw_material_part_number',
     ];
 }

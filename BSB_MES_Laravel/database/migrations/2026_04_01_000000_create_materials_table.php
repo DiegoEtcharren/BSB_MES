@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('material');
             $table->string('description')->nullable();
             $table->string('small_description')->nullable();
-            $table->string('raw_material_part_number')->nullable();
             $table->timestamps();
         });
     }
