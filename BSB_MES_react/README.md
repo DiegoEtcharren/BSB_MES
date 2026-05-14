@@ -1,16 +1,40 @@
-# React + Vite
+# Manufacturing Execution System - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Description
+The idea of this project is a manufacturing system, where all the information of the process can be logged into the system, making sure that the specifications for each type of product are followed properly. This is the frontend component of the system, providing the user interface for operators and administrators.
 
-Currently, two official plugins are available:
+## Tech Stack
+* React
+* Vite
+* TailwindCSS / Shadcn (if applicable based on UI styling)
+* Axios for API requests
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Setup Instructions
 
-## React Compiler
+1. **Navigate to the frontend directory:**
+   ```bash
+   cd BSB_MES_react
+   ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. **Install dependencies:**
+   Make sure you have Node.js installed, then run:
+   ```bash
+   npm install
+   ```
 
-## Expanding the ESLint configuration
+3. **Environment Setup:**
+   If the project requires specific environment variables (like the backend API URL), create a `.env` file in the root of the `BSB_MES_react` directory:
+   ```env
+   VITE_API_URL=http://localhost:8000/api
+   ```
+   *(Adjust the URL if your backend runs on a different host or port)*
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Running the Application
+
+To run the frontend development server:
+
+```bash
+npm run dev
+```
+
+This will start the Vite development server, usually accessible at `http://localhost:5173`. Open this URL in your browser to view the application.
