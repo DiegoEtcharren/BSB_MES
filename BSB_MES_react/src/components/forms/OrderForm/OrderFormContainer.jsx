@@ -24,6 +24,7 @@ import Step6NameTags from "./steps/Step6NameTags";
 import Step7OrderCerts from "./steps/Step7OrderCerts";
 import Step8Attachments from "./steps/Step8Attachments";
 import { useProductionOrders } from "../../../hooks/useProductionOrders";
+import { toast } from 'react-toastify';
 
 export default function OrderForm({ initialData = null, onSuccess }) {
   const { closeModal } = useContext(MesContext);
@@ -215,18 +216,44 @@ const handleChange = (e) => {
     e.preventDefault();
     setErrors({});
 
-    try {
-      await saveProductionOrder(formData);
-      if (onSuccess) onSuccess();
-      closeModal();
-    } catch (err) {
-      if (err.response && err.response.status === 422) {
-        setErrors(err.response.data.errors);
-        console.error("Validation errors:", err.response.data.errors);
-      } else {
-        console.error("Error saving production order", err);
-      }
-    }
+    toast
+      .promise(
+        saveProductionOrder(formData).catch((error) => {
+          if (error.response && error.response.status === 422) {
+            setErrors(error.response.data.errors);
+          }
+          throw error;
+        }),
+        {
+          pending: "Registering new MES Order...",
+          success: {
+            render({ data }) {
+              const order_number = data?.data?.order_number;
+              console.log(data);
+              return `Order ${order_number} registered successfully`;
+            },
+          },
+          error: {
+            render({ data }) {
+              if (data?.response?.status === 422) {
+                return "Validation failed. Please correct the highlighted fields.";
+              }
+              return (
+                data?.response?.data?.message ||
+                "System error. Could not add order."
+              );
+            },
+          },
+        },
+      )
+      .then(() => {
+        if (onSuccess) {
+          onSuccess();
+        }
+        closeModal();
+      })
+      .catch(() => {
+      });
   };
 
   const renderActiveStep = () => {
