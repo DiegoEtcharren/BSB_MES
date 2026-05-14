@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\StandardProductComponentController;
 use App\Http\Controllers\Api\ManufacturingRangeController;
 use App\Http\Controllers\Api\CertificateController;
 use App\Http\Controllers\Api\ProductionOrderController;
+use App\Http\Controllers\Api\MaterialController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -44,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/rules/{id}', [ManufacturingRangeController::class, 'show']);
             Route::get('/certificates', [CertificateController::class, 'index']);
             Route::post('/production-orders', [ProductionOrderController::class, 'store']);
+            Route::get('/materials', [MaterialController::class, 'index']);
         });
     });
 });

@@ -1,5 +1,6 @@
 import { useEffect, useState} from 'react';
 import { useStandardProductComponents } from "../../../../hooks/useStandardProductComponents";
+import { useMasterData } from "../../../../context/MasterDataContext";
 
 export default function Step3OrderBOM({
   formData,
@@ -8,6 +9,7 @@ export default function Step3OrderBOM({
 }) {
 
   const {isLoading, productComponents, fetchProductComponents} = useStandardProductComponents();
+  const { materials } = useMasterData();
   const [bomRows, setBomRows] = useState(formData.bom || []);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function Step3OrderBOM({
       id: `temp-${Date.now()}`,
       component_name: "",
       component_part_number: "",
-      material: "316 SST"
+      material: materials.length > 0 ? materials[0].id : ""
     };
     const newRows = [...bomRows, newRow];
     setBomRows(newRows);
@@ -133,15 +135,14 @@ export default function Step3OrderBOM({
                       <td className="px-6 py-4">
                         <select
                           className="w-full bg-transparent border-none focus:ring-0 text-sm p-0"
-                          value={item.material || item.component_material || "316 SST"}
+                          value={item.material || item.component_material || (materials.length > 0 ? materials[0].id : "")}
                           onChange={(e) => handleInputChange(item.id, 'material', e.target.value)}
                         >
-                          <option value="Stainless Steel 316L">316 SST</option>
-                          <option value="Carbon Steel">Carbon Steel</option>
-                          <option value="Alloy 400">Alloy 400</option>
-                          <option value="Titanium Grade 2">
-                            Titanium Grade 2
-                          </option>
+                          {materials.map((mat) => (
+                            <option key={mat.id} value={mat.id}>
+                              {mat.small_description}
+                            </option>
+                          ))}
                         </select>
                       </td>
                       <td className="px-4 py-4">
