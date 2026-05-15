@@ -27,6 +27,7 @@ export default function OrderFormFooter({currentStep, closeModal, prevStep, next
       <div>
         {currentStep < 7 ? (
           <button
+            key="next-btn"
             type="button"
             onClick={nextStep}
             className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-primary hover:bg-primary-hover shadow-lg shadow-red-500/20 transition-all active:scale-[0.98] flex items-center gap-2 cursor-pointer"
@@ -38,6 +39,7 @@ export default function OrderFormFooter({currentStep, closeModal, prevStep, next
           </button>
         ) : (
           <button
+            key="submit-btn"
             type="submit"
             form="order_form"
             className="px-6 py-2.5 rounded-lg font-bold text-sm text-white bg-green-600 hover:bg-green-700 shadow-lg shadow-green-500/20 transition-all active:scale-[0.98] cursor-pointer"
