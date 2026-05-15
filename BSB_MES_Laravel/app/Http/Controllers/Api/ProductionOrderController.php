@@ -15,6 +15,51 @@ use Illuminate\Support\Facades\DB;
 
 class ProductionOrderController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize']);
+
+        // Filtering
+        if ($request->filled('order_number')) {
+            $query->where('order_number', 'like', '%' . $request->input('order_number') . '%');
+        }
+
+        if ($request->filled('product_type')) {
+            $query->whereHas('productType', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->input('product_type') . '%');
+            });
+        }
+
+        if ($request->filled('size')) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('productSize', function ($q2) use ($request) {
+                    $q2->where('display_name', 'like', '%' . $request->input('size') . '%')
+                       ->orWhere('size_value', 'like', '%' . $request->input('size') . '%');
+                })->orWhere('custom_product_size', 'like', '%' . $request->input('size') . '%');
+            });
+        }
+
+        if ($request->filled('burst_pressure')) {
+            $query->whereHas('specs', function ($q) use ($request) {
+                $q->where('burst_pressure', 'like', '%' . $request->input('burst_pressure') . '%');
+            });
+        }
+
+        if ($request->filled('temperature')) {
+            $query->whereHas('specs', function ($q) use ($request) {
+                $q->where('temperature', 'like', '%' . $request->input('temperature') . '%');
+            });
+        }
+
+        $perPage = $request->input('per_page', 10);
+        $orders = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $orders
+        ]);
+    }
+
     public function store(StoreProductionOrderRequest $request)
     {
         try {
@@ -136,6 +181,23 @@ class ProductionOrderController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'An error occurred while creating the production order.'
+            ], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $order = ProductionOrder::findOrFail($id);
+            $order->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Production order deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred while deleting the production order.'
             ], 500);
         }
     }

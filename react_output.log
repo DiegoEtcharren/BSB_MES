@@ -1,0 +1,9 @@
+
+> bsb-mes-react@0.0.0 dev
+> vite --host 0.0.0.0 --port 3000
+
+
+  VITE v7.3.3  ready in 406 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: http://192.168.0.2:3000/
