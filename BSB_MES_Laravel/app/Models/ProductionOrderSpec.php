@@ -29,4 +29,9 @@ class ProductionOrderSpec extends Model
     {
         return $this->belongsTo(ProductionOrder::class);
     }
+
+    public function pressureUnit()
+    {
+        return $this->belongsTo(PressureUnit::class);
+    }
 }

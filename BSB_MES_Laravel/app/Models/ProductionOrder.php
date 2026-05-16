@@ -43,4 +43,14 @@ class ProductionOrder extends Model
     {
         return $this->hasMany(ProductionOrderCertificate::class);
     }
+
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
+
+    public function productSize()
+    {
+        return $this->belongsTo(StandardProductSize::class, 'product_size_id');
+    }
 }

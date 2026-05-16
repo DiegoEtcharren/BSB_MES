@@ -44,7 +44,9 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/rules/product/{productId}', [ManufacturingRangeController::class, 'getRulesByProduct']);
             Route::get('/rules/{id}', [ManufacturingRangeController::class, 'show']);
             Route::get('/certificates', [CertificateController::class, 'index']);
+            Route::get('/production-orders', [ProductionOrderController::class, 'index']);
             Route::post('/production-orders', [ProductionOrderController::class, 'store']);
+            Route::delete('/production-orders/{id}', [ProductionOrderController::class, 'destroy']);
             Route::get('/materials', [MaterialController::class, 'index']);
         });
     });
