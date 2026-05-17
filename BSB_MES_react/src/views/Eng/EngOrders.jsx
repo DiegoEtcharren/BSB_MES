@@ -5,7 +5,7 @@ import { useProductionOrders } from "../../hooks/useProductionOrders";
 import { getOrderStatusFormatting } from "../../utilities/tableFormatters";
 import { convertToPSI, convertFromPSI } from "../../utilities/pressureConversions";
 import { convertToFahrenheit} from "../../utilities/temperatureConversions";
-import { DatePicker, Space } from 'antd';
+import { DatePicker, Input, ConfigProvider, Space } from 'antd';
 import dayjs from 'dayjs';
 
 export default function EngOrders() {
@@ -115,13 +115,34 @@ export default function EngOrders() {
             <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">
               Filter by:
             </span>
-          <Space direction="vertical" size={12} style={{ padding: '20px' }}>
+            <ConfigProvider
+              theme={{
+                token: {
+                  colorPrimary: "var(--color-primary)",
+                },
+                components: {
+                  DatePicker: {
+                    activeBorderColor: "var(--color-primary)",
+                    hoverBorderColor: "var(--color-primary-hover)",
+                    activeShadow: "0 0 0 2px rgba(var(--color-primary), 0.1)",
+                  },
+                  Input: {
+                    activeBorderColor: "var(--color-primary-primary)",
+                    hoverBorderColor: "var(--color-primary-hover)",
+                  },
+                },
+              }}
+            >
+              {" "}
+              <Space orientation="vertical" size={12}>
                 <RangePicker
                   presets={rangePresets}
                   onChange={onRangeChange}
-                  placeholder={['From', 'To']}
+                  placeholder={["From", "To"]}
                 />
               </Space>
+            </ConfigProvider>
+
             <select
               className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
               value={statusFilter}
