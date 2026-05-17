@@ -17,6 +17,7 @@ export default function EngOrders() {
   const [burstPressureFilter, setBurstPressureFilter] = useState("");
   const [temperatureFilter, setTemperatureFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [dueDateFilter, setDueDateFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function EngOrders() {
   useEffect(() => {
     const params = { page };
     if (statusFilter) params.status = statusFilter;
+    if (dueDateFilter) params.due_date_range = dueDateFilter;
     if (searchQuery) params.search = searchQuery;
     console.log(params);
     const delayDebounceFn = setTimeout(() => {
@@ -44,13 +46,13 @@ export default function EngOrders() {
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, searchQuery, fetchProductionOrders]);
+  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, dueDateFilter, searchQuery, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
     if (window.confirm(`Are you sure you want to delete order ${orderNumber}?`)) {
       try {
         await deleteProductionOrder(id);
-        fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter });
+        fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, due_date_range: dueDateFilter });
       } catch (err) {
         console.error("Error deleting order:", err);
       }
@@ -80,6 +82,18 @@ export default function EngOrders() {
             </span>
             <select
               className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
+              value={dueDateFilter}
+              onChange={(e) => setDueDateFilter(e.target.value)}
+            >
+              <option value={""}>All Dates</option>
+              <option value={"today"}>Today</option>
+              <option value={"this_week"}>This Week</option>
+              <option value={"next_7_days"}>Next 7 Days</option>
+              <option value={"this_month"}>This Month</option>
+              <option value={"overdue"}>Overdue</option>
+            </select>
+            <select
+              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -100,6 +114,9 @@ export default function EngOrders() {
             <tr>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 SO #
+              </th>
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
+                Due Date
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Product Type
@@ -125,7 +142,7 @@ export default function EngOrders() {
             {isLoading ? (
               <tr>
                 <td
-                  colSpan="7"
+                  colSpan="8"
                   className="px-6 py-8 text-center text-sm font-medium text-slate-500"
                 >
                   Loading orders...
@@ -139,6 +156,15 @@ export default function EngOrders() {
                 const size = order.custom_product_size ? `${order.custom_product_size} ${order.custom_size_uom || ''}`.trim() : (order.product_size?.display_name || '-');
                 const statusFormatting = getOrderStatusFormatting(order.status || 'pending');
 
+                let dueDateFormatted = '-';
+                if (order.required_date) {
+                  const dateObj = new Date(order.required_date);
+                  const day = String(dateObj.getDate()).padStart(2, '0');
+                  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                  const year = dateObj.getFullYear();
+                  dueDateFormatted = `${day}/${month}/${year}`;
+                }
+
                 return (
                   <tr
                     key={order.id}
@@ -146,6 +172,9 @@ export default function EngOrders() {
                   >
                     <td className="px-6 py-4 text-sm font-bold text-charcoal text-center">
                       {order.order_number}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-slate-600 text-center">
+                      {dueDateFormatted}
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-600 text-center">
                       {productType}
@@ -176,7 +205,7 @@ export default function EngOrders() {
                             openModal(
                               <OrderForm
                                 initialData={order}
-                                onSuccess={() => fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter })}
+                                onSuccess={() => fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, due_date_range: dueDateFilter })}
                               />,
                               "Edit Order",
                               `Update details for Order: ${order.order_number}`,
@@ -207,7 +236,7 @@ export default function EngOrders() {
             ) : (
               <tr className="hover:bg-slate-50 transition-colors group">
                 <td
-                  colSpan="7"
+                  colSpan="8"
                   className="px-6 py-8 text-center text-sm font-medium text-slate-500 italic"
                 >
                   No orders found
