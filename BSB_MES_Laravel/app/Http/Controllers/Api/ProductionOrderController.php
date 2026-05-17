@@ -24,7 +24,8 @@ class ProductionOrderController extends Controller
             'status' => 'sometimes|string|in:inProgress,completed,pending',
             'search'   => 'sometimes|nullable|string|max:255',
             'per_page' => 'sometimes|integer|min:1|max:100',
-            'due_date_range' => 'sometimes|nullable|string|in:today,this_week,next_7_days,overdue,this_month',
+            'start_date' => 'sometimes|nullable|date',
+            'end_date' => 'sometimes|nullable|date|after_or_equal:start_date',
         ]);
 
         $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize']);
@@ -33,33 +34,10 @@ class ProductionOrderController extends Controller
             $query->where('status', $validated['status']);
         }
 
-        if (!empty($validated['due_date_range'])) {
-            $now = Carbon::now();
-            $today = $now->copy()->startOfDay();
-
-            switch ($validated['due_date_range']) {
-                case 'today':
-                    $query->whereDate('required_date', $today);
-                    break;
-                case 'this_week':
-                    $startOfWeek = $now->copy()->startOfWeek();
-                    $endOfWeek = $now->copy()->endOfWeek();
-                    $query->whereBetween('required_date', [$startOfWeek, $endOfWeek]);
-                    break;
-                case 'next_7_days':
-                    $endOf7Days = $now->copy()->addDays(7)->endOfDay();
-                    $query->whereBetween('required_date', [$today, $endOf7Days]);
-                    break;
-                case 'overdue':
-                    $query->whereDate('required_date', '<', $today)
-                          ->where('status', '!=', 'completed');
-                    break;
-                case 'this_month':
-                    $startOfMonth = $now->copy()->startOfMonth();
-                    $endOfMonth = $now->copy()->endOfMonth();
-                    $query->whereBetween('required_date', [$startOfMonth, $endOfMonth]);
-                    break;
-            }
+        if (!empty($validated['start_date']) && !empty($validated['end_date'])) {
+            $startDate = Carbon::parse($validated['start_date'])->startOfDay();
+            $endDate = Carbon::parse($validated['end_date'])->endOfDay();
+            $query->whereBetween('required_date', [$startDate, $endDate]);
         }
 
         // Search logic:
