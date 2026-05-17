@@ -5,6 +5,8 @@ import { useProductionOrders } from "../../hooks/useProductionOrders";
 import { getOrderStatusFormatting } from "../../utilities/tableFormatters";
 import { convertToPSI, convertFromPSI } from "../../utilities/pressureConversions";
 import { convertToFahrenheit} from "../../utilities/temperatureConversions";
+import { DatePicker, Space } from 'antd';
+import dayjs from 'dayjs';
 
 export default function EngOrders() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
@@ -19,6 +21,29 @@ export default function EngOrders() {
   const [statusFilter, setStatusFilter] = useState("");
   const [dueDateFilter, setDueDateFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [dateRange, setDateRange] = useState("");
+
+  const { RangePicker } = DatePicker;
+  const rangePresets = [
+    {
+      label: "Next 7 Days",
+      value: [dayjs(), dayjs().add(1, "week")],
+    },
+    {
+      label: "Next Month",
+      value: [dayjs(), dayjs().add(1, "month")],
+    },
+    {
+      label: "This Month Entirely",
+      value: [dayjs().startOf("month"), dayjs().endOf("month")],
+    },
+  ];
+
+  const onRangeChange = (dates, dateStrings) => {
+    setDateRange(dates);
+    console.log('Formatted Selected Range: ', dateStrings);
+    // Example output: ['2026-05-17', '2026-05-24']
+  };
 
   useEffect(() => {
     setHeaderConfig("Production Orders", {
@@ -38,9 +63,8 @@ export default function EngOrders() {
   useEffect(() => {
     const params = { page };
     if (statusFilter) params.status = statusFilter;
-    if (dueDateFilter) params.due_date_range = dueDateFilter;
+    if (dueDateFilter) params.dateRange = dueDateFilter;
     if (searchQuery) params.search = searchQuery;
-    console.log(params);
     const delayDebounceFn = setTimeout(() => {
       fetchProductionOrders(params);
     }, 300);
@@ -80,18 +104,13 @@ export default function EngOrders() {
             <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">
               Filter by:
             </span>
-            <select
-              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
-              value={dueDateFilter}
-              onChange={(e) => setDueDateFilter(e.target.value)}
-            >
-              <option value={""}>All Dates</option>
-              <option value={"today"}>Today</option>
-              <option value={"this_week"}>This Week</option>
-              <option value={"next_7_days"}>Next 7 Days</option>
-              <option value={"this_month"}>This Month</option>
-              <option value={"overdue"}>Overdue</option>
-            </select>
+          <Space direction="vertical" size={12} style={{ padding: '20px' }}>
+                <RangePicker
+                  presets={rangePresets}
+                  onChange={onRangeChange}
+                  placeholder={['From', 'To']}
+                />
+              </Space>
             <select
               className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
               value={statusFilter}
@@ -125,10 +144,10 @@ export default function EngOrders() {
                 Size
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
-                Burst Pressure (PSI)
+                B.P. (PSI)
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
-                Temperature (°F)
+                Temp. (°F)
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Status
@@ -150,19 +169,41 @@ export default function EngOrders() {
               </tr>
             ) : orders?.data?.length > 0 ? (
               orders.data.map((order) => {
-                const burstPressure = order.specs?.burst_pressure ? `${convertToPSI(order.specs.burst_pressure, order.specs.pressure_unit?.conversion_multiplier).toFixed(2)}` : '-';
-                const temperature = order.specs?.temperature ? `${convertToFahrenheit(order.specs.temperature, order.specs.temperature_units).toFixed(2)}`: '-';
-                const productType = order.product_type?.name || '-';
-                const size = order.custom_product_size ? `${order.custom_product_size} ${order.custom_size_uom || ''}`.trim() : (order.product_size?.display_name || '-');
-                const statusFormatting = getOrderStatusFormatting(order.status || 'pending');
+                const burstPressure = order.specs?.burst_pressure
+                  ? `${convertToPSI(order.specs.burst_pressure, order.specs.pressure_unit?.conversion_multiplier).toFixed(2)}`
+                  : "-";
+                const temperature = order.specs?.temperature
+                  ? `${convertToFahrenheit(order.specs.temperature, order.specs.temperature_units).toFixed(2)}`
+                  : "-";
+                const productType = order.product_type?.name || "-";
+                const size = order.custom_product_size
+                  ? `${order.custom_product_size} ${order.custom_size_uom || ""}`.trim()
+                  : order.product_size?.display_name || "-";
+                const statusFormatting = getOrderStatusFormatting(
+                  order.status || "pending",
+                );
 
-                let dueDateFormatted = '-';
+                let dueDateFormatted = "-";
                 if (order.required_date) {
                   const dateObj = new Date(order.required_date);
-                  const day = String(dateObj.getDate()).padStart(2, '0');
-                  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                  const day = String(dateObj.getDate()).padStart(2, "0");
+                  const monthNames = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                  ];
+                  const month = monthNames[dateObj.getMonth()];
                   const year = dateObj.getFullYear();
-                  dueDateFormatted = `${day}/${month}/${year}`;
+                  dueDateFormatted = `${day} / ${month} / ${year}`;
                 }
 
                 return (
@@ -205,11 +246,22 @@ export default function EngOrders() {
                             openModal(
                               <OrderForm
                                 initialData={order}
-                                onSuccess={() => fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, due_date_range: dueDateFilter })}
+                                onSuccess={() =>
+                                  fetchProductionOrders({
+                                    page,
+                                    order_number: orderNumberFilter,
+                                    product_type: productTypeFilter,
+                                    size: sizeFilter,
+                                    burst_pressure: burstPressureFilter,
+                                    temperature: temperatureFilter,
+                                    status: statusFilter,
+                                    due_date_range: dueDateFilter,
+                                  })
+                                }
                               />,
                               "Edit Order",
                               `Update details for Order: ${order.order_number}`,
-                              true
+                              true,
                             );
                           }}
                           className="p-1.5 hover:bg-indigo-100 hover:text-indigo-600 text-slate-500 hover:text-charcoal rounded transition-colors cursor-pointer"
@@ -220,7 +272,9 @@ export default function EngOrders() {
                           </span>
                         </button>
                         <button
-                          onClick={() => handleDelete(order.id, order.order_number)}
+                          onClick={() =>
+                            handleDelete(order.id, order.order_number)
+                          }
                           className="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-colors cursor-pointer"
                           title="Delete Order"
                         >
@@ -252,30 +306,34 @@ export default function EngOrders() {
       <div className="p-4 border-t border-border-subtle bg-slate-50 flex items-center justify-between shrink-0">
         <button
           className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
         >
           Previous
         </button>
         <div className="flex items-center gap-2">
-          {orders?.last_page > 0 && Array.from({ length: orders.last_page }, (_, index) => index + 1).map((pageNum) => (
-            <button
-              key={pageNum}
-              onClick={() => setPage(pageNum)}
-              className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors cursor-pointer ${
-                page === pageNum
-                  ? "bg-primary text-white font-bold"
-                  : "hover:bg-white text-slate-600"
-              }`}
+          {orders?.last_page > 0 &&
+            Array.from(
+              { length: orders.last_page },
+              (_, index) => index + 1,
+            ).map((pageNum) => (
+              <button
+                key={pageNum}
+                onClick={() => setPage(pageNum)}
+                className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                  page === pageNum
+                    ? "bg-primary text-white font-bold"
+                    : "hover:bg-white text-slate-600"
+                }`}
               >
-              {pageNum}
-            </button>
-          ))}
+                {pageNum}
+              </button>
+            ))}
         </div>
         <button
           className="px-4 py-2 border border-slate-300 rounded-md text-sm font-semibold text-slate-600 hover:bg-white hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           disabled={orders?.last_page && page >= orders.last_page}
-          onClick={() => setPage(prev => prev + 1)}
+          onClick={() => setPage((prev) => prev + 1)}
         >
           Next
         </button>
