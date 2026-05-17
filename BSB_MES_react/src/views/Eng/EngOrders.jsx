@@ -17,6 +17,7 @@ export default function EngOrders() {
   const [burstPressureFilter, setBurstPressureFilter] = useState("");
   const [temperatureFilter, setTemperatureFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setHeaderConfig("Production Orders", {
@@ -34,20 +35,16 @@ export default function EngOrders() {
   }, []);
 
   useEffect(() => {
+    const params = { page };
+    if (statusFilter) params.status = statusFilter;
+    if (searchQuery) params.search = searchQuery;
+    console.log(params);
     const delayDebounceFn = setTimeout(() => {
-      fetchProductionOrders({
-        page,
-        order_number: orderNumberFilter,
-        product_type: productTypeFilter,
-        size: sizeFilter,
-        burst_pressure: burstPressureFilter,
-        temperature: temperatureFilter,
-        status: statusFilter,
-      });
+      fetchProductionOrders(params);
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, fetchProductionOrders]);
+  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, searchQuery, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
     if (window.confirm(`Are you sure you want to delete order ${orderNumber}?`)) {
@@ -62,92 +59,39 @@ export default function EngOrders() {
 
   return (
     <div className="flex flex-col h-full bg-white rounded-lg shadow-sm border border-border-subtle overflow-hidden">
-      {/* Filters Bar */}
-      <div className="p-4 border-b border-border-subtle bg-white space-y-4 shrink-0">
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          <div className="flex flex-wrap items-center gap-3 w-full">
-            <div className="relative flex-1 min-w-[150px]">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <span className="material-symbols-outlined text-[18px]">tag</span>
-              </span>
-              <input
-                type="text"
-                placeholder="Order No..."
-                className="w-full py-1.5 pl-9 pr-3 text-sm border-slate-200 rounded-md bg-slate-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-400"
-                value={orderNumberFilter}
-                onChange={(e) => setOrderNumberFilter(e.target.value)}
-              />
-            </div>
-            <div className="relative flex-1 min-w-[150px]">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <span className="material-symbols-outlined text-[18px]">category</span>
-              </span>
-              <input
-                type="text"
-                placeholder="Product Type..."
-                className="w-full py-1.5 pl-9 pr-3 text-sm border-slate-200 rounded-md bg-slate-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-400"
-                value={productTypeFilter}
-                onChange={(e) => setProductTypeFilter(e.target.value)}
-              />
-            </div>
-            <div className="relative flex-1 min-w-[150px]">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <span className="material-symbols-outlined text-[18px]">straighten</span>
-              </span>
-              <input
-                type="text"
-                placeholder="Size..."
-                className="w-full py-1.5 pl-9 pr-3 text-sm border-slate-200 rounded-md bg-slate-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-400"
-                value={sizeFilter}
-                onChange={(e) => setSizeFilter(e.target.value)}
-              />
-            </div>
-            <div className="relative flex-1 min-w-[150px]">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <span className="material-symbols-outlined text-[18px]">compress</span>
-              </span>
-              <input
-                type="text"
-                placeholder="Burst Press..."
-                className="w-full py-1.5 pl-9 pr-3 text-sm border-slate-200 rounded-md bg-slate-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-400"
-                value={burstPressureFilter}
-                onChange={(e) => setBurstPressureFilter(e.target.value)}
-              />
-            </div>
-            <div className="relative flex-1 min-w-[150px]">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <span className="material-symbols-outlined text-[18px]">thermostat</span>
-              </span>
-              <input
-                type="text"
-                placeholder="Temp..."
-                className="w-full py-1.5 pl-9 pr-3 text-sm border-slate-200 rounded-md bg-slate-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-400"
-                value={temperatureFilter}
-                onChange={(e) => setTemperatureFilter(e.target.value)}
-              />
-            </div>
+      {/* Search Bar: */}
+      <div className="p-6 border-b border-border-subtle flex items-center justify-between bg-white shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="relative flex items-center">
+            <span className="material-symbols-outlined absolute left-3  text-slate-400 text-[20px]">
+              search
+            </span>
+            <input
+              className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-64 text-charcoal placeholder-slate-400"
+              placeholder="Search orders..."
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">
+              Filter by:
+            </span>
             <select
-              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer min-w-[150px]"
+              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option value={""}>All Status</option>
-              <option value={"pending"}>Pending</option>
-              <option value={"in_progress"}>In Progress</option>
+              <option value={"inProgress"}>In Progress</option>
               <option value={"completed"}>Completed</option>
+              <option value={"pending"}>Pending</option>
             </select>
           </div>
         </div>
-        <div className="text-sm text-slate-500 font-medium">
-          Showing{" "}
-          <span className="text-charcoal font-bold">
-            {orders?.from || 0}-{orders?.to || 0}
-          </span>{" "}
-          of <span className="text-charcoal font-bold">{orders?.total || 0}</span>{" "}
-          orders
-        </div>
       </div>
-      {/* End Filters Bar */}
+      {/* End Search Bar */}
 
       {/* Table: */}
       <div className="overflow-auto flex-1 min-h-0">
