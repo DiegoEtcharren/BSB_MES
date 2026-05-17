@@ -66,6 +66,35 @@ switch (normalizedStatus) {
   }
 };
 
+export const getOrderStatusFormatting = (status) => {
+  const normalizedStatus = String(status).toLowerCase();
+
+  switch (normalizedStatus) {
+    case "completed":
+      return {
+        wrapperClass: "bg-emerald-100 text-emerald-700",
+        dotClass: "bg-emerald-500",
+        label: "Completed"
+      };
+
+    case "in progress":
+    case "in_progress":
+      return {
+        wrapperClass: "bg-indigo-100 text-indigo-700",
+        dotClass: "bg-indigo-500",
+        label: "In Progress"
+      };
+
+    case "pending":
+    default:
+      return {
+        wrapperClass: "bg-amber-100 text-amber-700",
+        dotClass: "bg-amber-500",
+        label: "Pending"
+      };
+  }
+};
+
 export const formatDate = (dateString) => {
   const normalizedDateString = dateString.includes('T') ? dateString : dateString.replace(/-/g, '/');
   const date = new Date(normalizedDateString);

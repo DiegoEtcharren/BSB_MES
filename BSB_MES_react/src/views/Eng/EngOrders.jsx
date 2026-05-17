@@ -2,6 +2,7 @@ import MesContext from "../../context/MesProvider";
 import OrderForm from "../../components/forms/OrderForm/OrderFormContainer";
 import { useContext, useEffect, useState } from "react";
 import { useProductionOrders } from "../../hooks/useProductionOrders";
+import { getOrderStatusFormatting } from "../../utilities/tableFormatters";
 
 export default function EngOrders() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
@@ -13,6 +14,7 @@ export default function EngOrders() {
   const [sizeFilter, setSizeFilter] = useState("");
   const [burstPressureFilter, setBurstPressureFilter] = useState("");
   const [temperatureFilter, setTemperatureFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
   useEffect(() => {
     setHeaderConfig("Production Orders", {
@@ -39,17 +41,18 @@ export default function EngOrders() {
         size: sizeFilter,
         burst_pressure: burstPressureFilter,
         temperature: temperatureFilter,
+        status: statusFilter,
       });
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, fetchProductionOrders]);
+  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
     if (window.confirm(`Are you sure you want to delete order ${orderNumber}?`)) {
       try {
         await deleteProductionOrder(id);
-        fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter });
+        fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter });
       } catch (err) {
         console.error("Error deleting order:", err);
       }
@@ -122,6 +125,16 @@ export default function EngOrders() {
                 onChange={(e) => setTemperatureFilter(e.target.value)}
               />
             </div>
+            <select
+              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer min-w-[150px]"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value={""}>All Status</option>
+              <option value={"pending"}>Pending</option>
+              <option value={"in_progress"}>In Progress</option>
+              <option value={"completed"}>Completed</option>
+            </select>
           </div>
         </div>
         <div className="text-sm text-slate-500 font-medium">
@@ -155,6 +168,9 @@ export default function EngOrders() {
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest">
                 Temperature
               </th>
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest">
+                Status
+              </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-right">
                 Actions
               </th>
@@ -164,7 +180,7 @@ export default function EngOrders() {
             {isLoading ? (
               <tr>
                 <td
-                  colSpan="6"
+                  colSpan="7"
                   className="px-6 py-8 text-center text-sm font-medium text-slate-500"
                 >
                   Loading orders...
@@ -176,6 +192,7 @@ export default function EngOrders() {
                 const temperature = order.specs?.temperature ? `${order.specs.temperature} ${order.specs.temperature_units || ''}`.trim() : '-';
                 const productType = order.product_type?.name || '-';
                 const size = order.custom_product_size ? `${order.custom_product_size} ${order.custom_size_uom || ''}`.trim() : (order.product_size?.display_name || '-');
+                const statusFormatting = getOrderStatusFormatting(order.status || 'pending');
 
                 return (
                   <tr
@@ -197,6 +214,16 @@ export default function EngOrders() {
                     <td className="px-6 py-4 text-sm text-slate-600">
                       {temperature}
                     </td>
+                    <td className="px-6 py-4 text-sm">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusFormatting.wrapperClass}`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${statusFormatting.dotClass}`}
+                        ></span>{" "}
+                        {statusFormatting.label}
+                      </span>
+                    </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
                         <button
@@ -204,7 +231,7 @@ export default function EngOrders() {
                             openModal(
                               <OrderForm
                                 initialData={order}
-                                onSuccess={() => fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter })}
+                                onSuccess={() => fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter })}
                               />,
                               "Edit Order",
                               `Update details for Order: ${order.order_number}`,
@@ -235,7 +262,7 @@ export default function EngOrders() {
             ) : (
               <tr className="hover:bg-slate-50 transition-colors group">
                 <td
-                  colSpan="6"
+                  colSpan="7"
                   className="px-6 py-8 text-center text-sm font-medium text-slate-500 italic"
                 >
                   No orders found
