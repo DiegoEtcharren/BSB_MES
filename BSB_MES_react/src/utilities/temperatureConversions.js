@@ -1,5 +1,4 @@
 export const convertToFahrenheit = (value, unit) => {
-    console.log(value, unit);
     if (value === undefined || value === null || !unit) return value;
 
     let result;
