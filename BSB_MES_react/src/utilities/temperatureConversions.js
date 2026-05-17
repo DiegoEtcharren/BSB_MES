@@ -17,6 +17,25 @@ export const convertToFahrenheit = (value, unit) => {
     return Number(result.toFixed(2));
 };
 
+export const convertToCelsius = (value, unit) => {
+    if (value === undefined || value === null || !unit) return value;
+
+    let result;
+    const lowerUnit = unit.toLowerCase();
+
+    if (lowerUnit === 'fahrenheit') {
+        result = (value - 32) * 5/9;
+    } else if (lowerUnit === 'kelvin') {
+        result = value - 273.15;
+    } else if (lowerUnit === 'celsius') {
+        result = value;
+    } else {
+        return value; // Unrecognized unit
+    }
+
+    return Number(result.toFixed(2));
+};
+
 export const convertFromFahrenheit = (valueInFahrenheit, targetUnit) => {
     if (valueInFahrenheit === undefined || valueInFahrenheit === null || !targetUnit) return valueInFahrenheit;
 
