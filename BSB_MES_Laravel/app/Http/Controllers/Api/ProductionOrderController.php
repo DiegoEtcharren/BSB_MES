@@ -51,6 +51,10 @@ class ProductionOrderController extends Controller
             });
         }
 
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
         $perPage = $request->input('per_page', 10);
         $orders = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
