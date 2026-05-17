@@ -1,15 +1,16 @@
 export const convertToFahrenheit = (value, unit) => {
+    console.log(value, unit);
     if (value === undefined || value === null || !unit) return value;
 
     let result;
     const lowerUnit = unit.toLowerCase();
 
     if (lowerUnit === 'celsius') {
-        result = (value * 9/5) + 32;
+        result = (Number(value) * 9/5) + 32;
     } else if (lowerUnit === 'kelvin') {
-        result = (value - 273.15) * 9/5 + 32;
+        result = (Number(value) - 273.15) * 9/5 + 32;
     } else if (lowerUnit === 'fahrenheit') {
-        result = value;
+        result = Number(value);
     } else {
         return value; // Unrecognized unit
     }
@@ -24,11 +25,11 @@ export const convertToCelsius = (value, unit) => {
     const lowerUnit = unit.toLowerCase();
 
     if (lowerUnit === 'fahrenheit') {
-        result = (value - 32) * 5/9;
+        result = (Number(value) - 32) * 5/9;
     } else if (lowerUnit === 'kelvin') {
-        result = value - 273.15;
+        result = Number(value) - 273.15;
     } else if (lowerUnit === 'celsius') {
-        result = value;
+        result = Number(value);
     } else {
         return value; // Unrecognized unit
     }
@@ -43,11 +44,11 @@ export const convertFromFahrenheit = (valueInFahrenheit, targetUnit) => {
     const lowerUnit = targetUnit.toLowerCase();
 
     if (lowerUnit === 'celsius') {
-        result = (valueInFahrenheit - 32) * 5/9;
+        result = (Number(valueInFahrenheit) - 32) * 5/9;
     } else if (lowerUnit === 'kelvin') {
-        result = (valueInFahrenheit - 32) * 5/9 + 273.15;
+        result = (Number(valueInFahrenheit) - 32) * 5/9 + 273.15;
     } else if (lowerUnit === 'fahrenheit') {
-        result = valueInFahrenheit;
+        result = Number(valueInFahrenheit);
     } else {
         return valueInFahrenheit; // Unrecognized unit
     }

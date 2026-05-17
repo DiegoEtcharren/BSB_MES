@@ -3,6 +3,8 @@ import OrderForm from "../../components/forms/OrderForm/OrderFormContainer";
 import { useContext, useEffect, useState } from "react";
 import { useProductionOrders } from "../../hooks/useProductionOrders";
 import { getOrderStatusFormatting } from "../../utilities/tableFormatters";
+import { convertToPSI, convertFromPSI } from "../../utilities/pressureConversions";
+import { convertToFahrenheit} from "../../utilities/temperatureConversions";
 
 export default function EngOrders() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
@@ -29,7 +31,6 @@ export default function EngOrders() {
         );
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -154,7 +155,7 @@ export default function EngOrders() {
           <thead className="sticky top-0 z-10 bg-slate-50 border-b border-border-subtle shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
             <tr>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
-                Order No.
+                SO #
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Product Type
@@ -163,10 +164,10 @@ export default function EngOrders() {
                 Size
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
-                Burst Pressure
+                Burst Pressure (PSI)
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
-                Temperature
+                Temperature (°F)
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Status
@@ -188,8 +189,8 @@ export default function EngOrders() {
               </tr>
             ) : orders?.data?.length > 0 ? (
               orders.data.map((order) => {
-                const burstPressure = order.specs?.burst_pressure ? `${order.specs.burst_pressure} ${order.specs.pressure_unit?.symbol || ''}`.trim() : '-';
-                const temperature = order.specs?.temperature ? `${order.specs.temperature} ${order.specs.temperature_units || ''}`.trim() : '-';
+                const burstPressure = order.specs?.burst_pressure ? `${convertToPSI(order.specs.burst_pressure, order.specs.pressure_unit?.conversion_multiplier).toFixed(2)}` : '-';
+                const temperature = order.specs?.temperature ? `${convertToFahrenheit(order.specs.temperature, order.specs.temperature_units).toFixed(2)}`: '-';
                 const productType = order.product_type?.name || '-';
                 const size = order.custom_product_size ? `${order.custom_product_size} ${order.custom_size_uom || ''}`.trim() : (order.product_size?.display_name || '-');
                 const statusFormatting = getOrderStatusFormatting(order.status || 'pending');
