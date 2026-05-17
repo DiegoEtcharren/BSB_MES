@@ -40,7 +40,11 @@ export default function EngOrders() {
   ];
 
   const onRangeChange = (dates, dateStrings) => {
-    setDateRange(dates);
+    if (dates) {
+      setDateRange({ start_date: dateStrings[0], end_date: dateStrings[1] });
+    } else {
+      setDateRange("");
+    }
   };
 
   useEffect(() => {
@@ -61,20 +65,29 @@ export default function EngOrders() {
   useEffect(() => {
     const params = { page };
     if (statusFilter) params.status = statusFilter;
-    if (dateRange) params.dateRange = dateRange;
+    if (dateRange) {
+      params.start_date = dateRange.start_date;
+      params.end_date = dateRange.end_date;
+    }
     if (searchQuery) params.search = searchQuery;
     const delayDebounceFn = setTimeout(() => {
       fetchProductionOrders(params);
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, dueDateFilter, searchQuery, fetchProductionOrders]);
+    // Trigger re-fetch when dateRange (or other filters) change
+  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, dueDateFilter, searchQuery, dateRange, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
     if (window.confirm(`Are you sure you want to delete order ${orderNumber}?`)) {
       try {
         await deleteProductionOrder(id);
-        fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, due_date_range: dueDateFilter });
+        const params = { page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, due_date_range: dueDateFilter };
+        if (dateRange) {
+          params.start_date = dateRange.start_date;
+          params.end_date = dateRange.end_date;
+        }
+        fetchProductionOrders(params);
       } catch (err) {
         console.error("Error deleting order:", err);
       }
@@ -241,20 +254,25 @@ export default function EngOrders() {
                       <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => {
+                            const params = {
+                              page,
+                              order_number: orderNumberFilter,
+                              product_type: productTypeFilter,
+                              size: sizeFilter,
+                              burst_pressure: burstPressureFilter,
+                              temperature: temperatureFilter,
+                              status: statusFilter,
+                              due_date_range: dueDateFilter,
+                            };
+                            if (dateRange) {
+                              params.start_date = dateRange.start_date;
+                              params.end_date = dateRange.end_date;
+                            }
                             openModal(
                               <OrderForm
                                 initialData={order}
                                 onSuccess={() =>
-                                  fetchProductionOrders({
-                                    page,
-                                    order_number: orderNumberFilter,
-                                    product_type: productTypeFilter,
-                                    size: sizeFilter,
-                                    burst_pressure: burstPressureFilter,
-                                    temperature: temperatureFilter,
-                                    status: statusFilter,
-                                    due_date_range: dueDateFilter,
-                                  })
+                                  fetchProductionOrders(params)
                                 }
                               />,
                               "Edit Order",
