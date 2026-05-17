@@ -153,22 +153,22 @@ export default function EngOrders() {
         <table className="w-full text-left">
           <thead className="sticky top-0 z-10 bg-slate-50 border-b border-border-subtle shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
             <tr>
-              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest">
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Order No.
               </th>
-              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest">
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Product Type
               </th>
-              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest">
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Size
               </th>
-              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest">
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Burst Pressure
               </th>
-              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest">
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Temperature
               </th>
-              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest">
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Status
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-right">
@@ -199,22 +199,22 @@ export default function EngOrders() {
                     key={order.id}
                     className="hover:bg-slate-50 transition-colors group"
                   >
-                    <td className="px-6 py-4 text-sm font-bold text-charcoal">
+                    <td className="px-6 py-4 text-sm font-bold text-charcoal text-center">
                       {order.order_number}
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
+                    <td className="px-6 py-4 text-sm text-slate-600 text-center">
                       {productType}
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
+                    <td className="px-6 py-4 text-sm text-slate-600 text-center">
                       {size}
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
+                    <td className="px-6 py-4 text-sm text-slate-600 text-center">
                       {burstPressure}
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
+                    <td className="px-6 py-4 text-sm text-slate-600 text-center">
                       {temperature}
                     </td>
-                    <td className="px-6 py-4 text-sm">
+                    <td className="px-6 py-4 text-sm text-center">
                       <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusFormatting.wrapperClass}`}
                       >
