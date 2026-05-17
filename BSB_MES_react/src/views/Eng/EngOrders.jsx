@@ -41,8 +41,6 @@ export default function EngOrders() {
 
   const onRangeChange = (dates, dateStrings) => {
     setDateRange(dates);
-    console.log('Formatted Selected Range: ', dateStrings);
-    // Example output: ['2026-05-17', '2026-05-24']
   };
 
   useEffect(() => {
@@ -63,7 +61,7 @@ export default function EngOrders() {
   useEffect(() => {
     const params = { page };
     if (statusFilter) params.status = statusFilter;
-    if (dueDateFilter) params.dateRange = dueDateFilter;
+    if (dateRange) params.dateRange = dateRange;
     if (searchQuery) params.search = searchQuery;
     const delayDebounceFn = setTimeout(() => {
       fetchProductionOrders(params);
