@@ -20,14 +20,15 @@ export default function EngOrders() {
       icon: "post_add",
       onClick: () => {
         openModal(
-          <OrderForm onSuccess={() => fetchProductionOrders({ page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter })} />,
+          <OrderForm onSuccess={() => fetchProductionOrders()} />,
           "Add New Order",
           "Create a new order",
           true
         );
       },
     });
-  }, [setHeaderConfig, openModal, fetchProductionOrders, page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
