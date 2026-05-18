@@ -5,7 +5,7 @@ import { useProductionOrders } from "../../hooks/useProductionOrders";
 import { getOrderStatusFormatting } from "../../utilities/tableFormatters";
 import { convertToPSI, convertFromPSI } from "../../utilities/pressureConversions";
 import { convertToFahrenheit} from "../../utilities/temperatureConversions";
-import { DatePicker, Input, ConfigProvider, Space } from 'antd';
+import { DatePicker, Input, Space } from 'antd';
 import dayjs from 'dayjs';
 
 export default function EngOrders() {
@@ -115,25 +115,7 @@ export default function EngOrders() {
             <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">
               Filter by:
             </span>
-            <ConfigProvider
-              theme={{
-                token: {
-                  colorPrimary: "#E31E24",
-                },
-                components: {
-                  DatePicker: {
-                    activeBorderColor: "#E31E24",
-                    hoverBorderColor: "#E31E24",
-                    activeShadow: "0 0 0 2px rgba(#E31E24, 0.1)",
-                  },
-                  Input: {
-                    activeBorderColor: "#E31E24",
-                    hoverBorderColor: "#b9151a",
-                  },
-                },
-              }}
-            >
-              {" "}
+
               <Space orientation="vertical" size={12}>
                 <RangePicker
                   presets={rangePresets}
@@ -141,7 +123,6 @@ export default function EngOrders() {
                   placeholder={["From", "To"]}
                 />
               </Space>
-            </ConfigProvider>
 
             <select
               className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
