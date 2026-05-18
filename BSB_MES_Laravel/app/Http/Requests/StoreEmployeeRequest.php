@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
 
