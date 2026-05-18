@@ -7,9 +7,11 @@ import { toast, ToastContainer, Bounce } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import router from './router';
 import './index.css';
+import { GlobalAntdProvider } from './GlobalAntdProvider';
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
+  <GlobalAntdProvider>
   <MasterDataProvider>
     <MesProvider>
       <ToastContainer
@@ -28,5 +30,6 @@ createRoot(document.getElementById("root")).render(
       <RouterProvider router={router} />
     </MesProvider>
   </MasterDataProvider>
+  </GlobalAntdProvider>
   // </StrictMode>,
 );
