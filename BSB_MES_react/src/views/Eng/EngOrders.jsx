@@ -118,17 +118,17 @@ export default function EngOrders() {
             <ConfigProvider
               theme={{
                 token: {
-                  colorPrimary: "var(--color-primary)",
+                  colorPrimary: "#E31E24",
                 },
                 components: {
                   DatePicker: {
-                    activeBorderColor: "var(--color-primary)",
-                    hoverBorderColor: "var(--color-primary-hover)",
-                    activeShadow: "0 0 0 2px rgba(var(--color-primary), 0.1)",
+                    activeBorderColor: "#E31E24",
+                    hoverBorderColor: "#E31E24",
+                    activeShadow: "0 0 0 2px rgba(#E31E24, 0.1)",
                   },
                   Input: {
-                    activeBorderColor: "var(--color-primary-primary)",
-                    hoverBorderColor: "var(--color-primary-hover)",
+                    activeBorderColor: "#E31E24",
+                    hoverBorderColor: "#b9151a",
                   },
                 },
               }}
