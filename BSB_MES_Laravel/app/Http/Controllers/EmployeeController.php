@@ -41,8 +41,8 @@ class EmployeeController extends Controller
             }
         }
 
-            // Search logic:
-            if (!empty($validated['search'])) {
+        // Search logic:
+        if (!empty($validated['search'])) {
             $searchTerm = $validated['search'];
 
             // We wrap the search clauses in a function to group the SQL 'OR' statements:

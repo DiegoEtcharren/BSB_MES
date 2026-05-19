@@ -81,8 +81,8 @@ export default function EngOperators() {
       {/* Search Bar: */}
       <div className="p-6 border-b border-border-subtle flex items-center justify-between bg-white shrink-0">
         <div className="flex items-center gap-4">
-          <div className="relative">
-            <span className="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[20px]">
+          <div className="relative flex items-center">
+            <span className="material-symbols-outlined absolute left-3 text-slate-400 text-[20px]">
               search
             </span>
             <input

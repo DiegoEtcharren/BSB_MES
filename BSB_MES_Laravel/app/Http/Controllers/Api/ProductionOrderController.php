@@ -12,48 +12,46 @@ use App\Models\ProductionOrderSpec;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ProductionOrderController extends Controller
 {
     public function index(Request $request)
     {
+
+        // Validate request information:
+        $validated = $request->validate([
+            'status' => 'sometimes|string|in:inProgress,completed,pending',
+            'search'   => 'sometimes|nullable|string|max:255',
+            'per_page' => 'sometimes|integer|min:1|max:100',
+            'start_date' => 'sometimes|nullable|date',
+            'end_date' => 'sometimes|nullable|date|after_or_equal:start_date',
+        ]);
+
         $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize']);
 
-        // Filtering
-        if ($request->filled('order_number')) {
-            $query->where('order_number', 'like', '%' . $request->input('order_number') . '%');
+        if (isset($validated['status'])) {
+            $query->where('status', $validated['status']);
         }
 
-        if ($request->filled('product_type')) {
-            $query->whereHas('productType', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->input('product_type') . '%');
-            });
+        if (!empty($validated['start_date']) && !empty($validated['end_date'])) {
+            $startDate = Carbon::parse($validated['start_date'])->startOfDay();
+            $endDate = Carbon::parse($validated['end_date'])->endOfDay();
+            $query->whereBetween('required_date', [$startDate, $endDate]);
         }
 
-        if ($request->filled('size')) {
-            $query->where(function($q) use ($request) {
-                $q->whereHas('productSize', function ($q2) use ($request) {
-                    $q2->where('display_name', 'like', '%' . $request->input('size') . '%')
-                       ->orWhere('size_value', 'like', '%' . $request->input('size') . '%');
-                })->orWhere('custom_product_size', 'like', '%' . $request->input('size') . '%');
-            });
-        }
+        // Search logic:
+        if (!empty($validated['search'])) {
+                $searchTerm = $validated['search'];
 
-        if ($request->filled('burst_pressure')) {
-            $query->whereHas('specs', function ($q) use ($request) {
-                $q->where('burst_pressure', 'like', '%' . $request->input('burst_pressure') . '%');
-            });
-        }
-
-        if ($request->filled('temperature')) {
-            $query->whereHas('specs', function ($q) use ($request) {
-                $q->where('temperature', 'like', '%' . $request->input('temperature') . '%');
-            });
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->input('status'));
-        }
+                // We wrap the search clauses in a function to group the SQL 'OR' statements:
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->where('order_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhereHas('productType', function ($productTypeQuery) use ($searchTerm) {
+                        $productTypeQuery->where('name', 'LIKE', "%{$searchTerm}%");
+                    });
+                });
+            }
 
         $perPage = $request->input('per_page', 10);
         $orders = $query->orderBy('created_at', 'desc')->paginate($perPage);
