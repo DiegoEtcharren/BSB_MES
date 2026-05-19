@@ -7,6 +7,8 @@ import { convertToPSI, convertFromPSI } from "../../utilities/pressureConversion
 import { convertToFahrenheit} from "../../utilities/temperatureConversions";
 import { DatePicker, Input, Space } from 'antd';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 export default function EngOrders() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
@@ -79,19 +81,38 @@ export default function EngOrders() {
   }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, dueDateFilter, searchQuery, dateRange, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
-    if (window.confirm(`Are you sure you want to delete order ${orderNumber}?`)) {
-      try {
-        await deleteProductionOrder(id);
+    const result = await Swal.fire({
+      title: "Delete Order?",
+      text: `Are you sure you want to delete order ${orderNumber}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Yes",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
+    toast.promise(
+      deleteProductionOrder(id).then(() => {
         const params = { page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, due_date_range: dueDateFilter };
         if (dateRange) {
           params.start_date = dateRange.start_date;
           params.end_date = dateRange.end_date;
         }
         fetchProductionOrders(params);
-      } catch (err) {
-        console.error("Error deleting order:", err);
+      }),
+      {
+        pending: `Deleting order ${orderNumber}...`,
+        success: `Order ${orderNumber} has been successfully deleted.`,
+        error: {
+          render({ data: error }) {
+            return `Failed to delete order: ${error?.response?.data?.message || error.message || "Unknown error"}`;
+          }
+        }
       }
-    }
+    );
   };
 
   return (
