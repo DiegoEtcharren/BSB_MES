@@ -1,5 +1,0 @@
-PHP Warning:  require(/app/BSB_MES_Laravel/vendor/autoload.php): Failed to open stream: No such file or directory in /app/BSB_MES_Laravel/artisan on line 10
-PHP Fatal error:  Uncaught Error: Failed opening required '/app/BSB_MES_Laravel/vendor/autoload.php' (include_path='.:/usr/share/php') in /app/BSB_MES_Laravel/artisan:10
-Stack trace:
-#0 {main}
-  thrown in /app/BSB_MES_Laravel/artisan on line 10

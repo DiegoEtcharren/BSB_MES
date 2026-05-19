@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ManufacturingRangeController;
 use App\Http\Controllers\Api\CertificateController;
 use App\Http\Controllers\Api\ProductionOrderController;
 use App\Http\Controllers\Api\MaterialController;
+use App\Http\Controllers\Api\DashboardController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -48,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/production-orders', [ProductionOrderController::class, 'store']);
             Route::delete('/production-orders/{id}', [ProductionOrderController::class, 'destroy']);
             Route::get('/materials', [MaterialController::class, 'index']);
+
+            Route::get('/dashboard/kpis', [DashboardController::class, 'index']);
         });
     });
 });

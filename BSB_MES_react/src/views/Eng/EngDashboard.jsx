@@ -1,6 +1,7 @@
 import MesContext from "../../context/MesProvider";
 import { useContext, useEffect } from "react";
-import { Card, Typography } from "antd";
+import { Card, Typography, Spin } from "antd";
+import { useDashboardKpis } from "../../hooks/useDashboardKpis";
 import {
   Archive,
   TrendingUp,
@@ -14,10 +15,12 @@ const { Title, Text } = Typography;
 
 export default function EngDashboard() {
   const { setHeaderConfig } = useContext(MesContext);
+  const { kpis, isLoading, fetchDashboardKpis } = useDashboardKpis();
 
   useEffect(() => {
     setHeaderConfig("Dashboard");
-  }, []);
+    fetchDashboardKpis();
+  }, [setHeaderConfig, fetchDashboardKpis]);
 
   return (
 
@@ -35,6 +38,29 @@ export default function EngDashboard() {
                 <Archive className="w-5 h-5 text-red-400" />
               </div>
             </div>
+          </div>
+          <Spin spinning={isLoading}>
+            <div className="mb-2">
+              <Title level={2} style={{ margin: 0 }}>
+                {kpis?.active_orders?.total_value !== undefined
+                  ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(kpis.active_orders.total_value)
+                  : '$0.00'}
+              </Title>
+            </div>
+            <div className="flex items-center text-sm">
+              <Text type="secondary">
+                {kpis?.active_orders?.count !== undefined ? kpis.active_orders.count : 0} orders
+              </Text>
+            </div>
+          </Spin>
+        </Card>
+
+        {/* KPI 2: Production Efficiency */}
+        <Card className="shadow-sm border-gray-200" bodyStyle={{ padding: '20px' }}>
+          <div className="flex justify-between items-start mb-4">
+            <Text type="secondary" className="text-gray-500 font-medium">Production Efficiency</Text>
+            <div className="bg-yellow-50 p-2 rounded-md">
+              <TrendingUp className="w-5 h-5 text-yellow-500" />
             <div className="mb-2">
               <Title level={2} style={{ margin: 0 }}>1,248</Title>
             </div>
