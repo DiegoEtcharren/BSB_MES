@@ -115,7 +115,7 @@ export default function EngOrders() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-lg shadow-sm border border-border-subtle overflow-hidden">
+    <div className="flex flex-col h-full bg-white rounded-xl shadow-sm border border-border-subtle overflow-hidden">
       {/* Search Bar: */}
       <div className="p-6 border-b border-border-subtle flex items-center justify-between bg-white shrink-0">
         <div className="flex items-center gap-4">
