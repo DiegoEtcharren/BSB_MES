@@ -77,7 +77,6 @@ export default function EngOrders() {
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-    // Trigger re-fetch when dateRange (or other filters) change
   }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, dueDateFilter, searchQuery, dateRange, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
