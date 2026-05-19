@@ -30,11 +30,11 @@ export default function Layout() {
         <EngHeader />
         <main className="flex-1 flex flex-col overflow-y-auto bg-gray-100 p-3 min-h-0">
           <Outlet />
-          <footer className="mt-8 text-center opacity-60">
+          {/* <footer className="mt-8 text-center opacity-60">
             <p className="text-slate-600 text-xs">
               © 2026 BS&B Safety Systems. All rights reserved.
             </p>
-          </footer>
+          </footer> */}
         </main>
       </div>
       <Modal />
