@@ -22,10 +22,6 @@
 @layer base {
   html, body, #root {
     @apply min-h-screen;
-    --ant-color-primary: var(--color-primary) !important;
-    --ant-color-primary-hover: var(--color-primary-hover) !important;
-    --ant-color-primary-active: var(--color-primary-hover) !important;
-    --ant-date-picker-cell-active-with-range-bg: var(--color-primary) !important;
   }
 
   body {
