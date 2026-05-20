@@ -48,7 +48,8 @@ export default function EngDashboard() {
                         style: "currency",
                         currency: "USD",
                       }).format(kpis.active_orders.total_value)
-                    : "$0.00"}
+                    : "$0.00"} {" "}
+                  in backlog
                 </Title>
               </div>
               <div className="flex items-center text-sm">
@@ -56,7 +57,7 @@ export default function EngDashboard() {
                   {kpis?.active_orders?.count !== undefined
                     ? kpis.active_orders.count
                     : 0}{" "}
-                  orders
+                  order(s) in backlog
                 </Text>
               </div>
             </Spin>
