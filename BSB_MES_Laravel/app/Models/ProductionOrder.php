@@ -21,6 +21,7 @@ class ProductionOrder extends Model
         'custom_product_size',
         'custom_size_uom',
         'status',
+        'operator_id',
     ];
 
     public function specs()
@@ -51,5 +52,10 @@ class ProductionOrder extends Model
     public function productSize()
     {
         return $this->belongsTo(StandardProductSize::class, 'product_size_id');
+    }
+
+    public function operator()
+    {
+        return $this->belongsTo(User::class, 'operator_id');
     }
 }

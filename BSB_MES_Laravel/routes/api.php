@@ -51,6 +51,13 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/materials', [MaterialController::class, 'index']);
 
             Route::get('/dashboard/kpis', [DashboardController::class, 'index']);
+
+            Route::get('/operators', function () {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => \App\Models\User::where('role', 'operator')->with('employee')->get()
+                ]);
+            });
         });
     });
 });

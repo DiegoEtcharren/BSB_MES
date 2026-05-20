@@ -1,3 +1,4 @@
+import axiosClient from "../../config/axios";
 import MesContext from "../../context/MesProvider";
 import OrderForm from "../../components/forms/OrderForm/OrderFormContainer";
 import { useContext, useEffect, useState } from "react";
@@ -21,9 +22,23 @@ export default function EngOrders() {
   const [burstPressureFilter, setBurstPressureFilter] = useState("");
   const [temperatureFilter, setTemperatureFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [operatorFilter, setOperatorFilter] = useState("");
   const [dueDateFilter, setDueDateFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState("");
+  const [operatorsList, setOperatorsList] = useState([]);
+
+  useEffect(() => {
+    const fetchOperators = async () => {
+      try {
+        const response = await axiosClient.get("/api/v1/operators");
+        setOperatorsList(response.data.data);
+      } catch (err) {
+        console.error("Failed to load operators", err);
+      }
+    };
+    fetchOperators();
+  }, []);
 
   const { RangePicker } = DatePicker;
   const rangePresets = [
@@ -67,6 +82,7 @@ export default function EngOrders() {
   useEffect(() => {
     const params = { page };
     if (statusFilter) params.status = statusFilter;
+    if (operatorFilter) params.operator_id = operatorFilter;
     if (dateRange) {
       params.start_date = dateRange.start_date;
       params.end_date = dateRange.end_date;
@@ -77,7 +93,7 @@ export default function EngOrders() {
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, dueDateFilter, searchQuery, dateRange, fetchProductionOrders]);
+  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, operatorFilter, dueDateFilter, searchQuery, dateRange, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
     const result = await Swal.fire({
@@ -95,7 +111,7 @@ export default function EngOrders() {
 
     toast.promise(
       deleteProductionOrder(id).then(() => {
-        const params = { page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, due_date_range: dueDateFilter };
+        const params = { page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, operator_id: operatorFilter, due_date_range: dueDateFilter };
         if (dateRange) {
           params.start_date = dateRange.start_date;
           params.end_date = dateRange.end_date;
@@ -154,6 +170,19 @@ export default function EngOrders() {
               <option value={"completed"}>Completed</option>
               <option value={"pending"}>Pending</option>
             </select>
+
+            <select
+              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
+              value={operatorFilter}
+              onChange={(e) => setOperatorFilter(e.target.value)}
+            >
+              <option value={""}>All Operators</option>
+              {operatorsList.map(op => (
+                <option key={op.id} value={op.id}>
+                  {op.employee ? `${op.employee.first_name} ${op.employee.last_name}` : op.username}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -181,6 +210,9 @@ export default function EngOrders() {
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Temp. (°F)
+              </th>
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
+                Operator
               </th>
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Status
@@ -262,6 +294,9 @@ export default function EngOrders() {
                     <td className="px-6 py-4 text-sm text-slate-600 text-center">
                       {temperature}
                     </td>
+                    <td className="px-6 py-4 text-sm text-slate-600 text-center font-medium">
+                      {order.operator?.employee ? `${order.operator.employee.first_name} ${order.operator.employee.last_name}` : (order.operator?.username || "-")}
+                    </td>
                     <td className="px-6 py-4 text-sm text-center">
                       <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusFormatting.wrapperClass}`}
@@ -284,6 +319,7 @@ export default function EngOrders() {
                               burst_pressure: burstPressureFilter,
                               temperature: temperatureFilter,
                               status: statusFilter,
+                              operator_id: operatorFilter,
                               due_date_range: dueDateFilter,
                             };
                             if (dateRange) {

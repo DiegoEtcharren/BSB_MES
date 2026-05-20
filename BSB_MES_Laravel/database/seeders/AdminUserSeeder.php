@@ -35,5 +35,28 @@ class AdminUserSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        // 3. Create an Operator Employee
+        $operatorEmployeeId = DB::table('employees')->insertGetId([
+            'employee_number' => '2001',
+            'first_name' => 'John',
+            'last_name' => 'Operator',
+            'department' => 'Manufacturing',
+            'email' => 'operator1@bsb.com',
+            'hired_at' => '2026-05-20',
+            'status' => 'active',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // 4. Create an Operator User
+        DB::table('users')->insert([
+            'employee_id' => $operatorEmployeeId,
+            'username' => 'operator1',
+            'password' => Hash::make('Welcome2022.'),
+            'role' => 'operator',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

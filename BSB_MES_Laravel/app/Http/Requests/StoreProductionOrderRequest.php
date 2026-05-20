@@ -37,6 +37,7 @@ class StoreProductionOrderRequest extends FormRequest
             'product_size_id' => 'nullable|exists:standard_product_sizes,id',
             'custom_product_size' => 'nullable|string',
             'custom_size_uom' => 'nullable|string',
+            'operator_id' => 'nullable|integer|exists:users,id',
 
             // Pressure & Temp
             'burst_pressure' => 'nullable|numeric',

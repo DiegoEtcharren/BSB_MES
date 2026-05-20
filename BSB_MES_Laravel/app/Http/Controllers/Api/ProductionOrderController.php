@@ -26,9 +26,14 @@ class ProductionOrderController extends Controller
             'per_page' => 'sometimes|integer|min:1|max:100',
             'start_date' => 'sometimes|nullable|date',
             'end_date' => 'sometimes|nullable|date|after_or_equal:start_date',
+            'operator_id' => 'sometimes|nullable|integer|exists:users,id',
         ]);
 
-        $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize']);
+        $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize', 'operator.employee']);
+
+        if (!empty($validated['operator_id'])) {
+            $query->where('operator_id', $validated['operator_id']);
+        }
 
         if (isset($validated['status'])) {
             $query->where('status', $validated['status']);
@@ -98,6 +103,7 @@ class ProductionOrderController extends Controller
                 'custom_product_size' => $validated['custom_product_size'] ?? null,
                 'custom_size_uom' => $validated['custom_size_uom'] ?? null,
                 'status' => 'pending',
+                'operator_id' => $validated['operator_id'] ?? null,
             ]);
 
             // Create Production Order Specs
