@@ -27,11 +27,14 @@ class ProductionOrderController extends Controller
             'start_date' => 'sometimes|nullable|date',
             'end_date' => 'sometimes|nullable|date|after_or_equal:start_date',
             'operator_id' => 'sometimes|nullable|integer|exists:users,id',
+            'unassigned' => 'sometimes|nullable|boolean',
         ]);
 
         $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize', 'operator.employee']);
 
-        if (!empty($validated['operator_id'])) {
+        if ($request->boolean('unassigned')) {
+            $query->whereNull('operator_id');
+        } elseif (!empty($validated['operator_id'])) {
             $query->where('operator_id', $validated['operator_id']);
         }
 

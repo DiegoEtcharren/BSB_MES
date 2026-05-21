@@ -28,6 +28,23 @@ export default function EngOrders() {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState("");
   const [operatorsList, setOperatorsList] = useState([]);
+  const [unassignedFilter, setUnassignedFilter] = useState(false);
+
+  const getQueryParams = (overridePage) => {
+    const params = { page: overridePage ?? page };
+    if (statusFilter && statusFilter.trim()) params.status = statusFilter;
+    if (unassignedFilter) {
+      params.unassigned = 1;
+    } else if (operatorFilter) {
+      params.operator_id = operatorFilter;
+    }
+    if (dateRange) {
+      params.start_date = dateRange.start_date;
+      params.end_date = dateRange.end_date;
+    }
+    if (searchQuery) params.search = searchQuery;
+    return params;
+  };
 
   useEffect(() => {
     const fetchOperators = async () => {
@@ -81,20 +98,13 @@ export default function EngOrders() {
   }, []);
 
   useEffect(() => {
-    const params = { page };
-    if (statusFilter) params.status = statusFilter;
-    if (operatorFilter) params.operator_id = operatorFilter;
-    if (dateRange) {
-      params.start_date = dateRange.start_date;
-      params.end_date = dateRange.end_date;
-    }
-    if (searchQuery) params.search = searchQuery;
+    const params = getQueryParams();
     const delayDebounceFn = setTimeout(() => {
       fetchProductionOrders(params);
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [page, orderNumberFilter, productTypeFilter, sizeFilter, burstPressureFilter, temperatureFilter, statusFilter, operatorFilter, dueDateFilter, searchQuery, dateRange, fetchProductionOrders]);
+  }, [page, statusFilter, operatorFilter, unassignedFilter, searchQuery, dateRange, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
     const result = await Swal.fire({
@@ -112,12 +122,7 @@ export default function EngOrders() {
 
     toast.promise(
       deleteProductionOrder(id).then(() => {
-        const params = { page, order_number: orderNumberFilter, product_type: productTypeFilter, size: sizeFilter, burst_pressure: burstPressureFilter, temperature: temperatureFilter, status: statusFilter, operator_id: operatorFilter, due_date_range: dueDateFilter };
-        if (dateRange) {
-          params.start_date = dateRange.start_date;
-          params.end_date = dateRange.end_date;
-        }
-        fetchProductionOrders(params);
+        fetchProductionOrders(getQueryParams());
       }),
       {
         pending: `Deleting order ${orderNumber}...`,
@@ -173,9 +178,10 @@ export default function EngOrders() {
             </select>
 
             <select
-              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
+              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               value={operatorFilter}
               onChange={(e) => setOperatorFilter(e.target.value)}
+              disabled={unassignedFilter}
             >
               <option value={""}>All Operators</option>
               {operatorsList.map(op => (
@@ -184,6 +190,21 @@ export default function EngOrders() {
                 </option>
               ))}
             </select>
+
+            <label className="flex items-center gap-2 cursor-pointer select-none text-sm text-slate-600 bg-slate-50 border border-slate-200 rounded-md py-1.5 px-3 hover:bg-slate-100 transition-colors">
+              <input
+                type="checkbox"
+                checked={unassignedFilter}
+                onChange={(e) => {
+                  setUnassignedFilter(e.target.checked);
+                  if (e.target.checked) {
+                    setOperatorFilter("");
+                  }
+                }}
+                className="rounded text-primary focus:ring-primary/20 cursor-pointer"
+              />
+              <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">Unassigned Only</span>
+            </label>
           </div>
         </div>
       </div>
@@ -322,26 +343,11 @@ export default function EngOrders() {
                       <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => {
-                            const params = {
-                              page,
-                              order_number: orderNumberFilter,
-                              product_type: productTypeFilter,
-                              size: sizeFilter,
-                              burst_pressure: burstPressureFilter,
-                              temperature: temperatureFilter,
-                              status: statusFilter,
-                              operator_id: operatorFilter,
-                              due_date_range: dueDateFilter,
-                            };
-                            if (dateRange) {
-                              params.start_date = dateRange.start_date;
-                              params.end_date = dateRange.end_date;
-                            }
                             openModal(
                               <OrderForm
                                 initialData={order}
                                 onSuccess={() =>
-                                  fetchProductionOrders(params)
+                                  fetchProductionOrders(getQueryParams())
                                 }
                               />,
                               "Edit Order",
@@ -358,26 +364,11 @@ export default function EngOrders() {
                         </button>
                         <button
                           onClick={() => {
-                            const params = {
-                              page,
-                              order_number: orderNumberFilter,
-                              product_type: productTypeFilter,
-                              size: sizeFilter,
-                              burst_pressure: burstPressureFilter,
-                              temperature: temperatureFilter,
-                              status: statusFilter,
-                              operator_id: operatorFilter,
-                              due_date_range: dueDateFilter,
-                            };
-                            if (dateRange) {
-                              params.start_date = dateRange.start_date;
-                              params.end_date = dateRange.end_date;
-                            }
                             openModal(
                               <AssignOperatorModal
                                 orderId={order.id}
                                 currentOperatorId={order.operator_id}
-                                onSuccess={() => fetchProductionOrders(params)}
+                                onSuccess={() => fetchProductionOrders(getQueryParams())}
                               />,
                               "Assign Operator",
                               `Select operator for Order: ${order.order_number}`,
