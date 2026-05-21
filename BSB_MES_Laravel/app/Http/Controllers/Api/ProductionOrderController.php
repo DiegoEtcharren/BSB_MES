@@ -209,4 +209,28 @@ class ProductionOrderController extends Controller
             ], 500);
         }
     }
+
+    public function updateOperator(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'operator_id' => 'nullable|integer|exists:users,id',
+            ]);
+
+            $order = ProductionOrder::findOrFail($id);
+            $order->operator_id = $validated['operator_id'] ?? null;
+            $order->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Operator assigned successfully',
+                'data' => $order->load(['operator.employee'])
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred while assigning the operator.'
+            ], 500);
+        }
+    }
 }

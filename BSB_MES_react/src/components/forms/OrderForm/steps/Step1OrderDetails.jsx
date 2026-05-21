@@ -1,6 +1,6 @@
 import FormField from '../../../../components/forms/FormField';
 import { getInputClass } from '../../../../utilities/formUtilities';
-export default function Step1OrderDetails({ formData, handleChange, errors, operators = [] }) {
+export default function Step1OrderDetails({ formData, handleChange, errors }) {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 p-2">
@@ -94,9 +94,9 @@ export default function Step1OrderDetails({ formData, handleChange, errors, oper
         </div>
         <div>
           <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-widest border-l-4 border-primary pl-3">
-            Timeline & Operator
+            Timeline
           </h3>
-          <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="mt-4 grid grid-cols-2 gap-6">
             <FormField label="Date Entered" name="date_entered" errors={errors}>
               <input
                 type="date"
@@ -109,7 +109,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors, oper
             </FormField>
 
             <FormField
-              label="Date Entered"
+              label="Required Date"
               name="required_date"
               errors={errors}
             >
@@ -121,23 +121,6 @@ export default function Step1OrderDetails({ formData, handleChange, errors, oper
                 onChange={handleChange}
                 className={getInputClass(!!errors?.required_date)}
               />
-            </FormField>
-
-            <FormField label="Operator" name="operator_id" errors={errors}>
-              <select
-                name="operator_id"
-                id="operator_id"
-                value={formData.operator_id}
-                onChange={handleChange}
-                className={getInputClass(!!errors?.operator_id)}
-              >
-                <option value="">Select Operator</option>
-                {operators.map((op) => (
-                  <option key={op.id} value={op.id}>
-                    {op.employee ? `${op.employee.first_name} ${op.employee.last_name}` : op.username}
-                  </option>
-                ))}
-              </select>
             </FormField>
           </div>
         </div>

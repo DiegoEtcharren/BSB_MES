@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/certificates', [CertificateController::class, 'index']);
             Route::get('/production-orders', [ProductionOrderController::class, 'index']);
             Route::post('/production-orders', [ProductionOrderController::class, 'store']);
+            Route::patch('/production-orders/{id}/operator', [ProductionOrderController::class, 'updateOperator']);
             Route::delete('/production-orders/{id}', [ProductionOrderController::class, 'destroy']);
             Route::get('/materials', [MaterialController::class, 'index']);
 

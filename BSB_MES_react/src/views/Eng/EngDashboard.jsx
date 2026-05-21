@@ -66,7 +66,7 @@ export default function EngDashboard() {
           {/* KPI 2: Production Efficiency */}
           <Card
             className="shadow-sm border-gray-200"
-            bodyStyle={{ padding: "20px" }}
+            styles={{ padding: "20px" }}
           >
             <div className="flex justify-between items-start mb-4">
               <Text type="secondary" className="text-gray-500 font-medium">

@@ -10,6 +10,7 @@ import { DatePicker, Input, Space } from 'antd';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import AssignOperatorModal from "../../components/forms/AssignOperatorModal";
 
 export default function EngOrders() {
   const { setHeaderConfig, openModal } = useContext(MesContext);
@@ -343,6 +344,41 @@ export default function EngOrders() {
                         >
                           <span className="material-symbols-outlined text-[18px]">
                             edit
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            const params = {
+                              page,
+                              order_number: orderNumberFilter,
+                              product_type: productTypeFilter,
+                              size: sizeFilter,
+                              burst_pressure: burstPressureFilter,
+                              temperature: temperatureFilter,
+                              status: statusFilter,
+                              operator_id: operatorFilter,
+                              due_date_range: dueDateFilter,
+                            };
+                            if (dateRange) {
+                              params.start_date = dateRange.start_date;
+                              params.end_date = dateRange.end_date;
+                            }
+                            openModal(
+                              <AssignOperatorModal
+                                orderId={order.id}
+                                currentOperatorId={order.operator_id}
+                                onSuccess={() => fetchProductionOrders(params)}
+                              />,
+                              "Assign Operator",
+                              `Select operator for Order: ${order.order_number}`,
+                              false
+                            );
+                          }}
+                          className="p-1.5 hover:bg-blue-100 hover:text-blue-600 text-slate-500 rounded transition-colors cursor-pointer"
+                          title="Assign Operator"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">
+                            person_add
                           </span>
                         </button>
                         <button

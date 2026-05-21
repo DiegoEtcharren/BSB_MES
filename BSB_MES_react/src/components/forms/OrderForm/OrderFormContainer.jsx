@@ -41,7 +41,6 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     quantity: initialData?.quantity || 0,
     date_entered: initialData?.date_entered || getTodayDateString(),
     required_date: initialData?.required_date || "",
-    operator_id: initialData?.operator_id || "",
 
     // --- Step 2: Product Specifications ---
     product_type_id: initialData?.product_type_id || "",
@@ -79,19 +78,7 @@ export default function OrderForm({ initialData = null, onSuccess }) {
   });
 
   const [manufacturingRangesRules, setManufacturingRangesRules] = useState([]);
-  const [operators, setOperators] = useState([]);
 
-  useEffect(() => {
-    const fetchOperators = async () => {
-      try {
-        const response = await axiosClient.get("/api/v1/operators");
-        setOperators(response.data.data);
-      } catch (err) {
-        console.error("Could not fetch operators", err);
-      }
-    };
-    fetchOperators();
-  }, []);
   useEffect(() => {
     if (!formData.product_type_id) return;
 
@@ -279,7 +266,6 @@ const handleChange = (e) => {
             handleChange={handleChange}
             initialData={initialData}
             errors={errors}
-            operators={operators}
           />
         );
       case 1:
@@ -353,7 +339,6 @@ const handleChange = (e) => {
             handleChange={handleChange}
             setFormData={setFormData}
             errors={errors}
-            operators={operators}
           />
         );
     }
