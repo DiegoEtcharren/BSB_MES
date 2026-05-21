@@ -22,13 +22,21 @@ class DashboardController extends Controller
             ->selectRaw('SUM(quantity * unit_price) as total_value')
             ->value('total_value');
 
+        // Past due orders: active and required_date in the past
+        $pastDueOrders = ProductionOrder::where('status', '!=', 'completed')
+            ->where('required_date', '<', now())
+            ->with(['specs.pressureUnit', 'productType', 'productSize', 'operator.employee'])
+            ->orderBy('required_date', 'asc')
+            ->get();
+
         return response()->json([
             'status' => 'success',
             'data' => [
                 'active_orders' => [
                     'total_value' => $totalValue ? (float) $totalValue : 0,
                     'count' => $totalOrdersCount,
-                ]
+                ],
+                'past_due_orders' => $pastDueOrders,
             ]
         ]);
     }
