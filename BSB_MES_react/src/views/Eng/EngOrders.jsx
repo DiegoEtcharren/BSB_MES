@@ -218,7 +218,7 @@ export default function EngOrders() {
               <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Status
               </th>
-              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-right">
+              <th className="px-6 py-4 text-xs font-black uppercase text-slate-500 tracking-widest text-center">
                 Actions
               </th>
             </tr>
@@ -295,8 +295,18 @@ export default function EngOrders() {
                     <td className="px-6 py-4 text-sm text-slate-600 text-center">
                       {temperature}
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-600 text-center font-medium">
-                      {order.operator?.employee ? `${order.operator.employee.first_name} ${order.operator.employee.last_name}` : (order.operator?.username || "-")}
+                    <td className="px-6 py-4 text-sm text-center font-medium">
+                      {order.operator ? (
+                        <span className="text-slate-600">
+                          {order.operator.employee
+                            ? `${order.operator.employee.first_name} ${order.operator.employee.last_name}`
+                            : order.operator.username}
+                        </span>
+                      ) : (
+                        <span className="text-red-500 font-semibold italic text-xs">
+                          No Operator Assigned
+                        </span>
+                      )}
                     </td>
                     <td className="px-6 py-4 text-sm text-center">
                       <span
