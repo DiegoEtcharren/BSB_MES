@@ -103,5 +103,13 @@ class DashboardControllerTest extends TestCase
         // Check ordering: Order 1 (2 days ago) should be first, Order 2 (1 day ago) should be second
         $this->assertEquals('SO-PAST-1', $pastDueOrders[0]['order_number']);
         $this->assertEquals('SO-PAST-2', $pastDueOrders[1]['order_number']);
+
+        // Assert shipped orders per month
+        $this->assertArrayHasKey('shipped_orders', $responseData);
+        $shippedOrders = $responseData['shipped_orders'];
+        $this->assertCount(1, $shippedOrders);
+        $this->assertEquals(Carbon::now()->format('Y-m'), $shippedOrders[0]['month']);
+        $this->assertEquals(1, $shippedOrders[0]['count']);
+        $this->assertEquals(1200.00, $shippedOrders[0]['total_value']);
     }
 }

@@ -29,6 +29,20 @@ class DashboardController extends Controller
             ->orderBy('required_date', 'asc')
             ->get();
 
+        // Shipped orders per month: completed status, grouped by month of updated_at
+        $shippedOrders = ProductionOrder::where('status', 'completed')
+            ->selectRaw("DATE_FORMAT(updated_at, '%Y-%m') as month, SUM(quantity * unit_price) as total_value, COUNT(*) as count")
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'month' => $item->month,
+                    'total_value' => $item->total_value ? (float) $item->total_value : 0,
+                    'count' => (int) $item->count,
+                ];
+            });
+
         return response()->json([
             'status' => 'success',
             'data' => [
@@ -37,6 +51,7 @@ class DashboardController extends Controller
                     'count' => $totalOrdersCount,
                 ],
                 'past_due_orders' => $pastDueOrders,
+                'shipped_orders' => $shippedOrders,
             ]
         ]);
     }
