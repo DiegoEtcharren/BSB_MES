@@ -48,7 +48,7 @@ export default function EngDashboard() {
                         style: "currency",
                         currency: "USD",
                       }).format(kpis.active_orders.total_value)
-                    : "$0.00"} {" "}
+                    : "$0.00"}{" "}
                   in backlog
                 </Title>
               </div>
@@ -149,7 +149,10 @@ export default function EngDashboard() {
             </Card>
           </div>
           <div className="lg:col-span-1">
-            <Card className="shadow-sm border-gray-200 h-full min-h-[400px] flex items-center justify-center bg-gray-50/50">
+            <Card className="shadow-sm border-gray-200 h-full min-h-[400px] bg-gray-50/50">
+              <Title level={3} style={{ margin: 0 }}>
+                Current Orders in Past Due:
+              </Title>
               <Text type="secondary" className="text-gray-400">
                 Recent Activity Placeholder
               </Text>
