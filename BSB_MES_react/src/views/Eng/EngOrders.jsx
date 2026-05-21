@@ -6,7 +6,7 @@ import { useProductionOrders } from "../../hooks/useProductionOrders";
 import { getOrderStatusFormatting } from "../../utilities/tableFormatters";
 import { convertToPSI, convertFromPSI } from "../../utilities/pressureConversions";
 import { convertToFahrenheit} from "../../utilities/temperatureConversions";
-import { DatePicker, Input, Space } from 'antd';
+import { DatePicker, Input, Space, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -142,7 +142,7 @@ export default function EngOrders() {
             </span>
             <input
               className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-64 text-charcoal placeholder-slate-400"
-              placeholder="Search orders..."
+              placeholder="SO# / Product Type"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -150,7 +150,7 @@ export default function EngOrders() {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">
-              Filter by:
+              Due Date Filter:
             </span>
 
               <Space orientation="vertical" size={12}>
@@ -166,7 +166,7 @@ export default function EngOrders() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value={""}>All Status</option>
+              <option value={" "}>All Status</option>
               <option value={"inProgress"}>In Progress</option>
               <option value={"completed"}>Completed</option>
               <option value={"pending"}>Pending</option>
@@ -303,9 +303,9 @@ export default function EngOrders() {
                             : order.operator.username}
                         </span>
                       ) : (
-                        <span className="text-red-500 font-semibold italic text-xs">
+                        <Tag color="error" className="m-0 font-medium rounded-full">
                           No Operator Assigned
-                        </span>
+                        </Tag>
                       )}
                     </td>
                     <td className="px-6 py-4 text-sm text-center">

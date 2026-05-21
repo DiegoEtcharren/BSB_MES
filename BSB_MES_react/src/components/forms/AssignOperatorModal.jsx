@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
-import axiosClient from "../../../config/axios";
-import MesContext from "../../../context/MesProvider";
+import axiosClient from '../../config/axios';
+import MesContext from "../../context/MesProvider";
 import { toast } from "react-toastify";
 
 export default function AssignOperatorModal({ orderId, currentOperatorId, onSuccess }) {
@@ -62,14 +62,14 @@ export default function AssignOperatorModal({ orderId, currentOperatorId, onSucc
           <button
             type="button"
             onClick={closeModal}
-            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary cursor-pointer"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-md shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-md shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? "Assigning..." : "Assign Operator"}
           </button>
