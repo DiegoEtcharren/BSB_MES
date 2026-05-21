@@ -26,16 +26,17 @@ class ProductionOrderController extends Controller
             'per_page' => 'sometimes|integer|min:1|max:100',
             'start_date' => 'sometimes|nullable|date',
             'end_date' => 'sometimes|nullable|date|after_or_equal:start_date',
-            'operator_id' => 'sometimes|nullable|integer|exists:users,id',
-            'unassigned' => 'sometimes|nullable|boolean',
+            'operator_id' => 'sometimes|nullable|string',
         ]);
 
         $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize', 'operator.employee']);
 
-        if ($request->boolean('unassigned')) {
-            $query->whereNull('operator_id');
-        } elseif (!empty($validated['operator_id'])) {
-            $query->where('operator_id', $validated['operator_id']);
+        if (isset($validated['operator_id'])) {
+            if ($validated['operator_id'] === 'unassigned') {
+                $query->whereNull('operator_id');
+            } elseif ($validated['operator_id'] !== '') {
+                $query->where('operator_id', $validated['operator_id']);
+            }
         }
 
         if (!empty($validated['status'])) {

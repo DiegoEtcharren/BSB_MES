@@ -28,16 +28,11 @@ export default function EngOrders() {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState("");
   const [operatorsList, setOperatorsList] = useState([]);
-  const [unassignedFilter, setUnassignedFilter] = useState(false);
 
   const getQueryParams = (overridePage) => {
     const params = { page: overridePage ?? page };
     if (statusFilter && statusFilter.trim()) params.status = statusFilter;
-    if (unassignedFilter) {
-      params.unassigned = 1;
-    } else if (operatorFilter) {
-      params.operator_id = operatorFilter;
-    }
+    if (operatorFilter) params.operator_id = operatorFilter;
     if (dateRange) {
       params.start_date = dateRange.start_date;
       params.end_date = dateRange.end_date;
@@ -104,7 +99,7 @@ export default function EngOrders() {
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [page, statusFilter, operatorFilter, unassignedFilter, searchQuery, dateRange, fetchProductionOrders]);
+  }, [page, statusFilter, operatorFilter, searchQuery, dateRange, fetchProductionOrders]);
 
   const handleDelete = async (id, orderNumber) => {
     const result = await Swal.fire({
@@ -178,33 +173,18 @@ export default function EngOrders() {
             </select>
 
             <select
-              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              className="form-select py-1.5 pl-3 pr-8 text-sm border-slate-200 rounded-md bg-slate-50 focus:border-primary focus:ring-0 cursor-pointer"
               value={operatorFilter}
               onChange={(e) => setOperatorFilter(e.target.value)}
-              disabled={unassignedFilter}
             >
               <option value={""}>All Operators</option>
+              <option value={"unassigned"}>Unassigned</option>
               {operatorsList.map(op => (
                 <option key={op.id} value={op.id}>
                   {op.employee ? `${op.employee.first_name} ${op.employee.last_name}` : op.username}
                 </option>
               ))}
             </select>
-
-            <label className="flex items-center gap-2 cursor-pointer select-none text-sm text-slate-600 bg-slate-50 border border-slate-200 rounded-md py-1.5 px-3 hover:bg-slate-100 transition-colors">
-              <input
-                type="checkbox"
-                checked={unassignedFilter}
-                onChange={(e) => {
-                  setUnassignedFilter(e.target.checked);
-                  if (e.target.checked) {
-                    setOperatorFilter("");
-                  }
-                }}
-                className="rounded text-primary focus:ring-primary/20 cursor-pointer"
-              />
-              <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">Unassigned Only</span>
-            </label>
           </div>
         </div>
       </div>
