@@ -21,7 +21,7 @@ class ProductionOrderController extends Controller
 
         // Validate request information:
         $validated = $request->validate([
-            'status' => 'sometimes|string|in:inProgress,completed,pending',
+            'status' => 'sometimes|nullable|string|in:inProgress,completed,pending',
             'search'   => 'sometimes|nullable|string|max:255',
             'per_page' => 'sometimes|integer|min:1|max:100',
             'start_date' => 'sometimes|nullable|date',
@@ -35,7 +35,7 @@ class ProductionOrderController extends Controller
             $query->where('operator_id', $validated['operator_id']);
         }
 
-        if (isset($validated['status'])) {
+        if (!empty($validated['status'])) {
             $query->where('status', $validated['status']);
         }
 
