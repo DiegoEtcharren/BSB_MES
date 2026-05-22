@@ -34,7 +34,25 @@ export default function OrderForm({ initialData = null, onSuccess }) {
   const [formData, setFormData] = useState({
     // --- Step 1: Basic Order Information ---
     order_number: initialData?.order_number || "",
-    previous_order: initialData?.previous_order || "",
+    previous_order: (() => {
+      if (!initialData) return "";
+      if (typeof initialData.previous_order === "string") {
+        return initialData.previous_order;
+      }
+      if (initialData.previous_order && typeof initialData.previous_order === "object") {
+        return initialData.previous_order.order_number || "";
+      }
+      if (initialData.previous_order_legacy) {
+        return initialData.previous_order_legacy;
+      }
+      if (initialData.legacy_previous_order_number) {
+        return initialData.legacy_previous_order_number;
+      }
+      if (initialData.previous_order_id) {
+        return initialData.previous_order?.order_number || String(initialData.previous_order_id);
+      }
+      return "";
+    })(),
     customer: initialData?.customer || "",
     customer_po: initialData?.customer_po || "",
     unit_price: initialData?.unit_price || "",
@@ -50,9 +68,9 @@ export default function OrderForm({ initialData = null, onSuccess }) {
     custom_size_uom: initialData?.custom_size_uom || "",
 
     // --- Step 2: Pressure & Temperature Requirements ---
-    burst_pressure: initialData?.burst_pressure || "",
+    burst_pressure: initialData?.specs.burst_pressure || "",
     pressure_unit_id: initialData?.pressure_unit_id || "",
-    temperature: initialData?.temperature || "",
+    temperature: initialData?.specs.temperature || "",
     temperature_units: initialData?.temperature_units || "",
 
     // --- Step 3: Manufacturing Ranges ---
@@ -78,6 +96,8 @@ export default function OrderForm({ initialData = null, onSuccess }) {
   });
 
   const [manufacturingRangesRules, setManufacturingRangesRules] = useState([]);
+
+  console.log(initialData);
 
   useEffect(() => {
     if (!formData.product_type_id) return;
@@ -231,7 +251,7 @@ const handleChange = (e) => {
             render({ data }) {
               const order_number = data?.data?.order_number;
               console.log(data);
-              return `Order ${order_number} registered successfully`;
+              return `Order ${order_number} created successfully`;
             },
           },
           error: {

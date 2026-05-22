@@ -1,6 +1,8 @@
 import FormField from '../../../../components/forms/FormField';
 import { getInputClass } from '../../../../utilities/formUtilities';
+import dayjs from 'dayjs';
 export default function Step1OrderDetails({ formData, handleChange, errors }) {
+  console.log(formData.date_entered, formData.required_date)
   return (
     <>
       <div className="grid grid-cols-1 gap-4 p-2">
@@ -102,7 +104,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
                 type="date"
                 name="date_entered"
                 id="date_entered"
-                value={formData.date_entered}
+                value={dayjs(formData.date_entered).format('YYYY-MM-DD')}
                 onChange={handleChange}
                 className={getInputClass(!!errors?.date_entered)}
               />
@@ -117,7 +119,7 @@ export default function Step1OrderDetails({ formData, handleChange, errors }) {
                 type="date"
                 name="required_date"
                 id="required_date"
-                value={formData.required_date}
+                value={dayjs(formData.required_date).format('YYYY-MM-DD')}
                 onChange={handleChange}
                 className={getInputClass(!!errors?.required_date)}
               />

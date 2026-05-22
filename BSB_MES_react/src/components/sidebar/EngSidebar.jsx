@@ -7,7 +7,7 @@ export default function EngSidebar() {
   const {logout, user} = useAuth({middleware : 'auth'});
 
   return (
-    <aside className="w-64 bg-white border-r border-border-subtle flex flex-col z-20">
+    <aside className="w-52 bg-white border-r border-border-subtle flex flex-col z-20">
         <div className="p-6 flex items-center gap-3">
           <BrandLogo />
           <p className="font-black text-xl tracking-tight text-charcoal">

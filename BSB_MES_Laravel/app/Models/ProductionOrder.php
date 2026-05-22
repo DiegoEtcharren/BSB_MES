@@ -58,4 +58,10 @@ class ProductionOrder extends Model
     {
         return $this->belongsTo(User::class, 'operator_id');
     }
+
+    public function previousOrder()
+    {
+        return $this->belongsTo(ProductionOrder::class, 'previous_order_id');
+    }
 }
+

@@ -18,6 +18,8 @@ export default function Step2ProductDetails({
   const hasStandardSize = formData.product_size_id !== "";
   const hasCustomSize = formData.custom_product_size && formData.custom_product_size.trim() !== "";
 
+  console.log(formData.burst_pressure);
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 p-2">

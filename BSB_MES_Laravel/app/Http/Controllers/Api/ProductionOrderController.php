@@ -29,7 +29,7 @@ class ProductionOrderController extends Controller
             'operator_id' => 'sometimes|nullable|string',
         ]);
 
-        $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize', 'operator.employee']);
+        $query = ProductionOrder::with(['specs.pressureUnit', 'productType', 'productSize', 'operator.employee', 'previousOrder']);
 
         if (isset($validated['operator_id'])) {
             if ($validated['operator_id'] === 'unassigned') {
@@ -186,7 +186,7 @@ class ProductionOrderController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Production order created successfully',
-                'data' => $order->load(['specs', 'instructions', 'boms', 'certificates']),
+                'data' => $order->load(['specs', 'instructions', 'boms', 'certificates', 'previousOrder']),
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
