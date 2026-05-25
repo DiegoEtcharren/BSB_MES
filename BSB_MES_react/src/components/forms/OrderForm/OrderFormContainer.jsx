@@ -62,16 +62,16 @@ export default function OrderForm({ initialData = null, onSuccess }) {
 
     // --- Step 2: Product Specifications ---
     product_type_id: initialData?.product_type_id || "",
-    size_units: initialData?.size_units || "",
+    size_units: initialData?.size_units || initialData?.product_size?.units || initialData?.custom_size_uom || "",
     product_size_id: initialData?.product_size_id || "",
     custom_product_size: initialData?.custom_product_size || "",
     custom_size_uom: initialData?.custom_size_uom || "",
 
     // --- Step 2: Pressure & Temperature Requirements ---
-    burst_pressure: initialData?.specs.burst_pressure || "",
-    pressure_unit_id: initialData?.pressure_unit_id || "",
-    temperature: initialData?.specs.temperature || "",
-    temperature_units: initialData?.temperature_units || "",
+    burst_pressure: initialData?.specs?.burst_pressure || "",
+    pressure_unit_id: initialData?.specs?.pressure_unit?.id || "",
+    temperature: initialData?.specs?.temperature || "",
+    temperature_units: initialData?.specs?.temperature_units || "",
 
     // --- Step 3: Manufacturing Ranges ---
     manufacturing_range_id: initialData?.manufacturing_range_id || "",
